@@ -373,10 +373,10 @@ representation of the returned JSON from the Forecast.io API."
         (opts))
     (push (format f "units"
                   (case forecast-units
-                    ((si SI Si) "si")
-                    ((us US Us) "us")
-                    ((ca CA Ca) "ca")
-                    ((uk UK)    "uk2")
+                    (si "si")
+                    (us "us")
+                    (ca "ca")
+                    (uk "uk2")
                     (otherwise  "auto")))
           opts)
     (push (format f "lang"
@@ -423,7 +423,7 @@ average of minimum and maximum predicted temperatures."
 
 Returns 'F for Fahrenheit, 'C for Centigrade."
   (case forecast-units
-    ((US us Us) 'F)
+    (us 'F)
     (otherwise  'C)))
 
 (defun forecast--timezone ()
