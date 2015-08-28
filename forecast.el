@@ -446,8 +446,7 @@ letter."
           (forecast--temperature)
           (case (forecast--temperature-unit)
             (C "°C")
-            (F "°F")
-            (K "K"))))
+            (F "°F"))))
 
 (defun forecast--pressure (unit)
   "Return pressure in UNIT."
