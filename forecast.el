@@ -139,6 +139,9 @@
 
 ;;; Changes:
 ;;
+;; v0.1.4, 28 August 2015
+;;   - Fix callback called immaturely in `forecast--load-data'
+;;   - Add faces `forecast-upcoming-summary' and `forecast-upcoming-temperature'
 ;; v0.1.3, 28 August 2015
 ;;   - Fix non-prefixed functions.
 ;;   - Fix some errors regarding rendering.
