@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Package-Version: 0.1.0
+;; Package-Version: 0.1.1
 ;; X-URL: http://github.com/cadadr/forecast.el
 ;; URL: http://github.com/cadadr/forecast.el
 ;;
@@ -134,6 +134,8 @@
 
 ;;; Changes:
 ;;
+;; v0.1.0, 28 August 2015
+;;   - Incredibly important changes.
 ;; v0.1.0, 28 August 2015
 ;;   - First release.
 ;;
