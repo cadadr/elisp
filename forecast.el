@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Package-Version: 0.1.4
+;; Package-Version: 0.1.5
 ;; X-URL: http://github.com/cadadr/forecast.el
 ;; URL: http://github.com/cadadr/forecast.el
 ;;
@@ -139,6 +139,8 @@
 
 ;;; Changes:
 ;;
+;; v0.1.5, 28 August 2015
+;;   - New release because I can't really do releases properly.
 ;; v0.1.4, 28 August 2015
 ;;   - Fix callback called immaturely in `forecast--load-data'
 ;;   - Add faces `forecast-upcoming-summary' and `forecast-upcoming-temperature'
