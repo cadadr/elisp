@@ -571,7 +571,7 @@ See the face `forecast-moon-phase'"
   (newline)
   (let ((v (forecast--visibility)))
     (when v
-      (forecast--insert-format "Visibility %.1f%%" v)))
+      (forecast--insert-format "Visibility %.1f%%; " v)))
   (forecast--insert-format
    "Wind %s %s, from %s"
    (forecast--wind-speed)
