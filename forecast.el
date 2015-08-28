@@ -401,8 +401,8 @@ Returns NIL, as it is asynchronous."
                             (setq forecast--data w)
                             (when forecast--debug
                               (message "Forecast: loaded forecast data."))
-                            (funcall callback)
-                            (setf forecast--update-time (current-time)))))
+                            (setf forecast--update-time (current-time))
+                            (funcall callback))))
 
 (defun forecast--summary ()
   "Return an human-readable summary of the current forecast."
