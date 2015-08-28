@@ -453,7 +453,7 @@ letter."
 (defun forecast--wind-unit ()
   "Find the correct unit for the wind value."
   (case forecast-units
-    ((us uk) "mil/h")
+    ((us uk) "mph")
     ( ca     "km/h")
     ( si     "m/s")))
 
