@@ -606,7 +606,7 @@ See the face `forecast-moon-phase'"
                   (aref (forecast--assoca '(daily data) b) i))
           (let ((forecast--data b))
             (forecast--insert-with-props
-             (forecast--format-current-time "%A")
+             (forecast--format-current-time "\n%A")
              'font-lock-face 'org-level-3)
             (newline)
             (forecast--insert-with-props
@@ -698,7 +698,7 @@ absent."
       (forecast--insert-sun-moon-graphic)
       (newline)
       (forecast--insert-atmosphere-details)
-      (newline)
+      (newline 2)
       (forecast--insert-upcoming)
       (newline)
       (forecast--insert-io-link)
