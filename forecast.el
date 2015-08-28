@@ -152,6 +152,7 @@
 
 ;;; TODO:
 ;; 
+;; - Adjust for `customize-group'.
 ;; - Automatically find city and country names.
 ;; - Get location from computer?
 ;; - I18N?
