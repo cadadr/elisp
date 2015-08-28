@@ -430,8 +430,8 @@ letter."
   (format "%.0f%s"
           (forecast--temperature)
           (case (forecast--temperature-unit)
-            (C "℃")
-            (F "℉")
+            (C "°C")
+            (F "°F")
             (K "K"))))
 
 (defun forecast--pressure (unit)
