@@ -606,7 +606,7 @@ See the face `forecast-moon-phase'"
                   (aref (forecast--assoca '(daily data) b) i))
           (let ((forecast--data b))
             (forecast--insert-with-props
-             (forecast--format-current-time "\n%A")
+             (forecast--format-current-time "%A")
              'font-lock-face 'org-level-3)
             (newline)
             (forecast--insert-with-props
@@ -618,7 +618,7 @@ See the face `forecast-moon-phase'"
              'font-lock-face 'forecast-upcoming-summary)
             (newline)
             (forecast--insert-atmosphere-details)
-            (newline)))))
+            (newline 2)))))
 
 (defun forecast--insert-io-link ()
   "Insert link to Forecast.io."
