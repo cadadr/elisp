@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Package-Version: 0.1.1
+;; Package-Version: 0.1.2
 ;; X-URL: http://github.com/cadadr/forecast.el
 ;; URL: http://github.com/cadadr/forecast.el
 ;;
@@ -79,6 +79,11 @@
 ;; For the rest of variables, see their docstrings (C-h v RET var-name
 ;; RET).
 ;;
+;; See also the docstring for `forecast-moon-phase', which governs the
+;; face for  the moon phase  visualisation.  Most fonts will  not have
+;; defined the  necessary characters, thus  one may need to  install a
+;; font, e.g. Quivira.
+;;
 ;; Then on,  you may run  the command  `forecast' to get  the forecast
 ;; buffer.  The forecast  buffer uses `org-level-*' faces,  so it will
 ;; look like  your org  files.  It is  called «*Weather  Forecast*» by
@@ -134,7 +139,9 @@
 
 ;;; Changes:
 ;;
-;; v0.1.0, 28 August 2015
+;; v0.1.2, 28 August 2015
+;;   - Add missing docs.
+;; v0.1.1, 28 August 2015
 ;;   - Incredibly important changes.
 ;; v0.1.0, 28 August 2015
 ;;   - First release.

@@ -54,6 +54,11 @@ https://developer.forecast.io/
 For the  rest of variables, see  their docstrings (C-h v  RET var-name
 RET).
 
+See also  the docstring  for `forecast-moon-phase', which  governs the
+face  for the  moon phase  visualisation.   Most fonts  will not  have
+defined the necessary characters, thus one may need to install a font,
+e.g. Quivira.
+
 Then  on, you  may  run the  command `forecast'  to  get the  forecast
 buffer.  The forecast buffer uses `org-level-*' faces, so it will look
 like your  org files.  It  is called «*Weather Forecast*»  by default,
