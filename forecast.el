@@ -420,7 +420,7 @@ The temperature, plus the degree sign, plus the unit in capital
 letter."
   (format "%.0f%s"
           (forecast--temperature)
-          (case (forecast-temperature-unit)
+          (case (forecast--temperature-unit)
             (C "℃")
             (F "℉")
             (K "K"))))
