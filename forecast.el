@@ -255,7 +255,7 @@ many fonts that support this character.  There are also the
 BabelStone fonts.")
 
 ;;; Functions:
-(defun assoca (keyseq list)
+(defun forecast--assoca (keyseq list)
   "Arbitrary depth multi-level alist query.
 
 KEYSEQ is the list of keys to look up in the LIST.  The first key
@@ -266,28 +266,28 @@ resultant value is returned, or nil, in case one or more keys are
 not found in the LIST.
 
 Examples:
-\(assoca '(a b c)
+\(forecast--assoca '(a b c)
  '((a . ((b . ((c . e)
                (k . g)))
          (z . q)))
    (r . s)))
  => e
 
-\(assoca '(a t)
+\(forecast--assoca '(a t)
  '((a . ((b . ((c . e)
                (k . g)))
          (z . q)))
    (r . s)))
  => nil
 
-\(assoca '(a o t)
+\(forecast--assoca '(a o t)
  '((a . ((b . ((c . e)
                (k . g)))
          (z . q)))
    (r . s)))
  => nil
 
-\(assoca nil
+\(forecast--assoca nil
  '((a . ((b . ((c . e)
                (k . g)))
          (z . q)))
@@ -298,7 +298,7 @@ Examples:
     (dolist (k ks ret)
       (setq ret (cdr (assoc k ret))))))
 
-(defun insert-with-props (text &rest props)
+(defun forecast--insert-with-props (text &rest props)
   "Insert the given string TEXT and set PROPS lock on it."
   (let ((p1) (p2))
     (setf p1 (point))
@@ -306,7 +306,7 @@ Examples:
     (setf p2 (point))
     (add-text-properties p1 p2 props)))
 
-(defun insert-format (str &rest fa)
+(defun forecast--insert-format (str &rest fa)
   "Apply format, then insert into the buffer.
 
 STR is the format string.  FA are the arguments to format.  See
@@ -360,18 +360,18 @@ representation of the returned JSON from the Forecast.io API."
   (let ((f "%s=%s")
         (opts))
     (push (format f "units"
-             (case forecast-units
-               ((si SI Si) "si")
-               ((us US Us) "us")
-               ((ca CA Ca) "ca")
-               ((uk UK)    "uk2")
-               (otherwise  "auto")))
+                  (case forecast-units
+                    ((si SI Si) "si")
+                    ((us US Us) "us")
+                    ((ca CA Ca) "ca")
+                    ((uk UK)    "uk2")
+                    (otherwise  "auto")))
           opts)
     (push (format f "lang"
                   (symbol-name
-                    (if (memq forecast-language forecast--supported-languages)
-                        forecast-language
-                      'en)))
+                   (if (memq forecast-language forecast--supported-languages)
+                       forecast-language
+                     'en)))
           opts)
     (mapconcat 'identity opts "&")))
 
@@ -386,24 +386,24 @@ Arguments LAT, LONG and TIME are identical to those of
 
 Returns NIL, as it is asynchronous."
   (forecast--get-forecast (lambda (w)
-                           (setq forecast--data w)
-                           (when forecast--debug
-                             (message "Forecast: loaded forecast data."))
-                           (funcall callback)
-                           (setf forecast--update-time (current-time)))))
+                            (setq forecast--data w)
+                            (when forecast--debug
+                              (message "Forecast: loaded forecast data."))
+                            (funcall callback)
+                            (setf forecast--update-time (current-time)))))
 
 (defun forecast--summary ()
   "Return an human-readable summary of the current forecast."
-  (assoca '(currently summary) forecast--data))
+  (forecast--assoca '(currently summary) forecast--data))
 
 (defun forecast--temperature ()
   "Return the temperature from the current forecast.
 
 If not available, i.e. not using 'currently, then return the
 average of minimum and maximum predicted temperatures."
-  (or (assoca '(currently temperature) forecast--data)
-      (/ (+ (assoca '(currently temperatureMin) forecast--data)
-            (assoca '(currently temperatureMax) forecast--data))
+  (or (forecast--assoca '(currently temperature) forecast--data)
+      (/ (+ (forecast--assoca '(currently temperatureMin) forecast--data)
+            (forecast--assoca '(currently temperatureMax) forecast--data))
          2)))
 
 (defun forecast--temperature-unit ()
@@ -416,11 +416,11 @@ Returns 'F for Fahrenheit, 'C for Centigrade."
 
 (defun forecast--timezone ()
   "The time zone of the forecast."
-  (assoca '(timezone) forecast--data))
+  (forecast--assoca '(timezone) forecast--data))
 
 (defun forecast--offset ()
   "The offset of the timezone of the forecast from GMT."
-  (assoca '(offset) forecast--data))
+  (forecast--assoca '(offset) forecast--data))
 
 (defun forecast--temperature-string ()
   "Return a string representing the current temperature.
@@ -436,7 +436,7 @@ letter."
 
 (defun forecast--pressure (unit)
   "Return pressure in UNIT."
-  (let ((p (assoca '(currently pressure) forecast--data)))
+  (let ((p (forecast--assoca '(currently pressure) forecast--data)))
     (case unit
       (bar p)
       (atm (forecast--bars-to-atm p))
@@ -448,7 +448,7 @@ letter."
 
 (defun forecast--wind-speed ()
   "Return the value for the wind speed."
-  (assoca '(currently windSpeed) forecast--data))
+  (forecast--assoca '(currently windSpeed) forecast--data))
 
 (defun forecast--wind-unit ()
   "Find the correct unit for the wind value."
@@ -459,9 +459,9 @@ letter."
 
 (defun forecast--apparent-temperature ()
   "Feels-like temperature, truncated."
-  (truncate (or (assoca '(currently apparentTemperature) forecast--data)
-                (/ (+ (assoca '(currently apparentTemperatureMin) forecast--data)
-                      (assoca '(currently apparentTemperatureMax) forecast--data))
+  (truncate (or (forecast--assoca '(currently apparentTemperature) forecast--data)
+                (/ (+ (forecast--assoca '(currently apparentTemperatureMin) forecast--data)
+                      (forecast--assoca '(currently apparentTemperatureMax) forecast--data))
                    2))))
 
 (defun forecast--format-current-time (formats)
@@ -470,13 +470,13 @@ letter."
 FORMATS is the format string to use.  See `format-time-string'."
   (format-time-string
    formats
-   (seconds-to-time (assoca '(currently time) forecast--data))))
+   (seconds-to-time (forecast--assoca '(currently time) forecast--data))))
 
 (defun forecast--wind-direction ()
   "Calculate and return the direction of current wind."
   (if (zerop (forecast--wind-speed)) ""
-      (let ((dir (assoca '(currently windBearing) forecast--data)))
-        (upcase (symbol-name (forecast--cardinal-from-degrees dir))))))
+    (let ((dir (forecast--assoca '(currently windBearing) forecast--data)))
+      (upcase (symbol-name (forecast--cardinal-from-degrees dir))))))
 
 (defun forecast--cardinal-from-degrees (d)
   "Turn degrees to one of 4 equivalent cardinal directions or a composed one.
@@ -515,9 +515,9 @@ Sunrise:
 ☉————————————————————<
 Sunset:
 >————————————————————☉"
-  (let* ((today (aref (assoca '(daily data) forecast--data) 0))
-         (sunrise (assoca '(sunriseTime) today))
-         (sunset  (assoca '(sunsetTime) today))
+  (let* ((today (aref (forecast--assoca '(daily data) forecast--data) 0))
+         (sunrise (forecast--assoca '(sunriseTime) today))
+         (sunset  (forecast--assoca '(sunsetTime) today))
          (now     (truncate (time-to-seconds (current-time))))
          (daylen  (- sunset sunrise))
          (sunsec  (- now sunrise))
@@ -534,14 +534,14 @@ Sunset:
 
 (defun forecast--detailed-summary ()
   "The more detailed summary of the forecast."
-  (assoca '(summary) (aref (assoca '(daily data) forecast--data) 0)))
+  (forecast--assoca '(summary) (aref (forecast--assoca '(daily data) forecast--data) 0)))
 
 (defun forecast--visualised-moon-phase ()
   "Visualise the moon phase w/ unicode characters.
 
 See the face `forecast-moon-phase'"
-  (let ((mp (assoca '(moonPhase)
-                    (aref (assoca '(daily data) forecast--data) 0))))
+  (let ((mp (forecast--assoca '(moonPhase)
+                              (aref (forecast--assoca '(daily data) forecast--data) 0))))
     (cond ((zerop mp)  "🌑") ; New moon
           ((<  mp .25) "🌒") ; Waxing crescent moon
           ((=  mp .25) "🌓") ; First quarter moon
@@ -554,53 +554,53 @@ See the face `forecast-moon-phase'"
 
 (defun forecast--humidity ()
   "Humidity percentage."
-  (* 100 (assoca '(currently humidity) forecast--data)))
+  (* 100 (forecast--assoca '(currently humidity) forecast--data)))
 
 (defun forecast--visibility ()
   "Visibility percentage."
-  (let ((v (assoca '(currently visibility) forecast--data)))
+  (let ((v (forecast--assoca '(currently visibility) forecast--data)))
     (when v
       (* 100 v))))
 
 (defun forecast--insert-atmosphere-details ()
   "Insert details like pressure, humidity, visibility and wind."
-  (insert-format
+  (forecast--insert-format
    "Pressure %1.3f atm; Humidity %.1f%%"
    (forecast--pressure 'atm)
    (forecast--humidity))
   (newline)
   (let ((v (forecast--visibility)))
     (when v
-      (insert-format "Visibility %.1f%%" v)))
-  (insert-format
+      (forecast--insert-format "Visibility %.1f%%" v)))
+  (forecast--insert-format
    "Wind %s %s, from %s"
    (forecast--wind-speed)
    (forecast--wind-unit)
    (forecast--wind-direction)))
 
 (defun forecast--insert-upcoming ()
-        "Forecasts about upcoming 7 days."
-        (insert-with-props
-          "Upcoming"
-          'font-lock-face 'org-level-2)
-        (newline)
-        (let ((b forecast--data))
-          (loop for i from 1 to 7
-                do
-                (setcdr (assoc 'currently b)
-                        (aref (assoca '(daily data) b) i))
-                (let ((forecast--data b))
-                  (insert-with-props
-                    (forecast--format-current-time "%A")
-                    'font-lock-face 'org-level-3)
-                  (newline)
-                  (insert-format
-                   "%s, %s"
-                   (forecast--temperature-string)
-                   (forecast--summary))
-                  (newline)
-                  (forecast--insert-atmosphere-details)
-                  (newline)))))
+  "Forecasts about upcoming 7 days."
+  (forecast--insert-with-props
+   "Upcoming"
+   'font-lock-face 'org-level-2)
+  (newline)
+  (let ((b forecast--data))
+    (loop for i from 1 to 7
+          do
+          (setcdr (assoc 'currently b)
+                  (aref (forecast--assoca '(daily data) b) i))
+          (let ((forecast--data b))
+            (forecast--insert-with-props
+             (forecast--format-current-time "%A")
+             'font-lock-face 'org-level-3)
+            (newline)
+            (forecast--insert-format
+             "%s, %s"
+             (forecast--temperature-string)
+             (forecast--summary))
+            (newline)
+            (forecast--insert-atmosphere-details)
+            (newline)))))
 
 (defun forecast--insert-io-link ()
   "Insert link to Forecast.io."
@@ -616,47 +616,47 @@ See the face `forecast-moon-phase'"
 
 (defun forecast--insert-location ()
   "Insert location details."
-  (insert-with-props
-    (format "Forecasts for %s, %s, %s"
-            forecast-city
-            forecast-country
-            (forecast--format-current-time "%F"))
-    'font-lock-face 'org-level-5)
+  (forecast--insert-with-props
+   (format "Forecasts for %s, %s, %s"
+           forecast-city
+           forecast-country
+           (forecast--format-current-time "%F"))
+   'font-lock-face 'org-level-5)
   (newline)
-  (insert-format "Lat: %f, Long: %f"
-                 forecast-latitude
-                 forecast-longitude))
+  (forecast--insert-format "Lat: %f, Long: %f"
+                           forecast-latitude
+                           forecast-longitude))
 
 (defun forecast--insert-update-time ()
   "Insert the last update time."
   (insert (format-time-string "Last updated %I:%M:%S%p, %F"
                               forecast--update-time))
-  (insert-format "; %s, GMT+%d"
-                 (forecast--timezone)
-                 (forecast--offset)))
+  (forecast--insert-format "; %s, GMT+%d"
+                           (forecast--timezone)
+                           (forecast--offset)))
 
 (defun forecast--insert-summary ()
   "Insert the summary of today's forecast."
-  (insert-with-props
-    (format "%s - %s"
-            (forecast--temperature-string)
-            (forecast--summary))
-    'font-lock-face 'org-level-1)
+  (forecast--insert-with-props
+   (format "%s - %s"
+           (forecast--temperature-string)
+           (forecast--summary))
+   'font-lock-face 'org-level-1)
   (newline)
-  (insert-with-props
-    (format "Feels like %d, %s"
-            (forecast--apparent-temperature)
-            (forecast--detailed-summary))
-    'font-lock-face 'org-level-4))
+  (forecast--insert-with-props
+   (format "Feels like %d, %s"
+           (forecast--apparent-temperature)
+           (forecast--detailed-summary))
+   'font-lock-face 'org-level-4))
 
 (defun forecast--insert-sun-moon-graphic ()
   "Insert the combined sun phase and moon phase visualisations."
-  (insert-with-props
-    (forecast--sun-position-graphic)
-    'intangible t)
-  (insert-with-props
-    (forecast--visualised-moon-phase)
-    'font-lock-face 'forecast-moon-phase))
+  (forecast--insert-with-props
+   (forecast--sun-position-graphic)
+   'intangible t)
+  (forecast--insert-with-props
+   (forecast--visualised-moon-phase)
+   'font-lock-face 'forecast-moon-phase))
 
 (defun forecast--make-buffer (buffername)
   "(Re)prepare the forecast buffer.
