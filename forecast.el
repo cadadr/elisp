@@ -257,6 +257,14 @@ the $HOME/.fonts directory for using the font.  There are not
 many fonts that support this character.  There are also the
 BabelStone fonts.")
 
+(defface forecast-upcoming-temperature
+  nil
+  "Face for the temperature part of the upcoming forecasts.")
+
+(defface forecast-upcoming-summary
+  nil
+  "Face for the summary part of the upcoming forecasts.")
+
 ;;; Functions:
 (defun forecast--assoca (keyseq list)
   "Arbitrary depth multi-level alist query.
@@ -597,10 +605,13 @@ See the face `forecast-moon-phase'"
              (forecast--format-current-time "%A")
              'font-lock-face 'org-level-3)
             (newline)
-            (forecast--insert-format
-             "%s, %s"
+            (forecast--insert-with-props
              (forecast--temperature-string)
-             (forecast--summary))
+             'font-lock-face 'forecast-upcoming-temperature)
+            (insert ", ")
+            (forecast--insert-with-props
+             (forecast--summary)
+             'font-lock-face 'forecast-upcoming-summary)
             (newline)
             (forecast--insert-atmosphere-details)
             (newline)))))
