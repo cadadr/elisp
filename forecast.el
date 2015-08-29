@@ -539,13 +539,13 @@ Sunset:
          (sunsec  (- now sunrise))
          (wwidth  (window-body-width))
          (graph   (concat ">" (make-string (- wwidth 5) ?—) "<"))
-         (glen    (length graph))
          (sun     ?☉)
          (pos    (cond
-                  ((>= sunrise now) 0)
-                  ((<= sunset now)  (1- glen))
+                  ((>= sunrise now) nil)
+                  ((<= sunset now)  nil)
                   (t (1- (/ sunsec (/ daylen wwidth)))))))
-    (aset graph pos sun)
+    (when pos
+      (aset graph pos sun))
     graph))
 
 (defun forecast--detailed-summary ()
