@@ -345,9 +345,6 @@ representation of the returned JSON from the Forecast.io API."
     (when (or (not forecast-api-key)
               (string-empty-p forecast-api-key))
       (user-error "Forecast: `forecast-api-key' not set"))
-    (when (or (not forecast-api-key)
-              (string-empty-p forecast-api-key))
-      (user-error "Forecast: `forecast-api-key' not set"))
     (setf request-url
           (format "%s/forecast/%s/%d,%d?%s"
                   forecast-api-url
