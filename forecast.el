@@ -166,7 +166,7 @@
 ;;; Code:
 
 (require 'json)
-(require 'cl)
+(require 'cl-lib)
 (require 'url)
 (require 'subr-x)
 (require 'org) ;; Org faces are used.
@@ -342,7 +342,7 @@ representation of the returned JSON from the Forecast.io API."
         (lo forecast-longitude)
         (request-url))
     ;; Make sure LO and LA end up being numbers.
-    (when (not (every #'numberp (list la lo)))
+    (when (not (cl-every #'numberp (list la lo)))
       (user-error "Forecast: Latitude and longitude have to be numbers"))
     ;; Check whether we're set for making an API call.
     (when (or (not forecast-api-key)
@@ -377,7 +377,7 @@ representation of the returned JSON from the Forecast.io API."
   (let ((f "%s=%s")
         (opts))
     (push (format f "units"
-                  (case forecast-units
+                  (cl-case forecast-units
                     (si "si")
                     (us "us")
                     (ca "ca")
@@ -427,7 +427,7 @@ average of minimum and maximum predicted temperatures."
   "Return the temperature unit.
 
 Returns 'F for Fahrenheit, 'C for Centigrade."
-  (case forecast-units
+  (cl-case forecast-units
     (us 'F)
     (otherwise  'C)))
 
@@ -446,14 +446,14 @@ The temperature, plus the degree sign, plus the unit in capital
 letter."
   (format "%.0f%s"
           (forecast--temperature)
-          (case (forecast--temperature-unit)
+          (cl-case (forecast--temperature-unit)
             (C "°C")
             (F "°F"))))
 
 (defun forecast--pressure (unit)
   "Return pressure in UNIT."
   (let ((p (forecast--assoca '(currently pressure) forecast--data)))
-    (case unit
+    (cl-case unit
       (bar p)
       (atm (forecast--bars-to-atm p))
       (otherwise (error "Forecast: unknown pressure unit: %s" unit)))))
@@ -468,7 +468,7 @@ letter."
 
 (defun forecast--wind-unit ()
   "Find the correct unit for the wind value."
-  (case forecast-units
+  (cl-case forecast-units
     ((us uk) "mph")
     ( ca     "km/h")
     ( si     "m/s")))
@@ -498,7 +498,7 @@ FORMATS is the format string to use.  See `format-time-string'."
   "Turn degrees to one of 4 equivalent cardinal directions or a composed one.
 
 D is a number value, degrees."
-  (case (truncate (/ d 22.5))
+  (cl-case (truncate (/ d 22.5))
     (0  'n)
     (1  'n-ne)
     (2  'ne)
@@ -601,25 +601,25 @@ See the face `forecast-moon-phase'"
    'font-lock-face 'org-level-2)
   (newline)
   (let ((b forecast--data))
-    (loop for i from 1 to 7
-          do
-          (setcdr (assoc 'currently b)
-                  (aref (forecast--assoca '(daily data) b) i))
-          (let ((forecast--data b))
-            (forecast--insert-with-props
-             (forecast--format-current-time "%A")
-             'font-lock-face 'org-level-3)
-            (newline)
-            (forecast--insert-with-props
-             (forecast--temperature-string)
-             'font-lock-face 'forecast-upcoming-temperature)
-            (insert ", ")
-            (forecast--insert-with-props
-             (forecast--summary)
-             'font-lock-face 'forecast-upcoming-summary)
-            (newline)
-            (forecast--insert-atmosphere-details)
-            (newline 2)))))
+    (cl-loop for i from 1 to 7
+             do
+             (setcdr (assoc 'currently b)
+                     (aref (forecast--assoca '(daily data) b) i))
+             (let ((forecast--data b))
+               (forecast--insert-with-props
+                (forecast--format-current-time "%A")
+                'font-lock-face 'org-level-3)
+               (newline)
+               (forecast--insert-with-props
+                (forecast--temperature-string)
+                'font-lock-face 'forecast-upcoming-temperature)
+               (insert ", ")
+               (forecast--insert-with-props
+                (forecast--summary)
+                'font-lock-face 'forecast-upcoming-summary)
+               (newline)
+               (forecast--insert-atmosphere-details)
+               (newline 2)))))
 
 (defun forecast--insert-io-link ()
   "Insert link to Forecast.io."
