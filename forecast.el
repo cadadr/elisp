@@ -4,8 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Package-Version: 0.1.5
-;; X-URL: http://github.com/cadadr/forecast.el
+;; Version: 0.1.5
 ;; URL: http://github.com/cadadr/forecast.el
 ;;
 ;; Permission  is  hereby  granted,  free of  charge,  to  any  person
@@ -69,7 +68,7 @@
 ;; able to.
 ;;
 ;; The first two  variables default to 0.0. The  following two default
-;; to "Nil".
+;; to "nil".
 ;; 
 ;; The  API  key  can  be obtained  via  registering  oneself  through
 ;; developer their website:
@@ -206,6 +205,9 @@ Only for display purposes, variables `forecast-latitude' and
   "Base url of the Forecast.io API.
 
 Without the trailing slash")
+
+(defvar forecast--hourly-mode nil
+  "Display a listing of hourly forecasts for today.")
 
 (defvar forecast--debug nil
   "Whether to surpress error messages.")
@@ -674,6 +676,12 @@ See the face `forecast-moon-phase'"
    (forecast--visualised-moon-phase)
    'font-lock-face 'forecast-moon-phase))
 
+(defun forecast--insert-hourly-forecast ()
+  "Insert a listing of hourly forecasts for today."
+  ;; Hourly data is in form of an array per each our of the day.
+  (let ((data (forecast--assoca '(hourly data) forecast--data)))
+    ))
+
 (defun forecast--make-buffer (buffername)
   "(Re)prepare the forecast buffer.
 
@@ -697,7 +705,9 @@ absent."
       (newline)
       (forecast--insert-atmosphere-details)
       (newline 2)
-      (forecast--insert-upcoming)
+      (if forecast--hourly-mode
+          (forecast--insert-hourly-forecast)
+        (forecast--insert-upcoming))
       (newline)
       (forecast--insert-io-link)
 
@@ -707,17 +717,23 @@ absent."
     ;; Return the prepared buffer.
     (current-buffer)))
 
-(defun forecast (&optional buffername)
-  "Bring up the forecast buffer.
-
-TODO If BUFFERNAME is a string, use it as the buffer name.  If
-the universal arg is non-zero, prompt user to specify a buffer
-name."
+;;;###autoload
+(defun forecast ()
+  "Bring up the forecast buffer."
   (interactive)
+  (setq forecast--hourly-mode nil)
   (forecast--load-data
    (lambda ()
-     (let ((buf (forecast--make-buffer (or buffername "*Weather Forecast*"))))
+     (let ((buf (forecast--make-buffer "*Weather Forecast*")))
        (switch-to-buffer buf)))))
+
+(defalias 'forecast-today 'forecast)
+
+(defun forecast-hourly ()
+  "Bring up the hourly forecast."
+  (interactive)
+  (setf forecast--hourly-mode t)
+  (forecast))
 
 (defvar forecast-mode-map
   (let ((map (make-sparse-keymap)))
