@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.1.5
+;; Version: 0.1.6
 ;; URL: http://github.com/cadadr/forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
