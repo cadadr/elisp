@@ -1,4 +1,4 @@
-;;; forecast.el -- Weather report. -*- lexical-binding: t; -*-
+;;; forecast.el --- Weather report. -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2015 Göktuğ Kayaalp
 ;;
