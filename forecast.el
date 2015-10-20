@@ -6,6 +6,7 @@
 ;; Keywords: weather, forecast
 ;; Version: 0.1.5
 ;; URL: http://github.com/cadadr/forecast.el
+;; Package-Requires: ((emacs "24.4"))
 ;;
 ;; Permission  is  hereby  granted,  free of  charge,  to  any  person
 ;; obtaining  a copy  of  this software  and associated  documentation
