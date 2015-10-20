@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.1.6
+;; Version: 0.1.7
 ;; URL: http://github.com/cadadr/forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -39,7 +39,7 @@
 ;;
 ;; See Installation section for installation and setup instructions.
 ;;
-;; Report bugs to the Issues page in the package url:
+;; Report bugs to the Issues page in the Github repo:
 ;;
 ;; https://github.com/cadadr/forecast.el/issues
 ;;
@@ -47,9 +47,11 @@
 ;;; Installation:
 ;; 
 ;; See also «Example configuration».
+;;
+;; forecast.el is available on Melpa with the package name `forecast'.
 ;; 
-;; Put the forecast.el  file somewhere in your path,  then require it.
-;; Then set these variables in your configuration:
+;; Otherwise, put  the forecast.el file  somewhere in your  path, then
+;; `require' it.  Then set these variables in your configuration:
 ;; 
 ;; `forecast-latitude'  Latitude of your location,       float
 ;; `forecast-longitude' Longitude of your configuration  float
@@ -63,42 +65,53 @@
 ;; non-sane  defaults, and  if `forecast-api-key'  is absent,  program
 ;; will not run.
 ;; 
-;; `forecast-city'   and    `forecast-country'   only    for   display
-;; purposes. At the moment forecast.el  cannot deduce these names from
-;; the latitude and  longitude values, but maybe in future  it will be
-;; able to.
+;; The variables  `forecast-city' and `forecast-country' are  used for
+;; display  purposes only.  At  the moment  forecast.el cannot  deduce
+;; these names  from the latitude  and longitude values, but  maybe in
+;; future it will be able to.
 ;;
 ;; The first two  variables default to 0.0. The  following two default
 ;; to "nil".
 ;; 
-;; The  API  key  can  be obtained  via  registering  oneself  through
-;; developer their website:
+;; The API key  can be obtained via registering  oneself through their
+;; developer website:
 ;;
 ;; https://developer.forecast.io/
 ;; 
 ;; For the rest of variables, see their docstrings (C-h v RET var-name
 ;; RET).
 ;;
-;; See also the docstring for `forecast-moon-phase', which governs the
-;; face for  the moon phase  visualisation.  Most fonts will  not have
-;; defined the  necessary characters, thus  one may need to  install a
-;; font, e.g. Quivira.
+;; See also  the docstring  for the face  `forecast-moon-phase', which
+;; governs the face for the moon phase visualisation.  Most fonts will
+;; not have  defined the  necessary characters, thus  one may  need to
+;; install a special font, e.g. Quivira (http://quivira-font.com/).
 ;;
 ;; Then on,  you may run  the command  `forecast' to get  the forecast
 ;; buffer.  The forecast  buffer uses `org-level-*' faces,  so it will
-;; look like  your org  files.  It is  called «*Weather  Forecast*» by
-;; default,  but if  the  `forecast' command  receives some  universal
-;; argument, it will prompt for  an alternative name.  See the section
-;; Usage for an explanation of the buffer.
-;; 
+;; look like  your org  files.  It is  called «*Weather  Forecast*».
 
 ;;; Example configuration:
 ;;
+;; (require 'forecast)
 ;; (setq forecast-latitude 41.168602
 ;;       forecast-longitude 29.047024
 ;;       forecast-city "İstanbul"
 ;;       forecast-country "Türkiye"
 ;;       forecast-api-key "<deduced>")
+;;
+;; Or, for the privacy of the API key:
+;;
+;; (require 'forecast)
+;; (setq forecast-latitude 41.168602
+;;       forecast-longitude 29.047024
+;;       forecast-city "İstanbul"
+;;       forecast-country "Türkiye")
+;;
+;; (load (locate-user-emacs-file "forecast-api-key.el"))
+;;
+;; And in the file ~/.emacs.d/forecast-api-key.el:
+;;
+;; (setq forecast-api-key "<deduced>")
 ;;
 
 ;;; Usage:
@@ -139,6 +152,10 @@
 
 ;;; Changes:
 ;;
+;; v0.1.7, 20 October 2015
+;;   - Doc fixes.
+;; v0.1.6, 20 October 2015
+;;   - Prepare for Melpa.
 ;; v0.1.5, 28 August 2015
 ;;   - New release because I can't really do releases properly.
 ;; v0.1.4, 28 August 2015

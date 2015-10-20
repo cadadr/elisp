@@ -6,99 +6,15 @@ one  needs to  acquire an  api  key from  them  in order  to use  this
 package.  They  allow 1000 requests  a day  in their free  plan, which
 should be enough for any user.
 
-See Installation section for installation and setup instructions.
+See   the   file   `forecast.el'  for   details.    Installation   and
+configuration process is detailed in the header comments.
 
-Report bugs to the Issues page in the package url:
+The project repository is hosted on github, on this url:
+
+https://github.com/cadadr/forecast.el
+
+Report bugs, etc. on the Issues page.
 
 https://github.com/cadadr/forecast.el/issues
 
-
-TODO:
-
-- Adjust for `customize-group'.
-- Automatically find city and country names.
-- Get location from computer?
-- I18N?
-
-
-                            Installation
-
-See also «Example configuration».
-
-Put  the forecast.el  file somewhere  in your  path, then  require it.
-Then set these variables in your configuration:
-
-`forecast-latitude'  Latitude of your location,       float
-`forecast-longitude' Longitude of your configuration  float
-`forecast-city'      The name of your city            string
-`forecast-country'   The name of your country         string
-`forecast-api-key'   The API key from Forecast.io     string
-`forecast-language'  Language to use                  symbol
-`forecast-units'     Unit standard to use             symbol
-
-Only  the first  five variables  are mandatory.   The first  four have
-non-sane defaults,  and if `forecast-api-key' is  absent, program will
-not run.
-
-`forecast-city' and  `forecast-country' only for display  purposes. At
-the moment forecast.el cannot deduce these names from the latitude and
-longitude values, but maybe in future it will be able to.
-
-The first two  variables default to 0.0. The following  two default to
-"Nil".
-
-The API key can be  obtained via registering oneself through developer
-their website:
-
-https://developer.forecast.io/
-
-For the  rest of variables, see  their docstrings (C-h v  RET var-name
-RET).
-
-See also  the docstring  for `forecast-moon-phase', which  governs the
-face  for the  moon phase  visualisation.   Most fonts  will not  have
-defined the necessary characters, thus one may need to install a font,
-e.g. Quivira.
-
-Then  on, you  may  run the  command `forecast'  to  get the  forecast
-buffer.  The forecast buffer uses `org-level-*' faces, so it will look
-like your  org files.  It  is called «*Weather Forecast*»  by default,
-but if  the `forecast'  command receives  some universal  argument, it
-will prompt  for an alternative  name.  See  the section Usage  for an
-explanation of the buffer.
-
-
-                        Example configuration
-
-(setq forecast-latitude 41.168602
-      forecast-longitude 29.047024
-      forecast-city "İstanbul"
-      forecast-country "Türkiye"
-      forecast-api-key "<deduced>")
-
-
-                                Usage
-
-There are 3 keybindings:
-
-g      Refresh the forecast.  Will re-download data.
-q      Bury the buffer.
-C-u q  Kill the buffer.
-
-Two contemporaneous instances of the program *will not* run correctly,
-as global state is used to store data.
-
-The buffer is made up of these elements:
-
-- At the top, the title, details of location, last update time
-
-- Temperature and summary
-
-- Apparent temperature (Feels like ...) and detailed summary
-
-- Pressure in ATMs, humidity percentage, wind speed and direction from
-  which wind comes. If available, visibility distance.
-
-- Summary information for upcoming seven days.
-
-- Link to the http://forecast.io.
+Pull requests welcome.
