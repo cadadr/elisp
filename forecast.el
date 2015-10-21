@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.1.7
+;; Version: 0.1.8
 ;; URL: http://github.com/cadadr/forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -152,6 +152,8 @@
 
 ;;; Changes:
 ;;
+;; v0.1.8, 21 October 2015
+;;   - Use special mode as parent mode.
 ;; v0.1.7, 20 October 2015
 ;;   - Doc fixes.
 ;; v0.1.6, 20 October 2015
@@ -761,7 +763,7 @@ absent."
       (define-key map "q" 'forecast-quit))))
 
 ;;; Major mode and keybindings:
-(define-derived-mode forecast-mode fundamental-mode
+(define-derived-mode forecast-mode special-mode
   "Weather Forecast Mode"
   "Major mode for weather forecast buffers."
   (kill-all-local-variables)
