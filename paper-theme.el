@@ -1,4 +1,4 @@
-;; paper-theme.el -- A minimal Emacs colour theme. -*- lexical-binding: t; -*-
+;;; paper-theme.el --- A minimal Emacs colour theme. -*- lexical-binding: t; -*-
 ;; Copyright (C) 2015 Göktuğ Kayaalp
 ;;
 ;; Author: Göktuğ Kayaalp
