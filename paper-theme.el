@@ -1,10 +1,10 @@
-;; paper-theme.el -- A minimal Emacs colour theme. -*- lexical-binding: t; -*-
+;;; paper-theme.el --- A minimal Emacs colour theme. -*- lexical-binding: t; -*-
 ;; Copyright (C) 2015 Göktuğ Kayaalp
 ;;
 ;; Author: Göktuğ Kayaalp
 ;; Keywords: theme paper
 ;; Package-Version: 0.1.0
-;; Package-Requires: (("hexrgb" . "0"))
+;; Package-Requires: ((emacs "24") (hexrgb "0"))
 ;; URL: http://gkayaalp.com/emacs.html#paper
 ;;
 ;; Permission  is  hereby  granted,  free of  charge,  to  any  person
