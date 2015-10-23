@@ -119,9 +119,7 @@ are hexedecimal digits).")
       `(quote
         (,(intern
            (concat o (number-to-string n)))
-         ((t (:family
-              "Sans Serif"
-              :slant normal
+         ((t (:slant normal
               :weight light
               :foreground ,(pop tints)
               :height
@@ -156,12 +154,7 @@ are hexedecimal digits).")
 
      ;; === Org titles ===
      (quote (org-tag ((t (:height 90 :weight light)))))
-     (quote (org-hide ((t (:height 0.1 :weight light :width extracondensed)))))
      ,@org-faces)))
-
-(require 'org)
-
-(setq org-hide-leading-stars t)
 
 (provide-theme 'paper)
 ;;; paper-theme.el ends here
