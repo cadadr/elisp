@@ -14,10 +14,10 @@
 ;; modify, merge, publish, distribute,  sublicense, and/or sell copies
 ;; of the  Software, and  to permit  persons to  whom the  Software is
 ;; furnished to do so, subject to the following conditions:
-;; 
+;;
 ;; The  above copyright  notice and  this permission  notice shall  be
 ;; included in all copies or substantial portions of the Software.
-;; 
+;;
 ;; THE SOFTWARE  IS PROVIDED  "AS IS", WITHOUT  WARRANTY OF  ANY KIND,
 ;; EXPRESS OR IMPLIED, INCLUDING BUT  NOT LIMITED TO THE WARRANTIES OF
 ;; MERCHANTABILITY,   FITNESS    FOR   A   PARTICULAR    PURPOSE   AND
@@ -26,7 +26,7 @@
 ;; ACTION OF CONTRACT,  TORT OR OTHERWISE, ARISING FROM, OUT  OF OR IN
 ;; CONNECTION WITH  THE SOFTWARE OR THE  USE OR OTHER DEALINGS  IN THE
 ;; SOFTWARE.
-;; 
+;;
 ;;; Commentary:
 ;;
 ;; Paper is a  little, minimal emacs theme that is  meant to be simple
@@ -130,7 +130,7 @@ are hexedecimal digits).")
         (n 8)
         (tints (paper-tints (paper-colour 'magenta) tf n nil)))
    (dolist (n (number-sequence 1 n))
-     (push 
+     (push
       `(quote
         (,(intern
            (concat o (number-to-string n)))
@@ -170,6 +170,13 @@ are hexedecimal digits).")
      ;; === Org titles ===
      (quote (org-tag ((t (:height 90 :weight light)))))
      ,@org-faces)))
+
+;;;###autoload
+(and load-file-name
+     (boundp 'custom-theme-load-path)
+     (add-to-list 'custom-theme-load-path
+                  (file-name-as-directory
+                   (file-name-directory load-file-name))))
 
 (provide-theme 'paper)
 ;;; paper-theme.el ends here
