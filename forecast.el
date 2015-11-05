@@ -337,11 +337,21 @@ Examples:
     (dolist (k ks ret)
       (setq ret (cdr (assoc k ret))))))
 
+(defun forecast--insert (str)
+  "Insert STR to the buffer, at point.
+
+Assume STR to be a unibyte string, convert it to multibyte, then
+insert it."
+  ;; XXX I do not really understand  why this works.  In my *scratch*,
+  ;; I was able to  apply `string-as-multibyte' directly.  However, it
+  ;; works.
+  (insert (string-as-multibyte (string-as-unibyte str))))
+
 (defun forecast--insert-with-props (text &rest props)
   "Insert the given string TEXT and set PROPS lock on it."
   (let ((p1) (p2))
     (setf p1 (point))
-    (insert text)
+    (forecast--insert text)
     (setf p2 (point))
     (add-text-properties p1 p2 props)))
 
@@ -350,7 +360,7 @@ Examples:
 
 STR is the format string.  FA are the arguments to format.  See
 `format' for details."
-  (insert (apply 'format str fa)))
+  (forecast--insert (apply 'format str fa)))
 
 (defun forecast--get-forecast (callback)
   "Get the forecasts from the Forecast.io API.
