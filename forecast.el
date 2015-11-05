@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.1.8
+;; Version: 0.1.9
 ;; URL: http://gkayaalp.com/emacs.html#forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -152,6 +152,9 @@
 
 ;;; Changes:
 ;;
+;; v0.1.9, 06 November 2015
+;;   - Fix multibyte string problem.
+;;   - Some doc fixes.
 ;; v0.1.8, 21 October 2015
 ;;   - Use special mode as parent mode.
 ;; v0.1.7, 20 October 2015
