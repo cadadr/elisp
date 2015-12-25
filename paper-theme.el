@@ -60,6 +60,10 @@
 ;;      face nil
 ;;      :family "Sans Serif"))
 ;;
+;; It is possible to modify the  base font size and the scaling factor
+;; for `org-level-faces' via  the variables `paper-base-font-size' and
+;; `paper-font-factor' respectively.
+;;
 ;;; Code:
 ;;
 
@@ -76,6 +80,9 @@ symbol identifying the colour and (cdr p) is the string, the
 hexedecimal notation of the colour (i.e. #RRGGBB where R, G and B
 are hexedecimal digits).")
 
+(defvar paper-use-varying-heights-for-org-title-headlines nil
+  "Whether to use varying heights for Org headlines.")
+
 (setq paper-colours-alist
       '((text "#070A01")
         (paper "#FAFAFA")
@@ -84,7 +91,14 @@ are hexedecimal digits).")
         (pen "#000F55")
         (light-shadow "#D9DDD9")))
 
+(defvar paper-base-font-size 100
+  "The base size for fonts.")
+
+(defvar paper-font-factor 0.1
+  "The font factor for calculating level fonts from base.")
+
 (defun paper-colour (colour-identifier)
+  "Get colour for COLOUR-IDENTIFIER."
   (cadr (assoc colour-identifier paper-colours-alist)))
 
 (defconst paper-normal-face
@@ -101,7 +115,7 @@ are hexedecimal digits).")
 
 (defconst paper-light-shadow-face
   `((t (:foreground ,(paper-colour 'text) :background ,(paper-colour 'light-shadow))))
-  "Colour couple that resembles a light shadow")
+  "Colour couple that resembles a light shadow.")
 
 (defconst paper-italicised-pen-face
   `((t (:foreground ,(paper-colour 'pen) :background ,(paper-colour 'paper)
@@ -121,55 +135,63 @@ are hexedecimal digits).")
               t)
              tints)))))
 
-(eval
- (let* ((b 100)                       ; base
-        (f 0.1)                       ; factor
-        (tf 70)
-        (o "org-level-")
-        (org-faces)
-        (n 8)
-        (tints (paper-tints (paper-colour 'magenta) tf n nil)))
-   (dolist (n (number-sequence 1 n))
-     (push
-      `(quote
-        (,(intern
-           (concat o (number-to-string n)))
-         ((t (:slant normal
-              :weight light
-              :foreground ,(pop tints)
-              :height
-              ,(truncate (+ b (- (* b (+ 1 f))
-                                 (* b (* f n))))))))))
-      org-faces))
+(defun paper--set-faces ()
+  "Set up faces.
 
-   `(custom-theme-set-faces
-     (quote paper)
-     ;; === Frame ===
-     (quote (default ,paper-normal-face))
-     (quote (cursor ,paper-inverse-face))
-     (quote (mode-line ((t (:foreground ,(paper-colour 'white)
-                                        :background ,(paper-colour 'magenta)
-                                        :box nil)))))
-     (quote (mode-line-inactive ,paper-light-shadow-face))
-     (quote (mode-line-highlight ((t (:foreground ,(paper-colour 'text)
-                                                  :box nil)))))
-     (quote (fringe ,paper-normal-face))
-     (quote (region ((t (:background ,(paper-colour 'magenta)
-                                     :foreground ,(paper-colour 'white))))))
+May be used to refresh after tweaking some variables."
+  (eval
+   (let* ((b paper-base-font-size)     ; base
+          (f paper-font-factor)        ; factor
+          (tf 70)
+          (o "org-level-")
+          (org-faces)
+          (n 8)
+          (tints (paper-tints (paper-colour 'magenta) tf n nil)))
+     (dolist (n (number-sequence 1 n))
+       (push
+        `(quote
+          (,(intern
+             (concat o (number-to-string n)))
+           ((t (:slant normal
+                :weight light
+                :foreground ,(pop tints)
+                ,@(when paper-use-varying-heights-for-org-title-headlines
+                    (list
+                     :height
+                     (truncate (+ b (- (* b (+ 1 f)) (* b (* f n))))))))))))
+        org-faces))
 
-     ;; === Syntax ===
-     (quote (font-lock-builtin-face        ,paper-normal-face))
-     (quote (font-lock-comment-face        ,paper-italicised-pen-face))
-     (quote (font-lock-string-face         ,paper-pen-face))
-     (quote (font-lock-function-name-face  ,paper-pen-face))
-     (quote (font-lock-variable-name-face  ,paper-pen-face))
-     (quote (font-lock-keyword-face        ,paper-magenta-on-paper-face))
-     (quote (font-lock-type-face           ,paper-magenta-on-paper-face))
-     (quote (font-lock-constant-face       ,paper-magenta-on-paper-face))
+     `(custom-theme-set-faces
+       (quote paper)
+       ;; === Frame ===
+       (quote (default ,paper-normal-face))
+       (quote (cursor ,paper-inverse-face))
+       (quote (mode-line ((t (:foreground ,(paper-colour 'white)
+                                          :background ,(paper-colour 'magenta)
+                                          :box nil)))))
+       (quote (mode-line-inactive ,paper-light-shadow-face))
+       (quote (mode-line-highlight ((t (:foreground ,(paper-colour 'text)
+                                                    :box nil)))))
+       (quote (fringe ,paper-normal-face))
+       (quote (region ((t (:background ,(paper-colour 'magenta)
+                                       :foreground ,(paper-colour 'white))))))
 
-     ;; === Org titles ===
-     (quote (org-tag ((t (:height 90 :weight light)))))
-     ,@org-faces)))
+       ;; === Syntax ===
+       (quote (font-lock-builtin-face        ,paper-normal-face))
+       (quote (font-lock-comment-face        ,paper-italicised-pen-face))
+       (quote (font-lock-string-face         ,paper-pen-face))
+       (quote (font-lock-function-name-face  ,paper-pen-face))
+       (quote (font-lock-variable-name-face  ,paper-pen-face))
+       (quote (font-lock-keyword-face        ,paper-magenta-on-paper-face))
+       (quote (font-lock-type-face           ,paper-magenta-on-paper-face))
+       (quote (font-lock-constant-face       ,paper-magenta-on-paper-face))
+
+       ;; === Org titles ===
+       ,(when paper-use-varying-heights-for-org-title-headlines
+          (quote (quote (org-tag ((t (:height 90 :weight light)))))))
+       ,@org-faces))))
+
+(paper--set-faces)
 
 ;;;###autoload
 (and load-file-name
