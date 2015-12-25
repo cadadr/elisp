@@ -3,7 +3,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp
 ;; Keywords: theme paper
-;; Package-Version: 0.1.0
+;; Package-Version: 0.2.0
 ;; Package-Requires: ((emacs "24") (hexrgb "0"))
 ;; URL: http://gkayaalp.com/emacs.html#paper
 ;;
@@ -44,6 +44,10 @@
 ;; It's most adapted for ELisp-Org users, as I'm one such user, though
 ;; it  works fine  with Markdown,  Textile, Python,  JavaScript, Html,
 ;; Diff, Magit, etc.
+;;
+;; When     `paper-use-varying-heights-for-org-title-headlines'     is
+;; non-nil,  which  is  `nil' by  default,  proportionally  descending
+;; heights will be set for org-mode headlines.
 ;;
 ;; The following snippet will modify org-level-* faces so that initial
 ;; stars in  org headings are  hidden and  a Sans-serif font  is used.
