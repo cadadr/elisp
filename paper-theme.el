@@ -3,7 +3,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp
 ;; Keywords: theme paper
-;; Package-Version: 0.2.0
+;; Package-Version: 1.0.0
 ;; Package-Requires: ((emacs "24") (hexrgb "0"))
 ;; URL: http://gkayaalp.com/emacs.html#paper
 ;;
