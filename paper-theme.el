@@ -45,9 +45,39 @@
 ;; it  works fine  with Markdown,  Textile, Python,  JavaScript, Html,
 ;; Diff, Magit, etc.
 ;;
-;; When     `paper-use-varying-heights-for-org-title-headlines'     is
-;; non-nil,  which  is  `nil' by  default,  proportionally  descending
-;; heights will be set for org-mode headlines.
+;;; Installation:
+;;
+;; Install it into a directory that's in the `custom-theme-load-path'.
+;; I recommend  that you  put that directory  also in  `load-path', so
+;; that you can `require' the  `paper-theme'.  Then adapt this snippet
+;; to your configuration.
+;;
+;;   ;; Not necessary, but silences flycheck errors for referencing free
+;;   ;; variables.
+;;   (require 'paper-theme)
+;;   ;; It's not necessary to modify these variables, they all have sane
+;;   ;; defaults.
+;;   (setf paper-paper-colour 'paper-parchment ; Custom background.
+;;         paper-tint-factor 45)      ; Tint factor for org-level-* faces
+;;   ;; Activate the theme.
+;;   (load-theme 'paper t)
+;;
+;;; Customisation:
+;;
+;; It is possible to modify the  base font size and the scaling factor
+;; for `org-level-faces' via  the variables `paper-base-font-size' and
+;; `paper-font-factor' respectively.
+;;
+;; The factor  for org-level-*  colours are also  configurable, adjust
+;; the variable `paper-tint-factor'.
+;;
+;; Various background colours  are provided, see the  docstring of the
+;; variable `paper-paper-colour'  in order to  find out how  to switch
+;; them.   You  can add  your  custom  colour for  background  without
+;; modifying this module:
+;;
+;;   (push (list 'my-bgcolour "#000000") paper-colours-alist)
+;;   (setf paper-paper-colour 'my-bgcolour)
 ;;
 ;; The following snippet will modify org-level-* faces so that initial
 ;; stars in  org headings are  hidden and  a Sans-serif font  is used.
@@ -64,36 +94,39 @@
 ;;      face nil
 ;;      :family "Sans Serif"))
 ;;
-;; It is possible to modify the  base font size and the scaling factor
-;; for `org-level-faces' via  the variables `paper-base-font-size' and
-;; `paper-font-factor' respectively.
-;;
 ;;; Code:
 ;;
-
+(require 'cl-lib)
 (require 'hexrgb)
-
+
 (deftheme paper
   "An Emacs colour theme that resembles the look of paper.")
 
-(defvar paper-colours-alist nil
+(defvar paper-colours-alist
+  '((text "#070A01")
+    (paper-grey "#FAFAFA")
+    (paper-old-dark "#F8ECC2")
+    (paper-parchment "#F1F1D4")
+    (paper-old-light "#F2EECB")
+    (white "#EEEEEE")
+    (magenta "#8C0D40")
+    (pen "#000F55")
+    (light-shadow "#D9DDD9"))
   "The colours used in Paper theme.
-
 The alist of colours where for each pair p (car p) is a
 symbol identifying the colour and (cdr p) is the string, the
 hexedecimal notation of the colour (i.e. #RRGGBB where R, G and B
 are hexedecimal digits).")
 
+(defvar paper-paper-colour 'paper-grey
+  "Which paper colour to use.
+The variable `paper-colours-alist' contains a suit of colours
+with prefix `paper-'.  This variable's value is supposed to be
+set to one of those symbols to specify the colour used for
+background.")
+
 (defvar paper-use-varying-heights-for-org-title-headlines nil
   "Whether to use varying heights for Org headlines.")
-
-(setq paper-colours-alist
-      '((text "#070A01")
-        (paper "#FAFAFA")
-        (white "#EEEEEE")
-        (magenta "#8C0D40")
-        (pen "#000F55")
-        (light-shadow "#D9DDD9")))
 
 (defvar paper-base-font-size 100
   "The base size for fonts.")
@@ -101,20 +134,28 @@ are hexedecimal digits).")
 (defvar paper-font-factor 0.1
   "The font factor for calculating level fonts from base.")
 
+(defvar paper-tint-factor 70
+  "The factor for computing tints for org levels.")
+
 (defun paper-colour (colour-identifier)
   "Get colour for COLOUR-IDENTIFIER."
   (cadr (assoc colour-identifier paper-colours-alist)))
 
+(defun paper-colour-paper ()
+  "Get the colour for paper.
+See `paper-paper-colour' and `paper-colours-alist'."
+  (paper-colour paper-paper-colour))
+
 (defconst paper-normal-face
-  `((t (:foreground ,(paper-colour 'text) :background ,(paper-colour 'paper))))
+  `((t (:foreground ,(paper-colour 'text) :background ,(paper-colour-paper))))
   "The base colours of Paper theme.")
 
 (defconst paper-inverse-face
-  `((t (:foreground ,(paper-colour 'paper) :background ,(paper-colour 'text))))
+  `((t (:foreground ,(paper-colour-paper) :background ,(paper-colour 'text))))
   "The inverse of base colours of Paper theme.")
 
 (defconst paper-pen-face
-  `((t (:foreground ,(paper-colour 'pen) :background ,(paper-colour 'paper))))
+  `((t (:foreground ,(paper-colour 'pen) :background ,(paper-colour-paper))))
   "Colour couple that resembles pen colour on paper.")
 
 (defconst paper-light-shadow-face
@@ -122,23 +163,27 @@ are hexedecimal digits).")
   "Colour couple that resembles a light shadow.")
 
 (defconst paper-italicised-pen-face
-  `((t (:foreground ,(paper-colour 'pen) :background ,(paper-colour 'paper)
+  `((t (:foreground ,(paper-colour 'pen) :background ,(paper-colour-paper)
                     :slant italic)))
   "Colour couple that resembles pen colour on paper, italicised.")
 
 (defconst paper-magenta-on-paper-face
-  `((t (:foreground ,(paper-colour 'magenta) :background ,(paper-colour 'paper)))))
+  `((t (:foreground ,(paper-colour 'magenta) :background ,(paper-colour-paper)))))
 
-(defun paper-tints (hex factor n darken)
-  (let ((tints))
-    (reverse
-     (dotimes (i n tints)
-       (push (hexrgb-increment-equal-rgb
-              hex 2
-              (* i (if darken (- factor) factor))
-              t)
-             tints)))))
-
+(defun paper-tints (hex n &optional darken)
+  "Compute equidistant tints of a given colour.
+HEX is the hexedecimal RRGGBB string representation of the colour.
+N is an integer denoting how many tints to compute.
+If DARKEN is non-nil, compute darker tints, otherwise, lighter."
+  (cl-loop
+   for i from 0 to n
+   collect (hexrgb-increment-equal-rgb
+            hex 2
+            (* i
+               (funcall
+                (if darken #'- #'identity)
+                paper-tint-factor)))))
+
 (defun paper--set-faces ()
   "Set up faces.
 
@@ -146,11 +191,10 @@ May be used to refresh after tweaking some variables."
   (eval
    (let* ((b paper-base-font-size)     ; base
           (f paper-font-factor)        ; factor
-          (tf 70)
           (o "org-level-")
           (org-faces)
           (n 8)
-          (tints (paper-tints (paper-colour 'magenta) tf n nil)))
+          (tints (paper-tints (paper-colour 'magenta) n)))
      (dolist (n (number-sequence 1 n))
        (push
         `(quote
@@ -203,6 +247,7 @@ May be used to refresh after tweaking some variables."
      (add-to-list 'custom-theme-load-path
                   (file-name-as-directory
                    (file-name-directory load-file-name))))
-
+
+(provide 'paper-theme)
 (provide-theme 'paper)
 ;;; paper-theme.el ends here
