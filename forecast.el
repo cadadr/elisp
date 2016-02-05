@@ -1,10 +1,10 @@
 ;;; forecast.el --- Display a forecast.io weather report in a buffer -*- lexical-binding: t; -*-
 ;;
-;; Copyright (C) 2015 Göktuğ Kayaalp
+;; Copyright (C) 2015-2016 Göktuğ Kayaalp
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.1.9
+;; Version: 0.2.0
 ;; URL: http://gkayaalp.com/emacs.html#forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -152,6 +152,8 @@
 
 ;;; Changes:
 ;;
+;; v0.2.0, 05 February 2016
+;;   - Fix bugs in `forecast--sun-position-graphic' (Thanks to Zoli Kertesz)
 ;; v0.1.9, 06 November 2015
 ;;   - Fix multibyte string problem.
 ;;   - Some doc fixes.
