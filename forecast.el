@@ -563,21 +563,20 @@ Sunrise:
 ☉————————————————————<
 Sunset:
 >————————————————————☉"
-  (let* ((today (aref (forecast--assoca '(daily data) forecast--data) 0))
+  (let* ((today   (aref (forecast--assoca '(daily data) forecast--data) 0))
          (sunrise (forecast--assoca '(sunriseTime) today))
          (sunset  (forecast--assoca '(sunsetTime) today))
-         (now     (truncate (time-to-seconds (current-time))))
+         (now     (float-time))
          (daylen  (- sunset sunrise))
          (sunsec  (- now sunrise))
          (wwidth  (window-body-width))
          (graph   (concat ">" (make-string (- wwidth 5) ?—) "<"))
          (sun     ?☉)
          (pos    (cond
-                  ((>= sunrise now) nil)
-                  ((<= sunset now)  nil)
-                  (t (1- (/ sunsec (/ daylen wwidth)))))))
-    (when pos
-      (aset graph pos sun))
+                  ((< sunrise sunset now) (- wwidth 4))
+                  ((> sunrise now) 0)
+                  (t (truncate (1- (/ sunsec (/ daylen wwidth))))))))
+    (aset graph pos sun)
     graph))
 
 (defun forecast--detailed-summary ()
