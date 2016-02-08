@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.2.0
+;; Version: 0.3.0
 ;; URL: http://gkayaalp.com/emacs.html#forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -154,6 +154,10 @@
 
 ;;; Changes:
 ;;
+;; v0.3.0, 09 February 2016
+;;   - Adapt for customisations via `customize'.
+;;   - Allow to customise time representation, via `forecast-time-format'.
+;;     (Thanks to Sharon Kimble for the recommendation)
 ;; v0.2.0, 05 February 2016
 ;;   - Fix bugs in `forecast--sun-position-graphic' (Thanks to Zoli Kertesz)
 ;; v0.1.9, 06 November 2015
