@@ -51,7 +51,8 @@
 ;; forecast.el is available on Melpa with the package name `forecast'.
 ;; 
 ;; Otherwise, put  the forecast.el file  somewhere in your  path, then
-;; `require' it.  Then set these variables in your configuration:
+;; `require'   it.   Then   set   these  variables   either  in   your
+;; configuration, or via the customisation group `forecast':
 ;; 
 ;; `forecast-latitude'  Latitude of your location,       float
 ;; `forecast-longitude' Longitude of your configuration  float
@@ -62,11 +63,11 @@
 ;; `forecast-units'     Unit standard to use             symbol
 ;; 
 ;; Only the first  five variables are mandatory.  The  first four have
-;; non-sane  defaults, and  if `forecast-api-key'  is absent,  program
+;; *non-sane* defaults,  and if `forecast-api-key' is  absent, program
 ;; will not run.
 ;; 
 ;; The variables  `forecast-city' and `forecast-country' are  used for
-;; display  purposes only.  At  the moment  forecast.el cannot  deduce
+;; display  purposes only.   At the  moment forecast.el  cannot deduce
 ;; these names  from the latitude  and longitude values, but  maybe in
 ;; future it will be able to.
 ;;
@@ -79,7 +80,8 @@
 ;; https://developer.forecast.io/
 ;; 
 ;; For the rest of variables, see their docstrings (C-h v RET var-name
-;; RET).
+;; RET) and the  customize buffer for forecast,  via the customisation
+;; group `forecast'.
 ;;
 ;; See also  the docstring  for the face  `forecast-moon-phase', which
 ;; governs the face for the moon phase visualisation.  Most fonts will
@@ -181,14 +183,12 @@
 
 ;;; TODO:
 ;; 
-;; - Adjust for `customize-group'.
 ;; - Automatically find city and country names.
 ;; - Get location from computer?
 ;; - I18N?
 ;; 
 
 ;;; Code:
-
 (require 'json)
 (require 'cl-lib)
 (require 'url)
@@ -203,61 +203,76 @@
   :prefix "forecast-")
 
 ;;; Variables:
-(defvar forecast-city "Nil"
+(defcustom forecast-city "Nil"
   "The city for which the forecast is given for.
-
 Only for display purposes, variables `forecast-latitude' and
-`forecast-longitude' still have to be set correctly.")
+`forecast-longitude' still have to be set correctly."
+  :type 'string
+  :group 'forecast)
 
-(defvar forecast-country "Nil"
+(defcustom forecast-country "Nil"
   "The country for which the forecast is given for.
-
 Only for display purposes, variables `forecast-latitude' and
-`forecast-longitude' still have to be set correctly.")
+`forecast-longitude' still have to be set correctly."
+  :type 'string
+  :group 'forecast)
 
-(defvar forecast-latitude 0.0
-  "The latitude of the location for which the forecast shall be
-  generated")
+(defcustom forecast-latitude 0.0
+  "The latitude of the location for which the forecast shall be generated"
+  :type 'float
+  :group 'forecast)
 
-(defvar forecast-longitude 0.0
-  "The longitude of the location for which the forecast shall be
-  generated")
+(defcustom forecast-longitude 0.0
+  "The longitude of the location for which the forecast shall be generated"
+  :type 'float
+  :group 'forecast)
 
-(defvar forecast-api-key ""
-  "The API Key from Forecast.io.")
+(defcustom forecast-api-key ""
+  "The API Key from Forecast.io."
+  :type 'string
+  :group 'forecast)
 
-(defvar forecast-api-url "https://api.forecast.io"
+(defcustom forecast-api-url "https://api.forecast.io"
   "Base url of the Forecast.io API.
+Without the trailing slash."
+  :type 'string
+  :group 'forecast)
 
-Without the trailing slash")
+(defcustom forecast-time-format "%I:%M:%S%p, %F"
+  "Format string for displaying timestamps.
+See `format-time-string'."
+  :type 'string
+  :group 'forecast)
 
-(defvar forecast--hourly-mode nil
-  "Display a listing of hourly forecasts for today.")
-
-(defvar forecast--debug nil
-  "Whether to surpress error messages.")
-
-(defvar forecast-units 'si
+(defcustom forecast-units 'si
   "Sets the unit standard.
-
 `si'  Standard units.
 `us'  US Imperial units.
 `ca'  Identical to si, but wind speed in km/h
 `uk'  Identical to si, but wind speed is in miles/h, visibility in miles
 
 Any other symbol means that the unit standard is automatically
-selected based on the location.")
+selected based on the location."
+  :type 'symbol
+  :group 'forecast)
 
-(defvar forecast-language 'en
-  "Language of the forecast.
-
+(defcustom forecast-language 'en
+  "Language of the forecast (click the more link if in customisation buffer).
 One of: ar (Arabic), bs (Bosnian), de (German), en (English,
 which is the default), es (Spanish), fr (French), it (Italian),
 nl (Dutch), pl (Polish), pt (Portuguese), ru (Russian),
 sk (Slovak), sv (Swedish), tet (Tetum), tr (Turkish),
 uk (Ukrainian), x-pig-latin (Igpay Atinlay), or zh (Chinese).
 
-If not one of these, then `en' is selected.")
+If not one of these, then `en' is selected."
+  :type 'symbol
+  :group 'forecast)
+
+(defvar forecast--hourly-mode nil
+  "Display a listing of hourly forecasts for today.")
+
+(defvar forecast--debug nil
+  "Whether to surpress error messages.")
 
 (defconst forecast--supported-languages
   '(ar bs de en  es fr it nl pl pt ru sk sv tet tr uk x-pig-latin or zh)
@@ -515,8 +530,7 @@ letter."
                    2))))
 
 (defun forecast--format-current-time (formats)
-  "Return the time for which the forecast is as a formatter time string.
-
+  "Format forecast's time with a format string.
 FORMATS is the format string to use.  See `format-time-string'."
   (format-time-string
    formats
@@ -681,8 +695,10 @@ See the face `forecast-moon-phase'"
 
 (defun forecast--insert-update-time ()
   "Insert the last update time."
-  (insert (format-time-string "Last updated %I:%M:%S%p, %F"
-                              forecast--update-time))
+  (insert (format-time-string
+           (concat "Last updated "
+                   forecast-time-format)
+           forecast--update-time))
   (forecast--insert-format "; %s, GMT+%d"
                            (forecast--timezone)
                            (forecast--offset)))
