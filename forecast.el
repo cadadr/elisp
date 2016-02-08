@@ -238,7 +238,7 @@ Without the trailing slash."
   :type 'string
   :group 'forecast)
 
-(defcustom forecast-time-format "%I:%M:%S%p, %F"
+(defcustom forecast-time-format "%H:%M:%S, %F"
   "Format string for displaying timestamps.
 See `format-time-string'."
   :type 'string
