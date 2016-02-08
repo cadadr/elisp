@@ -769,7 +769,9 @@ absent."
 
 ;;;###autoload
 (defun forecast ()
-  "Bring up the forecast buffer."
+  "Bring up the forecast buffer.
+Keybindings for `forecast-mode':
+\\{forecast-mode-map}"
   (interactive)
   (setq forecast--hourly-mode nil)
   (forecast--load-data
@@ -795,7 +797,9 @@ absent."
 ;;; Major mode and keybindings:
 (define-derived-mode forecast-mode special-mode
   "Weather Forecast Mode"
-  "Major mode for weather forecast buffers."
+  "Major mode for weather forecast buffers.
+Keybindings for `forecast-mode':
+\\{forecast-mode-map}"
   (kill-all-local-variables)
   (use-local-map forecast-mode-map)
   (buffer-disable-undo))
