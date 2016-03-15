@@ -593,9 +593,11 @@ Sunset:
          (graph   (concat ">" (make-string (- wwidth 5) ?—) "<"))
          (sun     ?☉)
          (pos    (cond
-                  ((< sunrise sunset now) (- wwidth 4))
+                  ((< sunrise sunset now) (- wwidth 5))
                   ((> sunrise now) 0)
-                  (t (truncate (1- (/ sunsec (/ daylen wwidth))))))))
+                  (t (truncate
+                      (let ((x (/ sunsec (/ daylen wwidth))))
+                        (- x 3)))))))
     (aset graph pos sun)
     graph))
 
