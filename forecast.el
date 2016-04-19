@@ -280,6 +280,11 @@ If not one of these, then `en' is selected."
   :type 'symbol
   :group 'forecast)
 
+(defcustom forecast-graph-marker "█"
+  "A single-character string for the graph marks."
+  :type 'string
+  :group 'forecast)
+
 (defvar forecast--debug nil
   "Whether to surpress error messages.")
 
@@ -756,10 +761,9 @@ See the face `forecast-moon-phase'"
     (forecast--insert-format "%4s \n" (forecast--temperature-unit-string))
     (dolist (i (number-sequence max-today min-today -1))
       (forecast--insert-format "%4d  " i)
-      
       (loop for j downfrom x to 0 do
             (insert
-             (cond ((= i (nth j temps)) "█")
+             (cond ((= i (nth j temps)) forecast-graph-marker)
                    ((= 0 (mod j 3))     "|")
                    ((cl-oddp i)         "-")
                    (t                   " "))))
