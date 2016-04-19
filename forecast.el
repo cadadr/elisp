@@ -138,6 +138,9 @@
 ;; - Pressure in  ATMs, humidity percentage, wind  speed and direction
 ;;   from which wind comes. If available, visibility distance.
 ;;
+;; - Graphic showing  hourly temperature  changes for the  upcoming 24
+;;   hours.
+;;
 ;; - Summary information for upcoming seven days.
 ;;
 ;; - Link to the http://forecast.io.
