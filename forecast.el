@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.3.1
+;; Version: 0.4.0
 ;; URL: http://gkayaalp.com/emacs.html#forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -160,11 +160,13 @@
 
 ;;; Changes:
 ;;
-;; next, ?
+;; v0.4.0, 19 April 2016
 ;;   - Implement an hourly temperature graphic.
 ;;   - Use the maximum instead of averate for upcoming forecasts.
 ;;   - Add procedure `forecast--temperature-unit-string', exported from
 ;;     `forecast--temperature-string'.
+;;   - Add variable `forecast-graph-marker' for allowing users to customise
+;;     the graph.
 ;; v0.3.0, 09 February 2016
 ;;   - Adapt for customisations via `customize'.
 ;;   - Allow to customise time representation, via `forecast-time-format'.
