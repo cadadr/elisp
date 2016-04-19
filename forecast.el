@@ -65,6 +65,9 @@
 ;; Only the first  five variables are mandatory.  The  first four have
 ;; *non-sane* defaults,  and if `forecast-api-key' is  absent, program
 ;; will not run.
+;;
+;; Use  [ M-x  customize-group  RET forecast  ] in  order  to see  all
+;; possible customisations.
 ;; 
 ;; The variables  `forecast-city' and `forecast-country' are  used for
 ;; display  purposes only.   At the  moment forecast.el  cannot deduce
