@@ -744,20 +744,25 @@ See the face `forecast-moon-phase'"
   ;; Display a graphic of hourly temperature.
   (let* ((data (forecast--assoca '(hourly data) forecast--data))
          (temps (mapcar (lambda (x)
-                         (truncate
-                          (forecast--assoca '(temperature) x)))
-                       data))
+                          (truncate
+                           (forecast--assoca '(temperature) x)))
+                        data))
          (min-today (apply 'min temps))
-         (max-today (apply 'max temps)))
+         (max-today (apply 'max temps))
+         (x (1- (length temps))))
+    (forecast--insert-with-props
+     "Temperature graphic for the next 24 hours\n"
+     'font-lock-face 'org-level-2)
     (forecast--insert-format "%4s \n" (forecast--temperature-unit-string))
     (dolist (i (number-sequence max-today min-today -1))
       (forecast--insert-format "%4d  " i)
-      (loop for j downfrom (1- (length temps)) to 0 do
-            (cond ((< i (nth j temps))
-                   (insert "."))
-                  ((= i (nth j temps))
-                   (insert "@"))
-                  (t (insert " "))))
+      
+      (loop for j downfrom x to 0 do
+            (insert
+             (cond ((= i (nth j temps)) "█")
+                   ((= 0 (mod j 3))     "|")
+                   ((cl-oddp i)         "-")
+                   (t                   " "))))
       (newline))
     (insert "Hour: ")
     (loop for j from 0 to (1- (length data)) by 3 do
