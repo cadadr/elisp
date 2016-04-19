@@ -154,6 +154,11 @@
 
 ;;; Changes:
 ;;
+;; next, ?
+;;   - Implement an hourly temperature graphic.
+;;   - Use the maximum instead of averate for upcoming forecasts.
+;;   - Add procedure `forecast--temperature-unit-string', exported from
+;;     `forecast--temperature-string'.
 ;; v0.3.0, 09 February 2016
 ;;   - Adapt for customisations via `customize'.
 ;;   - Allow to customise time representation, via `forecast-time-format'.
@@ -271,9 +276,6 @@ uk (Ukrainian), x-pig-latin (Igpay Atinlay), or zh (Chinese).
 If not one of these, then `en' is selected."
   :type 'symbol
   :group 'forecast)
-
-(defvar forecast--hourly-mode nil
-  "Display a listing of hourly forecasts for today.")
 
 (defvar forecast--debug nil
   "Whether to surpress error messages.")
@@ -470,11 +472,9 @@ Returns NIL, as it is asynchronous."
   "Return the temperature from the current forecast.
 
 If not available, i.e. not using 'currently, then return the
-average of minimum and maximum predicted temperatures."
+maximum."
   (or (forecast--assoca '(currently temperature) forecast--data)
-      (/ (+ (forecast--assoca '(currently temperatureMin) forecast--data)
-            (forecast--assoca '(currently temperatureMax) forecast--data))
-         2)))
+      (forecast--assoca '(currently temperatureMax) forecast--data)))
 
 (defun forecast--temperature-unit ()
   "Return the temperature unit.
@@ -492,6 +492,12 @@ Returns 'F for Fahrenheit, 'C for Centigrade."
   "The offset of the timezone of the forecast from GMT."
   (forecast--assoca '(offset) forecast--data))
 
+(defun forecast--temperature-unit-string ()
+  "Return the proper string for temperature unit."
+  (cl-case (forecast--temperature-unit)
+    (C "°C")
+    (F "°F")))
+
 (defun forecast--temperature-string ()
   "Return a string representing the current temperature.
 
@@ -499,9 +505,7 @@ The temperature, plus the degree sign, plus the unit in capital
 letter."
   (format "%.0f%s"
           (forecast--temperature)
-          (cl-case (forecast--temperature-unit)
-            (C "°C")
-            (F "°F"))))
+          (forecast--temperature-unit-string)))
 
 (defun forecast--pressure (unit)
   "Return pressure in UNIT."
@@ -734,9 +738,31 @@ See the face `forecast-moon-phase'"
 
 (defun forecast--insert-hourly-forecast ()
   "Insert a listing of hourly forecasts for today."
-  ;; Hourly data is in form of an array per each our of the day.
-  (let ((data (forecast--assoca '(hourly data) forecast--data)))
-    ))
+  ;; Display a graphic of hourly temperature.
+  (let* ((data (forecast--assoca '(hourly data) forecast--data))
+         (temps (mapcar (lambda (x)
+                         (truncate
+                          (forecast--assoca '(temperature) x)))
+                       data))
+         (min-today (apply 'min temps))
+         (max-today (apply 'max temps)))
+    (forecast--insert-format "%4s \n" (forecast--temperature-unit-string))
+    (dolist (i (number-sequence max-today min-today -1))
+      (forecast--insert-format "%4d  " i)
+      (loop for j downfrom (1- (length temps)) to 0 do
+            (cond ((< i (nth j temps))
+                   (insert "."))
+                  ((= i (nth j temps))
+                   (insert "@"))
+                  (t (insert " "))))
+      (newline))
+    (insert "Hour: ")
+    (loop for j from 0 to (1- (length data)) by 3 do
+          (let* ((time (seconds-to-time
+                        (forecast--assoca '(time) (aref data j))))
+                 (ts (format-time-string "%H" time)))
+            (forecast--insert-format "%-3s" ts)))
+    (newline)))
 
 (defun forecast--make-buffer (buffername)
   "(Re)prepare the forecast buffer.
@@ -761,9 +787,9 @@ absent."
       (newline)
       (forecast--insert-atmosphere-details)
       (newline 2)
-      (if forecast--hourly-mode
-          (forecast--insert-hourly-forecast)
-        (forecast--insert-upcoming))
+      (forecast--insert-hourly-forecast)
+      (newline)
+      (forecast--insert-upcoming)
       (newline)
       (forecast--insert-io-link)
 
@@ -779,19 +805,12 @@ absent."
 Keybindings for `forecast-mode':
 \\{forecast-mode-map}"
   (interactive)
-  (setq forecast--hourly-mode nil)
   (forecast--load-data
    (lambda ()
      (let ((buf (forecast--make-buffer "*Weather Forecast*")))
        (switch-to-buffer buf)))))
 
 (defalias 'forecast-today 'forecast)
-
-(defun forecast-hourly ()
-  "Bring up the hourly forecast."
-  (interactive)
-  (setf forecast--hourly-mode t)
-  (forecast))
 
 (defvar forecast-mode-map
   (let ((map (make-sparse-keymap)))
