@@ -766,7 +766,7 @@ See the face `forecast-moon-phase'"
     (forecast--insert-format "%4s \n" (forecast--temperature-unit-string))
     (dolist (i (number-sequence max-today min-today -1))
       (forecast--insert-format "%4d  " i)
-      (loop for j downfrom x to 0 do
+      (cl-loop for j downfrom x to 0 do
             (insert
              (cond ((= i (nth j temps)) forecast-graph-marker)
                    ((= 0 (mod j 3))     "|")
@@ -774,7 +774,7 @@ See the face `forecast-moon-phase'"
                    (t                   " "))))
       (newline))
     (insert "Hour: ")
-    (loop for j from 0 to (1- (length data)) by 3 do
+    (cl-loop for j from 0 to (1- (length data)) by 3 do
           (let* ((time (seconds-to-time
                         (forecast--assoca '(time) (aref data j))))
                  (ts (format-time-string "%H" time)))
