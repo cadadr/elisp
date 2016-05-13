@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.4.0
+;; Version: 0.4.1
 ;; URL: http://gkayaalp.com/emacs.html#forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -160,6 +160,9 @@
 
 ;;; Changes:
 ;;
+;; v0.4.1, 13 May 2016
+;;   - Fix use of `loop' instead of `cl-loop'.  Thanks to
+;;     github.com/Topslick
 ;; v0.4.0, 19 April 2016
 ;;   - Implement an hourly temperature graphic.
 ;;   - Use the maximum instead of averate for upcoming forecasts.
