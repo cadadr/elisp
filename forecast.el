@@ -215,6 +215,7 @@
 (require 'subr-x)
 (require 'org) ;; Org faces are used.
 (require 'button)
+(require 's)
 
 (defgroup forecast
   nil
@@ -625,12 +626,16 @@ Sunset:
   "The more detailed summary of the forecast."
   (forecast--assoca '(summary) (aref (forecast--assoca '(daily data) forecast--data) 0)))
 
+(defun forecast--moon-phase-percent ()
+  "The moon phase percentage as a floating point between 0 and 1."
+  (forecast--assoca '(moonPhase)
+                    (aref (forecast--assoca '(daily data) forecast--data) 0)))
+
 (defun forecast--visualised-moon-phase ()
   "Visualise the moon phase w/ unicode characters.
 
 See the face `forecast-moon-phase'"
-  (let ((mp (forecast--assoca '(moonPhase)
-                              (aref (forecast--assoca '(daily data) forecast--data) 0))))
+  (let ((mp (forecast--moon-phase-percent)))
     (cond ((zerop mp)  "🌑") ; New moon
           ((<  mp .25) "🌒") ; Waxing crescent moon
           ((=  mp .25) "🌓") ; First quarter moon
@@ -639,6 +644,19 @@ See the face `forecast-moon-phase'"
           ((<  mp .75) "🌖") ; Waning gibbous moon
           ((=  mp .75) "🌗") ; Last quarter moon
           ((<= mp  1)  "🌘") ; Waning crescent moon
+          )))
+
+(defun forecast--moon-phase-text ()
+  "The moon phase as text."
+  (let ((mp (forecast--moon-phase-percent)))
+    (cond ((zerop mp)  "New")
+          ((<  mp .25) "Waxing Crescent")
+          ((=  mp .25) "First Quarter")
+          ((<  mp .5)  "Waxing Gibbous")
+          ((-  mp .5)  "Full")
+          ((<  mp .75) "Waning Gibbous")
+          ((=  mp .75) "Last Quarter")
+          ((<= mp  1)  "Waning Crescent")
           )))
 
 (defun forecast--humidity ()
@@ -819,6 +837,25 @@ absent."
     ;; Return the prepared buffer.
     (current-buffer)))
 
+(defun forecast--make-buffer-text-report (buffername)
+  "(Re)prepare the forecast buffer with a text report.
+
+BUFFERNAME is the name of the forecast buffer to use.  Created if
+absent."
+  (with-current-buffer (get-buffer-create buffername)
+    (setq forecast--buffer (current-buffer))
+    (when (not buffer-read-only)
+      (read-only-mode))
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      ;; Begin inserting data to the buffer.
+      (forecast--insert (forecast--as-text forecast--data))
+      ;; Finished preparing buffer.
+      (goto-char (point-min))
+      (forecast-mode))
+    ;; Return the prepared buffer.
+    (current-buffer)))
+
 ;;;###autoload
 (defun forecast ()
   "Bring up the forecast buffer.
@@ -838,6 +875,94 @@ Keybindings for `forecast-mode':
     (prog1 map
       (define-key map "g" 'forecast-refresh)
       (define-key map "q" 'forecast-quit))))
+
+(defun forecast--time-am-pm (unixseconds)
+  (s-chop-prefix "0" (s-upcase (format-time-string "%I %p" (seconds-to-time unixseconds)))))
+
+(defun forecast--time-24h (unixseconds)
+  (s-chop-prefix "0" (format-time-string "%H:%M" (seconds-to-time unixseconds))))
+
+;; TODO refactor. same purpose as forecast--temperature-string but with an arg.
+(defun forecast--temperature-fmt (x)
+  (format "%.0f%s" x (forecast--temperature-unit-string)))
+
+(defun forecast--daily-rain-text (serverdata)
+  "Returns rain text for today."
+  (let* ((today (aref (forecast--assoca '(daily data) serverdata) 0))
+         (precipProb (forecast--assoca '(precipProbability) today)))
+    (if (= 0 precipProb)
+        "No rain today."
+      (format "%d%% chance of rain today." (* 100 precipProb)))))
+
+(defun forecast--text-update-time-fmt (time)
+  ;; org-mode inactive timestamp format
+  (format-time-string "[%Y-%m-%d %a %H:%M]" time))
+
+(defun forecast--as-text (serverdata)
+  "Returns a forecast summary text from the server data."
+  (let* ((today (aref (forecast--assoca '(daily data) serverdata) 0))
+
+         (highTemp (forecast--temperature-fmt
+                    (forecast--assoca '(temperatureMax) today)))
+         (highTempTime (forecast--time-am-pm
+                        (forecast--assoca '(temperatureMaxTime) today)))
+         (lowTemp (forecast--temperature-fmt
+                   (forecast--assoca '(temperatureMin) today)))
+         (lowTempTime (forecast--time-am-pm
+                       (forecast--assoca '(temperatureMinTime) today)))
+
+         (moonPercent (format "%d" (* 100 (forecast--assoca '(moonPhase) today))))
+         ;; TODO option to select m/s (SI from server) or km/h
+         (windSpeed (format "%d km/h" (* 3.6 (forecast--assoca '(windSpeed) today))))
+
+         (sunriseTime (forecast--time-24h (forecast--assoca '(sunriseTime) today)))
+         (sunsetTime  (forecast--time-24h (forecast--assoca '(sunsetTime) today))))
+
+    (s-join " "
+            (list (forecast--text-update-time-fmt forecast--update-time)
+                  (format "%s, %s."
+                          forecast-city
+                          forecast-country)
+                  (format "%s, %s."
+                          (forecast--temperature-string)
+                          (s-downcase (forecast--summary)))
+                  (forecast--assoca '(summary) (aref (forecast--assoca '(daily data) serverdata) 0))
+                  (forecast--daily-rain-text serverdata)
+                  (format "High %s at %s, low %s at %s."
+                          highTemp
+                          highTempTime
+                          lowTemp
+                          lowTempTime)
+                  (format "Wind %s."
+                          windSpeed)
+                  (format "The sun rose at %s and will set at %s."
+                          sunriseTime
+                          sunsetTime)
+                  (format "The moon is %s at %s%%."
+                          (s-downcase (forecast--moon-phase-text))
+                          moonPercent)))
+    ))
+
+;;;###autoload
+(defun forecast-text-report ()
+  "Displays a forecast text report in a new buffer."
+  (interactive)
+  (forecast--load-data
+   (lambda ()
+     (let ((buf (forecast--make-buffer-text-report "*Weather Text Forecast*")))
+       (switch-to-buffer buf)))))
+
+;;;###autoload
+(defun forecast-insert-text-report ()
+  "Inserts a forecast text report."
+  (interactive)
+  (forecast--load-data
+   (lambda ()
+     ;; FIXME
+     ;;(insert (forecast--as-text forecast--data))
+     ;; message works though.
+     (message (forecast--as-text forecast--data))
+     )))
 
 ;;; Major mode and keybindings:
 (define-derived-mode forecast-mode special-mode
