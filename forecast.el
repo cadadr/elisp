@@ -94,6 +94,10 @@
 ;; Then on,  you may run  the command  `forecast' to get  the forecast
 ;; buffer.  The forecast  buffer uses `org-level-*' faces,  so it will
 ;; look like  your org  files.  It is  called «*Weather  Forecast*».
+;;
+;; Alternatively,  the  `forecast-text-report'  command  displays  the
+;; forecast as human  readable text in a buffer  called «*Weather Text
+;; Forecast*».
 
 ;;; Example configuration:
 ;;
