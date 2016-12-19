@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.4.1
+;; Version: 0.5.0
 ;; URL: http://gkayaalp.com/emacs.html#forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -54,38 +54,24 @@
 ;; `require'   it.   Then   set   these  variables   either  in   your
 ;; configuration, or via the customisation group `forecast':
 ;; 
-;; `forecast-latitude'  Latitude of your location,       float
-;; `forecast-longitude' Longitude of your configuration  float
-;; `forecast-city'      The name of your city            string
-;; `forecast-country'   The name of your country         string
+;; `calendar-latitude'  Latitude of your location,       float
+;; `calendar-longitude' Longitude of your configuration  float
 ;; `forecast-api-key'   The API key from Forecast.io     string
+;; `calendar-city'      The name of your city            string
 ;; `forecast-language'  Language to use                  symbol
 ;; `forecast-units'     Unit standard to use             symbol
 ;; 
-;; Only the first  five variables are mandatory.  The  first four have
+;; Only the first three variables  are mandatory.  The first four have
 ;; *non-sane* defaults,  and if `forecast-api-key' is  absent, program
 ;; will not run.
 ;;
-;; Use  [ M-x  customize-group  RET forecast  ] in  order  to see  all
-;; possible customisations.
-;; 
-;; The variables  `forecast-city' and `forecast-country' are  used for
-;; display  purposes only.   At the  moment forecast.el  cannot deduce
-;; these names  from the latitude  and longitude values, but  maybe in
-;; future it will be able to.
-;;
-;; The first two  variables default to 0.0. The  following two default
-;; to "nil".
+;; See the documentation for these variables for more detail.
 ;; 
 ;; The API key  can be obtained via registering  oneself through their
 ;; developer website:
 ;;
 ;; https://developer.forecast.io/
 ;; 
-;; For the rest of variables, see their docstrings (C-h v RET var-name
-;; RET) and the  customize buffer for forecast,  via the customisation
-;; group `forecast'.
-;;
 ;; See also  the docstring  for the face  `forecast-moon-phase', which
 ;; governs the face for the moon phase visualisation.  Most fonts will
 ;; not have  defined the  necessary characters, thus  one may  need to
@@ -98,19 +84,18 @@
 ;;; Example configuration:
 ;;
 ;; (require 'forecast)
-;; (setq forecast-latitude 41.168602
-;;       forecast-longitude 29.047024
-;;       forecast-city "İstanbul"
-;;       forecast-country "Türkiye"
+;; (setq calendar-latitude 41.168602
+;;       calendar-longitude 29.047024
+;;       calendar-location-name "İstanbul, Türkiye"
 ;;       forecast-api-key "<deduced>")
 ;;
 ;; Or, for the privacy of the API key:
 ;;
 ;; (require 'forecast)
-;; (setq forecast-latitude 41.168602
-;;       forecast-longitude 29.047024
-;;       forecast-city "İstanbul"
-;;       forecast-country "Türkiye")
+;; (setq calendar-latitude 41.168602
+;;       calendar-longitude 29.047024
+;;       calendar-location-name "İstanbul, Türkiye"
+;;       forecast-city "İstanbul")
 ;;
 ;; (load (locate-user-emacs-file "forecast-api-key.el"))
 ;;
@@ -144,7 +129,10 @@
 ;; - Graphic showing  hourly temperature  changes for the  upcoming 24
 ;;   hours.
 ;;
-;; - Summary information for upcoming seven days.
+;; - Summary  information for  upcoming seven  days, by  default in  a
+;;   compact graphical format.   This format was added  in v0.5.0, set
+;;   the variable  ‘forecast-old-ui’ to a  non-nil value to  return to
+;;   the old UI.
 ;;
 ;; - Link to the http://forecast.io.
 ;;
@@ -160,6 +148,10 @@
 
 ;;; Changes:
 ;;
+;; v0.5.0, 19 Dec 2016
+;;   - Add the new compact graphic UI for the Upcoming forecast.
+;;   - Add variable ‘forecast-old-ui’ to control which Upcoming UI is used.
+;;   - Fix visibility interpreted as a percentage.  It is distance.
 ;; v0.4.1, 13 May 2016
 ;;   - Fix use of `loop' instead of `cl-loop'.  Thanks to
 ;;     github.com/Topslick
@@ -209,12 +201,13 @@
 ;; 
 
 ;;; Code:
-(require 'json)
-(require 'cl-lib)
-(require 'url)
-(require 'subr-x)
-(require 'org) ;; Org faces are used.
 (require 'button)
+(require 'calendar)
+(require 'cl-lib)
+(require 'json)
+(require 'org) ;; Org faces are used.
+(require 'subr-x)
+(require 'url)
 
 (defgroup forecast
   nil
@@ -223,30 +216,6 @@
   :prefix "forecast-")
 
 ;;; Variables:
-(defcustom forecast-city "Nil"
-  "The city for which the forecast is given for.
-Only for display purposes, variables `forecast-latitude' and
-`forecast-longitude' still have to be set correctly."
-  :type 'string
-  :group 'forecast)
-
-(defcustom forecast-country "Nil"
-  "The country for which the forecast is given for.
-Only for display purposes, variables `forecast-latitude' and
-`forecast-longitude' still have to be set correctly."
-  :type 'string
-  :group 'forecast)
-
-(defcustom forecast-latitude 0.0
-  "The latitude of the location for which the forecast shall be generated"
-  :type 'float
-  :group 'forecast)
-
-(defcustom forecast-longitude 0.0
-  "The longitude of the location for which the forecast shall be generated"
-  :type 'float
-  :group 'forecast)
-
 (defcustom forecast-api-key ""
   "The API Key from Forecast.io."
   :type 'string
@@ -293,6 +262,11 @@ If not one of these, then `en' is selected."
   :type 'string
   :group 'forecast)
 
+(defcustom forecast-old-ui nil
+  "If t, use the old text listing for upcoming forecast."
+  :type 'boolean
+  :group 'forecast)
+
 (defvar forecast--debug nil
   "Whether to surpress error messages.")
 
@@ -327,14 +301,6 @@ the $HOME/.fonts directory for using the font.  There are not
 many fonts that support this character.  There are also the
 BabelStone fonts.")
 
-(defface forecast-upcoming-temperature
-  nil
-  "Face for the temperature part of the upcoming forecasts.")
-
-(defface forecast-upcoming-summary
-  nil
-  "Face for the summary part of the upcoming forecasts.")
-
 ;;; Functions:
 (defun forecast--assoca (keyseq list)
   "Arbitrary depth multi-level alist query.
@@ -344,36 +310,7 @@ from KEYSEQ is looked up in the LIST, then the next key from
 KEYSEQ is looked up in the CDR of the return value of that
 operation, and so on until all the KEYSEQ is exhausted.  The
 resultant value is returned, or nil, in case one or more keys are
-not found in the LIST.
-
-Examples:
-\(forecast--assoca '(a b c)
- '((a . ((b . ((c . e)
-               (k . g)))
-         (z . q)))
-   (r . s)))
- => e
-
-\(forecast--assoca '(a t)
- '((a . ((b . ((c . e)
-               (k . g)))
-         (z . q)))
-   (r . s)))
- => nil
-
-\(forecast--assoca '(a o t)
- '((a . ((b . ((c . e)
-               (k . g)))
-         (z . q)))
-   (r . s)))
- => nil
-
-\(forecast--assoca nil
- '((a . ((b . ((c . e)
-               (k . g)))
-         (z . q)))
-   (r . s)))
- => ((a (b (c . e) (k . g)) (z . q)) (r . s))."
+not found in the LIST."
   (let ((ks keyseq)
         (ret list))
     (dolist (k ks ret)
@@ -409,8 +346,8 @@ STR is the format string.  FA are the arguments to format.  See
 
 CALLBACK is a function of a single argument, WEATHER, the Elisp
 representation of the returned JSON from the Forecast.io API."
-  (let ((la forecast-latitude)
-        (lo forecast-longitude)
+  (let ((la calendar-latitude)
+        (lo calendar-longitude)
         (request-url))
     ;; Make sure LO and LA end up being numbers.
     (when (not (cl-every #'numberp (list la lo)))
@@ -475,9 +412,11 @@ Arguments LAT, LONG and TIME are identical to those of
 Returns NIL, as it is asynchronous."
   (forecast--get-forecast (lambda (w)
                             (setq forecast--data w)
-                            (when forecast--debug
-                              (message "Forecast: loaded forecast data."))
-                            (setf forecast--update-time (current-time))
+                            (message "Forecast: updated data.")
+                            (setf forecast--update-time
+                                  (seconds-to-time
+                                   (forecast--assoca '(currently time)
+                                                     forecast--data)))
                             (funcall callback))))
 
 (defun forecast--summary ()
@@ -598,22 +537,24 @@ D is a number value, degrees."
 E.g.:
 
 Quasi-midday:
->————————☉———————————<
+┝━━━━━━━━☉━━━━━━━━━━━┥
 Sunrise:
-☉————————————————————<
+☉━━━━━━━━━━━━━━━━━━━━┥
 Sunset:
->————————————————————☉"
+┝━━━━━━━━━━━━━━━━━━━━☉
+
+Uses box-drawing characters."
   (let* ((today   (aref (forecast--assoca '(daily data) forecast--data) 0))
          (sunrise (forecast--assoca '(sunriseTime) today))
          (sunset  (forecast--assoca '(sunsetTime) today))
          (now     (float-time))
          (daylen  (- sunset sunrise))
          (sunsec  (- now sunrise))
-         (wwidth  (window-body-width))
-         (graph   (concat ">" (make-string (- wwidth 5) ?—) "<"))
+         (wwidth  58)
+         (graph   (concat "┝" (make-string (- wwidth 5) ?━) "┥"))
          (sun     ?☉)
          (pos    (cond
-                  ((< sunrise sunset now) (- wwidth 5))
+                  ((< sunrise sunset now) (- wwidth 4))
                   ((> sunrise now) 0)
                   (t (truncate
                       (let ((x (/ sunsec (/ daylen wwidth))))
@@ -646,10 +587,8 @@ See the face `forecast-moon-phase'"
   (* 100 (forecast--assoca '(currently humidity) forecast--data)))
 
 (defun forecast--visibility ()
-  "Visibility percentage."
-  (let ((v (forecast--assoca '(currently visibility) forecast--data)))
-    (when v
-      (* 100 v))))
+  "Visibility range."
+  (forecast--assoca '(currently visibility) forecast--data))
 
 (defun forecast--insert-atmosphere-details ()
   "Insert details like pressure, humidity, visibility and wind."
@@ -660,15 +599,100 @@ See the face `forecast-moon-phase'"
   (newline)
   (let ((v (forecast--visibility)))
     (when v
-      (forecast--insert-format "Visibility %.1f%%; " v)))
+      (forecast--insert-format "Visibility %d %s; "
+                               v (if (eq forecast-units 'uk) "miles" "km"))))
   (forecast--insert-format
    "Wind %s %s, from %s"
    (forecast--wind-speed)
    (forecast--wind-unit)
    (forecast--wind-direction)))
 
-(defun forecast--insert-upcoming ()
-  "Forecasts about upcoming 7 days."
+(defun forecast--insert-upcoming-graph ()
+  "Insert a line graph of daily high and daily low temperatures, and other data.
+Other data being precipitation, humidity, pressure, wind speed,
+wind directions."
+  (let*
+      ((data (reverse
+              ;; Listify the data, which is an array.
+              (append (forecast--assoca '(daily data) forecast--data) nil)))
+       hi lo precip hum pres wind max-hi min-lo time)
+    ;; Collect data
+    (dolist  (b data)
+      (push (truncate (forecast--assoca '(time) b)) time)
+      (push (truncate (forecast--assoca '(temperatureMax) b)) hi)
+      (push (truncate (forecast--assoca '(temperatureMin) b)) lo)
+      (push (forecast--assoca '(humidity) b) hum)
+      (push (forecast--bars-to-atm
+             (forecast--assoca '(pressure) b)) pres)
+      (push `(,(forecast--assoca '(windSpeed) b)
+              .
+              ,(let ((dir (forecast--assoca '(windBearing) b)))
+                 (forecast--cardinal-from-degrees dir)))
+            wind)
+      (push `(,(forecast--assoca '(precipProbability) b)
+              .
+              ,(forecast--assoca '(precipType) b))
+            precip))
+    ;; Find the limits of the graph.
+    (setq max-hi (apply #'max hi)
+          min-lo (apply #'min lo))
+    ;; Insert the graph
+    (forecast--insert-with-props
+     "Upcoming week, graph of high and low estimates, and other information\n"
+     'font-lock-face 'org-level-2)
+    (forecast--insert-format "%4s \n" (forecast--temperature-unit-string))
+    (dolist (i (number-sequence max-hi min-lo -1))
+      (forecast--insert-format "%4d  " i)
+      (cl-loop for j downfrom 7 to 0 do
+               (insert
+                (cond ((or (= i (nth j hi))
+                           (= i (nth j lo))) 
+                       (if (oddp i)
+                           (concat "-|-" forecast-graph-marker "-|-")
+                         (concat " | " forecast-graph-marker " | ")))
+                      ((oddp i) "-|---|-")
+                      (t " |   | "))))
+      (newline))
+    (forecast--insert-format
+     "Day:  %s\n" (mapconcat (lambda (tm) (format-time-string "  %a  " tm)) time ""))
+    ;; precipitation
+    (insert "      ")
+    (mapc (lambda (p)
+            (let ((pp (car p)) (pt (cdr p)))
+              (insert (if (zerop pp)
+                          "        "
+                        (format " % 2d%% %s" (* 100 pp)
+                                (cond ((string= pt "rain") "⛆")
+                                      ((string= pt "snow") "❄")))))))
+          precip)
+    (insert "  Precipitation\n")
+    ;; wind
+    (insert "      ")
+    (mapc (lambda (w)
+            (let ((ws (car w)))
+              (forecast--insert-format "  %-4d " ws)))
+          wind)
+    (insert (format
+             "  Wind speed (%s)\n"
+             (forecast--wind-unit)))
+    (insert "      ")
+    (mapc (lambda (w)
+            (let ((wb (cdr w)))
+              (forecast--insert-format "  %-4s " wb)))
+          wind)
+    (insert "  Wind bearing\n")
+    ;; humidity
+    (insert "      ")
+    (mapc (lambda (h) (forecast--insert-format "  %#1.1f  " h)) hum)
+    (insert "  Humidity\n")
+    ;; pressure
+    (insert "      ")
+    (mapc (lambda (p) (forecast--insert-format "  %#1.3f" p)) pres)
+    (insert "  Pressure (atm)\n")))
+
+(defun forecast--insert-upcoming-text ()
+  "Forecasts about upcoming 7 days.
+The old style."
   (forecast--insert-with-props
    "Upcoming"
    'font-lock-face 'org-level-2)
@@ -709,15 +733,14 @@ See the face `forecast-moon-phase'"
 (defun forecast--insert-location ()
   "Insert location details."
   (forecast--insert-with-props
-   (format "Forecasts for %s, %s, %s"
-           forecast-city
-           forecast-country
+   (format "Forecasts for %s, %s"
+           calendar-location-name
            (forecast--format-current-time "%F"))
    'font-lock-face 'org-level-5)
   (newline)
   (forecast--insert-format "Lat: %f, Long: %f"
-                           forecast-latitude
-                           forecast-longitude))
+                           calendar-latitude
+                           calendar-longitude))
 
 (defun forecast--insert-update-time ()
   "Insert the last update time."
@@ -772,7 +795,6 @@ See the face `forecast-moon-phase'"
       (cl-loop for j downfrom x to 0 do
             (insert
              (cond ((= i (nth j temps)) forecast-graph-marker)
-                   ((= 0 (mod j 3))     "|")
                    ((cl-oddp i)         "-")
                    (t                   " "))))
       (newline))
@@ -809,7 +831,9 @@ absent."
       (newline 2)
       (forecast--insert-hourly-forecast)
       (newline)
-      (forecast--insert-upcoming)
+      (if forecast-old-ui
+          (forecast--insert-upcoming-text)
+        (forecast--insert-upcoming-graph))
       (newline)
       (forecast--insert-io-link)
 
