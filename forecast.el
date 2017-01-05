@@ -1,10 +1,10 @@
 ;;; forecast.el --- Display a forecast.io weather report in a buffer -*- lexical-binding: t; -*-
 ;;
-;; Copyright (C) 2015-2016 Göktuğ Kayaalp
+;; Copyright (C) 2015-2017 Göktuğ Kayaalp
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.5.0
+;; Version: 0.5.1
 ;; URL: http://gkayaalp.com/emacs.html#forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -148,6 +148,8 @@
 
 ;;; Changes:
 ;;
+;; v0.5.1, 05 Jan 2017
+;;   - Fix bug in hourly graphic that causes incorrect graph.
 ;; v0.5.0, 19 Dec 2016
 ;;   - Add the new compact graphic UI for the Upcoming forecast.
 ;;   - Add variable ‘forecast-old-ui’ to control which Upcoming UI is used.
@@ -792,18 +794,18 @@ The old style."
     (forecast--insert-format "%4s \n" (forecast--temperature-unit-string))
     (dolist (i (number-sequence max-today min-today -1))
       (forecast--insert-format "%4d  " i)
-      (cl-loop for j downfrom x to 0 do
-            (insert
-             (cond ((= i (nth j temps)) forecast-graph-marker)
-                   ((cl-oddp i)         "-")
-                   (t                   " "))))
+      (cl-loop for j from 0 to x do
+               (insert
+                (cond ((= i (nth j temps)) forecast-graph-marker)
+                      ((cl-oddp i)         "-")
+                      (t                   " "))))
       (newline))
     (insert "Hour: ")
     (cl-loop for j from 0 to (1- (length data)) by 3 do
-          (let* ((time (seconds-to-time
-                        (forecast--assoca '(time) (aref data j))))
-                 (ts (format-time-string "%H" time)))
-            (forecast--insert-format "%-3s" ts)))
+             (let* ((time (seconds-to-time
+                           (forecast--assoca '(time) (aref data j))))
+                    (ts (format-time-string "%H" time)))
+               (forecast--insert-format "%-3s" ts)))
     (newline)))
 
 (defun forecast--make-buffer (buffername)
