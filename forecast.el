@@ -679,7 +679,7 @@ wind directions."
              (forecast--wind-unit)))
     (insert "      ")
     (mapc (lambda (w)
-            (let ((wb (cdr w)))
+            (let ((wb (upcase (symbol-name (cdr w)))))
               (forecast--insert-format "  %-4s " wb)))
           wind)
     (insert "  Wind bearing\n")
