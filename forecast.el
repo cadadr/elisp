@@ -645,7 +645,7 @@ wind directions."
     (forecast--insert-format "%4s \n" (forecast--temperature-unit-string))
     (dolist (i (number-sequence max-hi min-lo -1))
       (forecast--insert-format "%4d  " i)
-      (cl-loop for j downfrom 7 to 0 do
+      (cl-loop for j upfrom 0 to 7 do
                (insert
                 (cond ((or (= i (nth j hi))
                            (= i (nth j lo))) 
