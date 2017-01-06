@@ -49,37 +49,37 @@
 ;; See also «Example configuration».
 ;;
 ;; forecast.el is available on Melpa with the package name `forecast'.
-;; 
-;; Otherwise, put  the forecast.el file  somewhere in your  path, then
-;; `require'   it.   Then   set   these  variables   either  in   your
+;;
+;; Otherwise, put the forecast.el file somewhere in your path, then
+;; `require' it.   Then set these variables either in your
 ;; configuration, or via the customisation group `forecast':
-;; 
-;; `calendar-latitude'  Latitude of your location,       float
-;; `calendar-longitude' Longitude of your configuration  float
-;; `forecast-api-key'   The API key from Forecast.io     string
-;; `calendar-city'      The name of your city            string
-;; `forecast-language'  Language to use                  symbol
-;; `forecast-units'     Unit standard to use             symbol
-;; 
-;; Only the first three variables  are mandatory.  The first four have
-;; *non-sane* defaults,  and if `forecast-api-key' is  absent, program
+;;
+;; `calendar-latitude'      Latitude of your location        float
+;; `calendar-longitude'     Longitude of your location       float
+;; `forecast-api-key'       The API key from Forecast.io     string
+;; `calendar-location-name' Name of your location/city       string
+;; `forecast-language'      Language to use                  symbol
+;; `forecast-units'         Units standard to use            symbol
+;;
+;; Only the first three variables above are mandatory.  The first four have
+;; *non-sane* defaults, and if `forecast-api-key' is absent, this program
 ;; will not run.
 ;;
 ;; See the documentation for these variables for more detail.
-;; 
-;; The API key  can be obtained via registering  oneself through their
+;;
+;; The API key can be obtained via registering oneself through their
 ;; developer website:
 ;;
 ;; https://developer.forecast.io/
-;; 
-;; See also  the docstring  for the face  `forecast-moon-phase', which
+;;
+;; See also the docstring for the face `forecast-moon-phase', which
 ;; governs the face for the moon phase visualisation.  Most fonts will
-;; not have  defined the  necessary characters, thus  one may  need to
+;; not have defined the necessary characters, thus one may need to
 ;; install a special font, e.g. Quivira (http://quivira-font.com/).
 ;;
-;; Then on,  you may run  the command  `forecast' to get  the forecast
-;; buffer.  The forecast  buffer uses `org-level-*' faces,  so it will
-;; look like  your org  files.  It is  called «*Weather  Forecast*».
+;; Then on, you may run the command `forecast' to get the forecast
+;; buffer.  The forecast buffer uses `org-level-*' faces,  so it will
+;; look like your org files.  It is called «*Weather Forecast*».
 
 ;;; Example configuration:
 ;;
@@ -111,8 +111,8 @@
 ;; g      Refresh the forecast.  Will re-download data.
 ;; q      Bury the buffer.
 ;; C-u q  Kill the buffer.
-;; 
-;; Two  contemporaneous  instances  of  the  program  *will  not*  run
+;;
+;; Two contemporaneous instances of the program *will not* run
 ;; correctly, as global state is used to store data.
 ;; 
 ;; The buffer is made up of these elements:
@@ -123,15 +123,15 @@
 ;;
 ;; - Apparent temperature (Feels like ...) and detailed summary
 ;;
-;; - Pressure in  ATMs, humidity percentage, wind  speed and direction
+;; - Pressure in ATMs, humidity percentage, wind speed and direction
 ;;   from which wind comes. If available, visibility distance.
 ;;
-;; - Graphic showing  hourly temperature  changes for the  upcoming 24
+;; - Graphic showing hourly temperature changes for the upcoming 24
 ;;   hours.
 ;;
-;; - Summary  information for  upcoming seven  days, by  default in  a
-;;   compact graphical format.   This format was added  in v0.5.0, set
-;;   the variable  ‘forecast-old-ui’ to a  non-nil value to  return to
+;; - Summary information for upcoming seven days, by default in a
+;;   compact graphical format.  This format was added in v0.5.0, set
+;;   the variable `forecast-old-ui' to a non-nil value to return to
 ;;   the old UI.
 ;;
 ;; - Link to the http://forecast.io.
@@ -324,7 +324,7 @@ not found in the LIST."
 Assume STR to be a unibyte string, convert it to multibyte, then
 insert it."
   ;; XXX I do not really understand  why this works.  In my *scratch*,
-  ;; I was able to  apply `string-as-multibyte' directly.  However, it
+  ;; I was able to apply `string-as-multibyte' directly.  However, it
   ;; works.
   (insert (string-as-multibyte (string-as-unibyte str))))
 
