@@ -281,6 +281,16 @@ If not one of these, then `en' is selected."
   :type 'string
   :group 'forecast)
 
+(defcustom forecast-graph-marker-upcoming-max "▀"
+  "A single-character string for the upcoming graph marking the max temperature."
+  :type 'string
+  :group 'forecast)
+
+(defcustom forecast-graph-marker-upcoming-min "▄"
+  "A single-character string for the upcoming graph marking the min temperature."
+  :type 'string
+  :group 'forecast)
+
 (defcustom forecast-old-ui nil
   "If t, use the old text listing for upcoming forecast."
   :type 'boolean
@@ -664,8 +674,16 @@ wind directions."
       (forecast--insert-format "%4d  " i)
       (cl-loop for j upfrom 0 to 7 do
                (insert
-                (cond ((or (= i (nth j hi))
-                           (= i (nth j lo)))
+                (cond ((= i (nth j hi))
+                       (if (oddp i)
+                           (concat "-|-" forecast-graph-marker-upcoming-max "-|-")
+                         (concat " | " forecast-graph-marker-upcoming-max " | ")))
+                      ((= i (nth j lo))
+                       (if (oddp i)
+                           (concat "-|-" forecast-graph-marker-upcoming-min "-|-")
+                         (concat " | " forecast-graph-marker-upcoming-min " | ")))
+                      ((and (< i (nth j hi))
+                            (> i (nth j lo)))
                        (if (oddp i)
                            (concat "-|-" forecast-graph-marker "-|-")
                          (concat " | " forecast-graph-marker " | ")))
