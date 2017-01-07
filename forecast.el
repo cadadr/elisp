@@ -45,33 +45,33 @@
 ;;
 
 ;;; Installation:
-;; 
+;;
 ;; See also «Example configuration».
 ;;
 ;; forecast.el is available on Melpa with the package name `forecast'.
-;; 
+;;
 ;; Otherwise, put  the forecast.el file  somewhere in your  path, then
 ;; `require'   it.   Then   set   these  variables   either  in   your
 ;; configuration, or via the customisation group `forecast':
-;; 
+;;
 ;; `calendar-latitude'  Latitude of your location,       float
 ;; `calendar-longitude' Longitude of your configuration  float
 ;; `forecast-api-key'   The API key from Forecast.io     string
 ;; `calendar-city'      The name of your city            string
 ;; `forecast-language'  Language to use                  symbol
 ;; `forecast-units'     Unit standard to use             symbol
-;; 
+;;
 ;; Only the first three variables  are mandatory.  The first four have
 ;; *non-sane* defaults,  and if `forecast-api-key' is  absent, program
 ;; will not run.
 ;;
 ;; See the documentation for these variables for more detail.
-;; 
+;;
 ;; The API key  can be obtained via registering  oneself through their
 ;; developer website:
 ;;
 ;; https://developer.forecast.io/
-;; 
+;;
 ;; See also  the docstring  for the face  `forecast-moon-phase', which
 ;; governs the face for the moon phase visualisation.  Most fonts will
 ;; not have  defined the  necessary characters, thus  one may  need to
@@ -107,14 +107,14 @@
 ;;; Usage:
 ;;
 ;; There are 3 keybindings:
-;; 
+;;
 ;; g      Refresh the forecast.  Will re-download data.
 ;; q      Bury the buffer.
 ;; C-u q  Kill the buffer.
-;; 
+;;
 ;; Two  contemporaneous  instances  of  the  program  *will  not*  run
 ;; correctly, as global state is used to store data.
-;; 
+;;
 ;; The buffer is made up of these elements:
 ;;
 ;; - At the top, the title, details of location, last update time
@@ -196,11 +196,11 @@
 ;;
 
 ;;; TODO:
-;; 
+;;
 ;; - Automatically find city and country names.
 ;; - Get location from computer?
 ;; - I18N?
-;; 
+;;
 
 ;;; Code:
 (require 'button)
@@ -648,7 +648,7 @@ wind directions."
       (cl-loop for j upfrom 0 to 7 do
                (insert
                 (cond ((or (= i (nth j hi))
-                           (= i (nth j lo))) 
+                           (= i (nth j lo)))
                        (if (oddp i)
                            (concat "-|-" forecast-graph-marker "-|-")
                          (concat " | " forecast-graph-marker " | ")))
