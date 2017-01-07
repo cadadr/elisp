@@ -1,4 +1,4 @@
-;;; forecast.el --- Display a forecast.io weather report in a buffer -*- lexical-binding: t; -*-
+;;; forecast.el --- Weather forecasts -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2015-2017 Göktuğ Kayaalp
 ;;
@@ -31,11 +31,11 @@
 
 ;;; Commentary:
 ;;
-;; forecast.el generates  a _weather forecast report_  and displays it
-;; in a  buffer.  It uses data  from Forecast.io (http://forecast.io),
-;; and thus one needs to acquire an  api key from them in order to use
-;; this package.  They  allow 1000 requests a day in  their free plan,
-;; which should be enough for any user.
+;; forecast.el generates a _weather forecast report_ and displays it
+;; in a buffer.  It uses data from Dark Sky (http://darksky.net), and
+;; thus one needs to acquire an api key from them in order to use this
+;; package.  They allow 1000 requests a day in their free plan, which
+;; should be enough for any user.
 ;;
 ;; See Installation section for installation and setup instructions.
 ;;
@@ -56,7 +56,7 @@
 ;;
 ;; `calendar-latitude'      Latitude of your location        float
 ;; `calendar-longitude'     Longitude of your location       float
-;; `forecast-api-key'       The API key from Forecast.io     string
+;; `forecast-api-key'       The API key from Dark Sky        string
 ;; `calendar-location-name' Name of your location/city       string
 ;; `forecast-language'      Language to use                  symbol
 ;; `forecast-units'         Units standard to use            symbol
@@ -70,7 +70,7 @@
 ;; The API key can be obtained via registering oneself through their
 ;; developer website:
 ;;
-;; https://developer.forecast.io/
+;; https://darksky.net/dev/
 ;;
 ;; See also the docstring for the face `forecast-moon-phase', which
 ;; governs the face for the moon phase visualisation.  Most fonts will
@@ -134,7 +134,7 @@
 ;;   the variable `forecast-old-ui' to a non-nil value to return to
 ;;   the old UI.
 ;;
-;; - Link to the http://forecast.io.
+;; - Link to the service provider.
 ;;
 
 ;;; Contributing:
@@ -234,12 +234,12 @@
 
 ;;; Variables:
 (defcustom forecast-api-key ""
-  "The API Key from Forecast.io."
+  "The API Key."
   :type 'string
   :group 'forecast)
 
-(defcustom forecast-api-url "https://api.forecast.io"
-  "Base url of the Forecast.io API.
+(defcustom forecast-api-url "https://api.darksky.net"
+  "Base url of the remote service API.
 Without the trailing slash."
   :type 'string
   :group 'forecast)
@@ -359,10 +359,10 @@ STR is the format string.  FA are the arguments to format.  See
   (forecast--insert (apply 'format str fa)))
 
 (defun forecast--get-forecast (callback)
-  "Get the forecasts from the Forecast.io API.
+  "Get the forecasts from the remote API.
 
 CALLBACK is a function of a single argument, WEATHER, the Elisp
-representation of the returned JSON from the Forecast.io API."
+representation of the returned JSON from the API."
   (let ((la calendar-latitude)
         (lo calendar-longitude)
         (request-url))
@@ -736,16 +736,18 @@ The old style."
                (newline 2)))))
 
 (defun forecast--insert-io-link ()
-  "Insert link to Forecast.io."
+  "Insert link to the serice provider."
   (newline)
   (insert "Powered by")
   (insert " ")
   (insert-text-button
-   "forecast.io"
+   "Dark Sky"
    'follow-link t 'action
    (lambda (b)
      (ignore b)
-     (browse-url "http://forecast.io"))))
+     (browse-url (format "https://darksky.net/forecast/%s,%s/us12/en"
+                         (number-to-string calendar-latitude)
+                         (number-to-string calendar-longitude))))))
 
 (defun forecast--insert-location ()
   "Insert location details."
