@@ -204,7 +204,7 @@
 
 ;;; Code:
 (require 'button)
-(require 'calendar)
+(require 'solar)
 (require 'cl-lib)
 (require 'json)
 (require 'org) ;; Org faces are used.
