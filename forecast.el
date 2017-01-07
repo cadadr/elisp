@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.5.1
+;; Version: 0.5.2
 ;; URL: http://gkayaalp.com/emacs.html#forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -148,6 +148,13 @@
 
 ;;; Changes:
 ;;
+;; v0.5.2, 07 Jan 2017
+;;   Thanks to Kaushal Modi for these patches:
+;;   - Fix data displayed in mirrored fashion in Upcoming graph.
+;;   - Upcase wind directions in the Upcoming graph.
+;;   - Whitespace fixes.
+;;   - Replace the wrong requirement of ‘calendar’ package with
+;;     ‘solar’. (Github Issue #17)
 ;; v0.5.1, 05 Jan 2017
 ;;   - Fix bug in hourly graphic that causes incorrect graph.
 ;; v0.5.0, 19 Dec 2016
@@ -193,6 +200,14 @@
 ;;   - Incredibly important changes.
 ;; v0.1.0, 28 August 2015
 ;;   - First release.
+;;
+
+;;; Contributors:
+;;
+;; Kaushal Modi <kaushal.modi@gmail.com>
+;; Steve Purcell <steve@sanityinc.com>
+;; Syohei YOSHIDA <syohex@gmail.com>
+;; TopSlick <TopSlick@users.noreply.github.com>
 ;;
 
 ;;; TODO:
