@@ -697,8 +697,8 @@ wind directions."
     (mapc (lambda (p)
             (let ((pp (car p)) (pt (cdr p)))
               (insert (if (zerop pp)
-                          "        "
-                        (format " % 2d%% %s" (* 100 pp)
+                          "       "
+                        (format " %%%-3d%s " (* 100 pp)
                                 (cond ((string= pt "rain") "⛆")
                                       ((string= pt "snow") "❄")))))))
           precip)
