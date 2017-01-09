@@ -691,7 +691,8 @@ wind directions."
                       (t " |   | "))))
       (newline))
     (forecast--insert-format
-     "Day:  %s\n" (mapconcat (lambda (tm) (format-time-string "  %a  " tm)) time ""))
+     "Day:  %s\n" (mapconcat (lambda (tm)
+                               (format-time-string "%5a  " tm)) time ""))
     ;; precipitation
     (insert "      ")
     (mapc (lambda (p)
