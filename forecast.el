@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.6.0
+;; Version: 0.6.1
 ;; URL: http://gkayaalp.com/emacs.html#forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -148,6 +148,9 @@
 
 ;;; Changes:
 ;;
+;; v0.6.1, 09 Jan 2017
+;;   - Fixed alignment issued in the Upcoming graph.
+;;   - Distinctly identify max/min temp in upcoming temp graph.
 ;; v0.6.0, 07 Jan 2017
 ;;   - Switch from forecast.io to darksky.net, their new service.
 ;; v0.5.2, 07 Jan 2017
