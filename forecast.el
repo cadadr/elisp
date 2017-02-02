@@ -149,6 +149,8 @@
 ;;; Changes:
 ;;
 ;; next
+;;   - Replace calls to ‘oddp’ w/ ‘cl-oddp’.
+;;   - (forecast--get-forecast) Fix call to ‘signal’.
 ;;   - Fix "Invalid Time Specification" error on Emacs 24.5 (thanks
 ;;     to GitHub user ‘bdollard’.
 ;; v0.6.1, 09 Jan 2017
