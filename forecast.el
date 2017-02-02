@@ -148,6 +148,9 @@
 
 ;;; Changes:
 ;;
+;; next
+;;   - Fix "Invalid Time Specification" error on Emacs 24.5 (thanks
+;;     to GitHub user ‘bdollard’.
 ;; v0.6.1, 09 Jan 2017
 ;;   - Fixed alignment issued in the Upcoming graph.
 ;;   - Distinctly identify max/min temp in upcoming temp graph.
@@ -213,6 +216,7 @@
 ;; Steve Purcell <steve@sanityinc.com>
 ;; Syohei YOSHIDA <syohex@gmail.com>
 ;; TopSlick <TopSlick@users.noreply.github.com>
+;; bdollard <bradley.dollard@gmail.com>
 ;;
 
 ;;; TODO:
