@@ -682,19 +682,19 @@ wind directions."
       (cl-loop for j upfrom 0 to 7 do
                (insert
                 (cond ((= i (nth j hi))
-                       (if (oddp i)
+                       (if (cl-oddp i)
                            (concat "-|-" forecast-graph-marker-upcoming-max "-|-")
                          (concat " | " forecast-graph-marker-upcoming-max " | ")))
                       ((= i (nth j lo))
-                       (if (oddp i)
+                       (if (cl-oddp i)
                            (concat "-|-" forecast-graph-marker-upcoming-min "-|-")
                          (concat " | " forecast-graph-marker-upcoming-min " | ")))
                       ((and (< i (nth j hi))
                             (> i (nth j lo)))
-                       (if (oddp i)
+                       (if (cl-oddp i)
                            (concat "-|-" forecast-graph-marker "-|-")
                          (concat " | " forecast-graph-marker " | ")))
-                      ((oddp i) "-|---|-")
+                      ((cl-oddp i) "-|---|-")
                       (t " |   | "))))
       (newline))
     (forecast--insert-format
