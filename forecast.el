@@ -402,7 +402,7 @@ representation of the returned JSON from the API."
                 (ignore args)
                 (let ((err (plist-get status :error)))
                   (when err
-                    (apply 'signal err)))
+                    (funcall 'signal (car err) (cdr err))))
                 (save-excursion
                   (goto-char (point-min))
                   (re-search-forward "^{")
