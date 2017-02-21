@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.6.1
+;; Version: 0.6.2
 ;; URL: http://gkayaalp.com/emacs.html#forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -148,7 +148,9 @@
 
 ;;; Changes:
 ;;
-;; next
+;; 0.6.2
+;;   - Allow customisations of rain and snow symbols in the Upcoming
+;;     table.
 ;;   - Replace calls to ‘oddp’ w/ ‘cl-oddp’.
 ;;   - (forecast--get-forecast) Fix call to ‘signal’.
 ;;   - Fix "Invalid Time Specification" error on Emacs 24.5 (thanks
@@ -297,6 +299,16 @@ If not one of these, then `en' is selected."
 
 (defcustom forecast-graph-marker-upcoming-min "▄"
   "A single-character string for the upcoming graph marking the min temperature."
+  :type 'string
+  :group 'forecast)
+
+(defcustom forecast-snow-symbol "❄"
+  "A single-character string for a symbol to represent snowy wheather."
+  :type 'string
+  :group 'forecast)
+
+(defcustom forecast-rain-symbol "⛆"
+  "A single-character string for a symbol to represent snowy wheather."
   :type 'string
   :group 'forecast)
 
@@ -709,8 +721,10 @@ wind directions."
               (insert (if (zerop pp)
                           "       "
                         (format " %%%-3d%s " (* 100 pp)
-                                (cond ((string= pt "rain") "⛆")
-                                      ((string= pt "snow") "❄")))))))
+                                (cond ((string= pt "rain")
+                                       forecast-rain-symbol)
+                                      ((string= pt "snow")
+                                       forecast-snow-symbol)))))))
           precip)
     (insert "  Precipitation\n")
     ;; wind
