@@ -150,7 +150,7 @@
 ;;
 ;; next
 ;;   - Fix day names misaligned in the Upcoming week graph.
-;; 0.6.2
+;; 0.6.2, 22 Feb 2017
 ;;   - Allow customisations of rain and snow symbols in the Upcoming
 ;;     table.
 ;;   - Replace calls to ‘oddp’ w/ ‘cl-oddp’.
