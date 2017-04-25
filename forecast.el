@@ -148,6 +148,8 @@
 
 ;;; Changes:
 ;;
+;; next
+;;   - Fix day names misaligned in the Upcoming week graph.
 ;; 0.6.2
 ;;   - Allow customisations of rain and snow symbols in the Upcoming
 ;;     table.
@@ -712,8 +714,10 @@ wind directions."
                       (t " |   | "))))
       (newline))
     (forecast--insert-format
-     "Day:  %s\n" (mapconcat (lambda (tm)
-                               (format-time-string "%5a  " (seconds-to-time tm))) time ""))
+     "Day:    %s\n" (mapconcat 
+                     (lambda (tm)
+                       (format-time-string
+                        "%3a    " (seconds-to-time tm))) time ""))
     ;; precipitation
     (insert "      ")
     (mapc (lambda (p)
