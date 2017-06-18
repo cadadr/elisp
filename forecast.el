@@ -150,6 +150,7 @@
 ;;
 ;; next
 ;;   - Fix day names misaligned in the Upcoming week graph.
+;;   - Fix arithmetic error on 32bit OSes.
 ;; 0.6.2, 22 Feb 2017
 ;;   - Allow customisations of rain and snow symbols in the Upcoming
 ;;     table.
@@ -670,7 +671,7 @@ wind directions."
        hi lo precip hum pres wind max-hi min-lo time)
     ;; Collect data
     (dolist  (b data)
-      (push (truncate (forecast--assoca '(time) b)) time)
+      (push (forecast--assoca '(time) b) time)
       (push (truncate (forecast--assoca '(temperatureMax) b)) hi)
       (push (truncate (forecast--assoca '(temperatureMin) b)) lo)
       (push (forecast--assoca '(humidity) b) hum)
