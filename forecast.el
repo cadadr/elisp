@@ -149,6 +149,7 @@
 ;;; Changes:
 ;;
 ;; next
+;;   - Don't kill all local variables when setting up the mode.
 ;;   - Fix day names misaligned in the Upcoming week graph.
 ;;   - Fix arithmetic error on 32bit OSes.
 ;; 0.6.2, 22 Feb 2017
@@ -937,7 +938,6 @@ Keybindings for `forecast-mode':
   "Major mode for weather forecast buffers.
 Keybindings for `forecast-mode':
 \\{forecast-mode-map}"
-  (kill-all-local-variables)
   (use-local-map forecast-mode-map)
   (buffer-disable-undo))
 
