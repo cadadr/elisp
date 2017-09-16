@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.6.2
+;; Version: 0.6.3
 ;; URL: http://gkayaalp.com/emacs.html#forecast.el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -148,7 +148,7 @@
 
 ;;; Changes:
 ;;
-;; next
+;; 0.6.3, 16 Sep 2017
 ;;   - Don't kill all local variables when setting up the mode.
 ;;   - Fix day names misaligned in the Upcoming week graph.
 ;;   - Fix arithmetic error on 32bit OSes.
