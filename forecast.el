@@ -148,6 +148,9 @@
 
 ;;; Changes:
 ;;
+;; 0.6.4, 23 Sep 2017
+;;   - (forecast--get-forecast) Fix truncation of coordinates in request
+;;     url (Thanks to @dnbarbato on GitHub, issue#26).
 ;; 0.6.3, 16 Sep 2017
 ;;   - Don't kill all local variables when setting up the mode.
 ;;   - Fix day names misaligned in the Upcoming week graph.
@@ -411,7 +414,7 @@ representation of the returned JSON from the API."
               (string-empty-p forecast-api-key))
       (user-error "Forecast: `forecast-api-key' not set"))
     (setf request-url
-          (format "%s/forecast/%s/%d,%d?%s"
+          (format "%s/forecast/%s/%f,%f?%s"
                   forecast-api-url
                   forecast-api-key
                   la lo
