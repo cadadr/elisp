@@ -4,7 +4,7 @@
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Maintainer: Göktuğ Kayaalp <self@gkayaalp.com>
-;; Version: 0.1
+;; Version: 0.1.0
 ;; Keywords: unix
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -32,7 +32,7 @@
 
 ;;; Changes:
 
-;; next
+;; 0.1.0
 ;;   - First release.
 
 ;;; Code:
