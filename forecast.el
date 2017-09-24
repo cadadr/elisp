@@ -147,6 +147,7 @@
 ;;
 
 ;;; Changes:
+;; (this section won't be updated anymore)
 ;;
 ;; 0.6.4, 23 Sep 2017
 ;;   - (forecast--get-forecast) Fix truncation of coordinates in request

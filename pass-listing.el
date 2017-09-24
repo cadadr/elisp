@@ -31,11 +31,6 @@
 
 ;; See docstring for ‘pass-listing-mode’ for more info.
 
-;;; Changes:
-
-;; 0.1.0
-;;   - First release.
-
 ;;; Code:
 (require 'password-store)
 
