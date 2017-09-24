@@ -5,13 +5,14 @@ This repository is a swarm for all the Elisp stuff I published.  Most
 files will have licence information in it, which don't are licenced
 under the MIT licence, whose text is available in the LICENSE file.
 
+* What's here?
 Below are the contents of this repository:
 
-* =forecast.el=
+** =forecast.el=
 «forecast.el» is a weather forecast report generator, currently using
 data from [[https://darksky.net][Dark Sky]] (but I plan to add other backends in the future).
 
-* =paper-theme.el=
+** =paper-theme.el=
 «Paper» is a little, minimal emacs theme that is meant to be simple
 and consistent.
 
@@ -28,11 +29,11 @@ It's most adapted for ELisp-Org users, as I'm one such user, though it
 works fine with Markdown, Textile, Python, JavaScript, Html, Diff,
 Magit, etc.
 
-* =pass-listing.el=
+** =pass-listing.el=
 «pass-listing» is a simple frontend to the [[https://www.passwordstore.org/][pass]] utility.  It uses the
 functions from =password-store.el=.
 
-* =bsdpkg.el=
+** =bsdpkg.el=
 «bsdpkg» is an Emacs interface to FreeBSD =pkg(1)=.  It's planned to
 genericise the package to support all *BSD packaging systems, and the
 module is written with that sort of extensibility in mind.
@@ -43,7 +44,7 @@ the moment.  I'd be happy to accept changes or to hand it over if
 anybody will be interested.
 #+END_QUOTE
 
-* =gk-unilat.el=
+** =gk-unilat.el=
 «gk-unilat» is a unified input method for European variants of the
 Latin alphabet.
 
@@ -51,8 +52,16 @@ It aims to provide comprehensive support for typing characters found
 in different European versions of the Latin alphabet, in a unified,
 predictable way.
 
-* =gk-greek.el=
+** =gk-greek.el=
 «gk-greek» is a transliterating input method for modern Greek.
 
 Translates input in Greek latinization into Greek alphabet.  Mappings
 are based on vocal correspondence and common modern transliteration.
+
+* Issues
+Please mention the relevant filename in your issue title.
+
+* Contributing
+Thanks! Please submit a pull request or e-mail a patch.  Explain
+clearly your changes and the rationale for them, and include a clear
+commit message, prefixed with the relevant filename.
