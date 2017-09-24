@@ -12,8 +12,8 @@ Below are the contents of this repository:
 data from [[https://darksky.net][Dark Sky]] (but I plan to add other backends in the future).
 
 * =paper-theme.el=
-Paper is a little, minimal emacs theme that is meant to be simple and
-consistent.
+«Paper» is a little, minimal emacs theme that is meant to be simple
+and consistent.
 
 It was first intended to resemble the look of paper, but has diverged
 from that objective.  Still, though, I keep calling it Paper, as I
@@ -42,3 +42,17 @@ This is experimental, and kind-of obsoleted as I don't use BSD at
 the moment.  I'd be happy to accept changes or to hand it over if
 anybody will be interested.
 #+END_QUOTE
+
+* =gk-unilat.el=
+«gk-unilat» is a unified input method for European variants of the
+Latin alphabet.
+
+It aims to provide comprehensive support for typing characters found
+in different European versions of the Latin alphabet, in a unified,
+predictable way.
+
+* =gk-greek.el=
+«gk-greek» is a transliterating input method for modern Greek.
+
+Translates input in Greek latinization into Greek alphabet.  Mappings
+are based on vocal correspondence and common modern transliteration.
