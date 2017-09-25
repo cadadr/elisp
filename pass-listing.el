@@ -6,7 +6,8 @@
 ;; Maintainer: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Version: 0.1.0
 ;; Keywords: unix
-;; Package-Requires: ((password-store . "0.1"))
+;; URL: http://www.gkayaalp.com/emacs.html
+;; Package-Requires: ((password-store "0.1") (emacs "25"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -35,10 +36,10 @@
 (require 'password-store)
 
 ;;; The Major Mode:
-(defgroup pass-listing-mode '()
+(defgroup pass-listing '()
   "Emacs mode for pass-listing-mode."
   :prefix "pass-listing-"
-  :group 'pass-listing-mode)
+  :group 'pass-listing)
 
 ;;;; Keymap:
 (progn                                  ; Make sure C-M-x always gets both...
@@ -78,7 +79,7 @@ contents of the related file.\n
 
 Keybindings for `pass-listing-mode':\n
 \\{pass-listing-mode--composed-map}"
-  :group 'pass-listing-mode
+  :group 'pass-listing
   ;;; Setup.
   ;; Prepare buffer.
   (buffer-disable-undo)
