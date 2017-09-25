@@ -5,6 +5,8 @@
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: unix, tools
 ;; Version: 0
+;; URL: http://www.gkayaalp.com/emacs.html
+;; Package-Requires: ((emacs "25"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -21,7 +23,7 @@
 
 ;;; Commentary:
 
-;;;; Synopsis:
+;; This is alpha software.
 
 ;; ‘bsdpkg’ is an Emacs interface to FreeBSD pkg(1).  It's planned to
 ;; genericise the package to support all *BSD packaging systems, and
