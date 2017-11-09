@@ -31,7 +31,7 @@ It's most adapted for ELisp-Org users, as I'm one such user, though it
 works fine with Markdown, Textile, Python, JavaScript, Html, Diff,
 Magit, etc.
 
-[[./paper1.fig]]
+[[./paper1.gif]]
 
 ** =pass-listing.el=
 «pass-listing» is a simple frontend to the [[https://www.passwordstore.org/][pass]] utility.  It uses the
