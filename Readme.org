@@ -12,6 +12,8 @@ Below are the contents of this repository:
 «forecast.el» is a weather forecast report generator, currently using
 data from [[https://darksky.net][Dark Sky]] (but I plan to add other backends in the future).
 
+[[./forecast.el.png]]
+
 ** =paper-theme.el=
 «Paper» is a little, minimal emacs theme that is meant to be simple
 and consistent.
@@ -28,6 +30,8 @@ values which can be edited.  See source.
 It's most adapted for ELisp-Org users, as I'm one such user, though it
 works fine with Markdown, Textile, Python, JavaScript, Html, Diff,
 Magit, etc.
+
+[[./paper1.fig]]
 
 ** =pass-listing.el=
 «pass-listing» is a simple frontend to the [[https://www.passwordstore.org/][pass]] utility.  It uses the
