@@ -1,6 +1,6 @@
 ;;; forecast.el --- Weather forecasts -*- lexical-binding: t; -*-
 ;;
-;; Copyright (C) 2015-2017 Göktuğ Kayaalp
+;; Copyright (C) 2015-2018 Göktuğ Kayaalp
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
@@ -143,12 +143,12 @@
 ;;
 ;; Git repo:
 ;;
-;; https://github.com/cadadr/forecast.el
+;; https://github.com/cadadr/elisp
 ;;
 
 ;;; Changes:
-;; (this section won't be updated anymore)
-;;
+;; next
+;;   - Update the git repository URL.
 ;; 0.6.4, 23 Sep 2017
 ;;   - (forecast--get-forecast) Fix truncation of coordinates in request
 ;;     url (Thanks to @dnbarbato on GitHub, issue#26).
