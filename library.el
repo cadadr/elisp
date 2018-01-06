@@ -78,6 +78,13 @@
 
 ;;;; Helper functions:
 
+(defun library--assoca (keyseq list)
+  "Arbitrary depth multi-level alist query."
+  (let ((ks (if (listp keyseq) keyseq (list keyseq)))
+        (ret list))
+    (dolist (k ks ret)
+      (setq ret (cdr (assoc k ret))))))
+
 (defun library--items ()
   "Extract all the PDF files from each directory in ‘library-path’."
   (let (items)
@@ -172,13 +179,13 @@ The keybindings are as follows:
    (with-current-buffer (get-buffer-create "*Library*")
      (let ((items (library--items))
            (f (lambda (item)
-                (list (assoca 'library--filename item)
-                      (let ((title (assoca 'title item))
-                            (path (assoca 'library--filename item)))
+                (list (library--assoca 'library--filename item)
+                      (let ((title (library--assoca 'title item))
+                            (path (library--assoca 'library--filename item)))
                         (vector
                          (cons title
                                `(action library--find file ,path))
-                         (assoca 'author item)
+                         (library--assoca 'author item)
                          path))))))
        (setf tabulated-list-entries
              (mapcar f items)
