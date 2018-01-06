@@ -5,6 +5,8 @@
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Version: 0.1.0
 ;; Keywords: tools
+;; URL: http://gkayaalp.com/emacs.html#library.el
+;; Package-Requires: ((emacs "24.4") (pdf-tools "0.70"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -39,6 +41,8 @@
 
 
 ;;;; Installation:
+
+;; Library.el depends on ‘pdf-tools’.
 
 ;; After putting a copy of library.el in a directory in the
 ;; ‘load-path’, library.el can be configured as such:
