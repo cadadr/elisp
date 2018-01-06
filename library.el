@@ -164,6 +164,7 @@ called from a button."
   (define-key map "g" 'library)
   (define-key map "i" 'library--info))
 
+;;;###autoload
 (defun library ()
   "Show the library contents.
 
