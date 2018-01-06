@@ -88,7 +88,9 @@
                     items)))))
 
 (defun library--find (&optional marker)
-  "Open the PDF file for the row under point."
+  "Open the PDF file for the row under point.
+Optional argument MARKER is passed in when this function is
+called from a button."
   ;; This function caters to two cases: 1) when it's called from the
   ;; ‘tabulated-list-mode’ mechanism, where ‘marker’ will be set; and
   ;; 2) when it's called from a keyboard command, where it won't be,
