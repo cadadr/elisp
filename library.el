@@ -106,15 +106,13 @@ called from a button."
 (defun library--display-metadata (path)
   "Display PDF metadata for file at PATH."
   (interactive)
-  (let* ((buffer (current-buffer))
-         (md (pdf-info-metadata path)))
+  (let* ((md (pdf-info-metadata path)))
     (switch-to-buffer
      (with-current-buffer (get-buffer-create "*Library Item Metadata*")
        (let* ((inhibit-read-only t)
               (pad (apply'
                     max (mapcar (lambda (d) (length (symbol-name (car d)))) md)))
-              (fmt (format "%%%ds : %%s\n" pad))
-              window)
+              (fmt (format "%%%ds : %%s\n" pad)))
          (erase-buffer)
          (special-mode)
          (setq header-line-format path)
