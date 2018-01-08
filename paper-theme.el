@@ -1,5 +1,5 @@
 ;;; paper-theme.el --- A minimal Emacs colour theme. -*- lexical-binding: t; -*-
-;; Copyright (C) 2015 Göktuğ Kayaalp
+;; Copyright (C) 2015, 2018 Göktuğ Kayaalp
 ;;
 ;; Author: Göktuğ Kayaalp
 ;; Keywords: theme paper
@@ -134,7 +134,7 @@ background.")
 (defvar paper-font-factor 0.1
   "The font factor for calculating level fonts from base.")
 
-(defvar paper-tint-factor 70
+(defvar paper-tint-factor 20
   "The factor for computing tints for org levels.")
 
 (defun paper-colour (colour-identifier)
