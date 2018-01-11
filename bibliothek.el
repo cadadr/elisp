@@ -159,9 +159,9 @@ called from a button."
 
 (defvar bibliothek-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "f" 'bibliothek--find)
-    (define-key map "g" 'bibliothek)
-    (define-key map "i" 'bibliothek--info)
+    (define-key map "f" #'bibliothek--find)
+    (define-key map "g" #'bibliothek)
+    (define-key map "i" #'bibliothek--info)
     map))
 
 ;;;###autoload
