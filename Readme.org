@@ -48,14 +48,14 @@ the moment.  I'd be happy to accept changes or to hand it over if
 anybody will be interested.
 #+END_QUOTE
 
-** =library.el=
-«library.el» is a personal PDF library manager.  Presently it only
+** =bibliothek.el=
+«bibliothek.el» is a personal PDF library manager.  Presently it only
 displays a concatenated tabular list of PDF files from many locations,
 and allows to open the files or view metadata from that list.  Find
 below a screenshot of the default view.  I intend to add some
 functionality for moving PDF files around and editing the metadata.
 
-[[./library.png]]
+[[./bibliothek.png]]
 
 ** =gk-unilat.el=
 «gk-unilat» is a unified input method for European variants of the
