@@ -6,7 +6,7 @@
 ;; Version: 0.1.0
 ;; Keywords: tools
 ;; URL: http://gkayaalp.com/emacs.html#bibliothek.el
-;; Package-Requires: ((emacs "24.4") (pdf-tools "0.70"))
+;; Package-Requires: ((emacs "24.4") (pdf-tools "0.70") (a "0.1.0alpha4"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -77,13 +77,6 @@
 
 
 ;;;; Helper functions:
-
-(defun bibliothek--assoca (keyseq list)
-  "Arbitrary depth multi-level alist query."
-  (let ((ks (if (listp keyseq) keyseq (list keyseq)))
-        (ret list))
-    (dolist (k ks ret)
-      (setq ret (cdr (assoc k ret))))))
 
 (defun bibliothek--items ()
   "Extract all the PDF files from each directory in ‘bibliothek-path’."
@@ -180,13 +173,13 @@ The keybindings are as follows:
    (with-current-buffer (get-buffer-create "*Bibliothek*")
      (let ((items (bibliothek--items))
            (f (lambda (item)
-                (list (bibliothek--assoca 'bibliothek--filename item)
-                      (let ((title (bibliothek--assoca 'title item))
-                            (path (bibliothek--assoca 'bibliothek--filename item)))
+                (list (a-get item 'bibliothek--filename)
+                      (let ((title (a-get item 'title))
+                            (path  (a-get item 'bibliothek--filename)))
                         (vector
                          (cons title
                                `(action bibliothek--find file ,path))
-                         (bibliothek--assoca 'author item)
+                         (a-get item 'author)
                          path))))))
        (setf tabulated-list-entries
              (mapcar f items)
