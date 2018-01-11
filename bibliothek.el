@@ -157,12 +157,12 @@ called from a button."
   (tabulated-list-print t)
   (hl-line-mode))
 
-(defvar bibliothek-mode-map (make-sparse-keymap))
-
-(let ((map bibliothek-mode-map))
-  (define-key map "f" 'bibliothek--find)
-  (define-key map "g" 'bibliothek)
-  (define-key map "i" 'bibliothek--info))
+(defvar bibliothek-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "f" 'bibliothek--find)
+    (define-key map "g" 'bibliothek)
+    (define-key map "i" 'bibliothek--info)
+    map))
 
 ;;;###autoload
 (defun bibliothek ()
