@@ -56,6 +56,7 @@
 
 ;;; Code:
 
+(require 'a)
 (require 'pdf-info)
 (require 'goto-addr)
 (require 'cl-lib)
