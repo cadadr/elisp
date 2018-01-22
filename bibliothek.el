@@ -83,7 +83,7 @@
   "Extract all the PDF files from each directory in ‘bibliothek-path’."
   (let (items)
     (dolist (directory bibliothek-path items)
-      (dolist (file (directory-files directory t "\\.pdf$" t))
+      (dolist (file (directory-files directory t "\\.pdf\\'" t))
         (cl-pushnew (cons (cons 'bibliothek--filename file)
                           (pdf-info-metadata file))
                     items)))))
