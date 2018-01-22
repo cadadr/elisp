@@ -149,19 +149,20 @@ called from a button."
 
 ;;;; The major mode:
 
+(defvar bibliothek-mode-map
+  (let ((map (make-sparse-keymap)))
+    (prog1 map
+      (define-key map "f" #'bibliothek--find)
+      (define-key map "g" #'bibliothek)
+      (define-key map "i" #'bibliothek--info))))
+
 (define-derived-mode bibliothek-mode tabulated-list-mode
   "Bibliothek"
   "Bibliothek listing."
+  (use-local-map bibliothek-mode-map)
   (tabulated-list-init-header)
   (tabulated-list-print t)
   (hl-line-mode))
-
-(defvar bibliothek-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "f" #'bibliothek--find)
-    (define-key map "g" #'bibliothek)
-    (define-key map "i" #'bibliothek--info)
-    map))
 
 ;;;###autoload
 (defun bibliothek ()
