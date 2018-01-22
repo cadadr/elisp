@@ -73,7 +73,12 @@
   :group 'applications
   :prefix "bibliothek-")
 
-(defvar bibliothek-path nil "A list of paths to look for PDF files.")
+(defcustom bibliothek-path nil
+  "A list of directories to look for PDF files."
+  :type '(repeat directory)
+  ;; Should be a global variable.
+  :risky t
+  :group 'bibliothek)
 
 
 
