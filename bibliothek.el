@@ -70,7 +70,7 @@
 (defgroup bibliothek
   nil
   "Customisations for bibliothek.el, digital PDF library manager."
-  :group 'emacs
+  :group 'applications
   :prefix "bibliothek-")
 
 (defvar bibliothek-path nil "A list of paths to look for PDF files.")
