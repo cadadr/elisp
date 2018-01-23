@@ -80,18 +80,27 @@
   :risky t
   :group 'bibliothek)
 
+(defcustom bibliothek-recursive nil
+  "Recursively look for files in subdirectories."
+  :type 'boolean
+  :group 'bibliothek)
+
 
 
 ;;;; Helper functions:
 
 (defun bibliothek--items ()
   "Extract all the PDF files from each directory in ‘bibliothek-path’."
-  (let (items)
+  (let (items
+        (file-pattern "\\.pdf\\'"))
     (dolist (directory bibliothek-path items)
-      (dolist (file (directory-files directory t "\\.pdf\\'" t))
-        (cl-pushnew (cons (cons 'bibliothek--filename file)
-                          (pdf-info-metadata file))
-                    items)))))
+      (let ((files (if bibliothek-recursive
+                       (directory-files-recursively directory file-pattern)
+                     (directory-files directory t file-pattern t))))
+        (dolist (file files)
+          (cl-pushnew (cons (cons 'bibliothek--filename file)
+                            (pdf-info-metadata file))
+                      items))))))
 
 (defun bibliothek--find (&optional marker)
   "Open the PDF file for the row under point.
