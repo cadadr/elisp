@@ -3,8 +3,8 @@
 ;;
 ;; Author: Göktuğ Kayaalp
 ;; Keywords: theme paper
-;; Package-Version: 1.0.0
-;; Package-Requires: ((emacs "24") (hexrgb "0"))
+;; Package-Version: 1.0.1
+;; Package-Requires: ((emacs "24"))
 ;; URL: http://gkayaalp.com/emacs.html#paper
 ;;
 ;; Permission  is  hereby  granted,  free of  charge,  to  any  person
@@ -97,8 +97,105 @@
 ;;; Code:
 ;;
 (require 'cl-lib)
-(require 'hexrgb)
 
+;;; Code from hexrgb.el:
+;; On 25 Dec 2018 I was informed that Melpa was about to drop support
+;; for Emacswiki packages, which includes hexrgb.el too.  This means
+;; that I needed to remove the dependency on the package, so I include
+;; here the functions needed by paper-theme from that package.  Below,
+;; I reproduce information on copyright and some other things from the
+;; version I have of it:
+
+;; Copyright (C) 2004-2015, Drew Adams, all rights reserved.
+;; Last-Updated: Wed Jul  8 18:32:29 2015 (-0700)
+;;           By: dradams
+;;     Update #: 985
+;; URL: http://www.emacswiki.org/hexrgb.el
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program; see the file COPYING.  If not, write to
+;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth
+;; Floor, Boston, MA 02110-1301, USA.
+
+(if (featurep 'hexrgb)
+    (require 'hexrgb)
+  (progn
+    ;; Originally, I used the code from `int-to-hex-string' in `float.el'.
+    ;; This version is thanks to Juri Linkov <juri@jurta.org>.
+    ;;
+    (defun hexrgb-int-to-hex (int &optional nb-digits)
+      "Convert integer arg INT to a string of NB-DIGITS hexadecimal digits.
+If INT is too large to be represented with NB-DIGITS, then the result
+is truncated from the left.  So, for example, INT=256 and NB-DIGITS=2
+returns \"00\", since the hex equivalent of 256 decimal is 100, which
+is more than 2 digits."
+      (setq nb-digits  (or nb-digits 4))
+      (substring (format (concat "%0" (int-to-string nb-digits) "X") int) (- nb-digits)))
+
+    ;; From `hexl.el'.  This is the same as `hexl-hex-char-to-integer' defined there.
+    (defun hexrgb-hex-char-to-integer (character)
+      "Take a CHARACTER and return its value as if it were a hex digit."
+      (if (and (>= character ?0) (<= character ?9))
+          (- character ?0)
+        (let ((ch  (logior character 32)))
+          (if (and (>= ch ?a) (<= ch ?f))
+              (- ch (- ?a 10))
+            (error "Invalid hex digit `%c'" ch)))))
+
+    (defun hexrgb-hex-to-int (hex)
+      "Convert HEX string argument to an integer.
+The characters of HEX must be hex characters."
+      (let* ((factor  1)
+             (len     (length hex))
+             (indx    (1- len))
+             (int     0))
+        (while (>= indx 0)
+          (setq int     (+ int (* factor (hexrgb-hex-char-to-integer (aref hex indx))))
+                indx    (1- indx)
+                factor  (* 16 factor)))
+        int))
+
+    (defun hexrgb-increment-hex (hex nb-digits increment &optional wrap-p)
+      "Increment hexadecimal-digits string HEX by INCREMENT.
+Only the first NB-DIGITS of HEX are used.
+If optional arg WRAP-P is non-nil then the result wraps around zero.
+  For example, with NB-DIGITS 3, incrementing \"fff\" by 1 causes it
+  to wrap around to \"000\"."
+      (let* ((int      (hexrgb-hex-to-int hex))
+             (new-int  (+ increment int)))
+        (if (or wrap-p
+                (and (>= int 0)             ; Not too large for the machine.
+                     (>= new-int 0)         ; For the case where increment < 0.
+                     (<= (length (format (concat "%X") new-int)) nb-digits))) ; Not too long.
+            (hexrgb-int-to-hex new-int nb-digits) ; Use incremented number.
+          hex)))                            ; Don't increment.
+
+    (defun hexrgb-increment-equal-rgb (hex nb-digits increment &optional wrap-p)
+      "Increment each color component (r,g,b) of rgb string HEX by INCREMENT.
+String HEX starts with \"#\".  Each color is NB-DIGITS hex digits long.
+If optional arg WRAP-P is non-nil then the result wraps around zero.
+  For example, with NB-DIGITS 3, incrementing \"#fffffffff\" by 1
+  causes it to wrap around to \"#000000000\"."
+      (concat
+       "#"
+       (hexrgb-increment-hex (substring hex 1 (1+ nb-digits)) nb-digits increment wrap-p)
+       (hexrgb-increment-hex (substring hex (1+ nb-digits) (1+ (* nb-digits 2)))
+                             nb-digits
+                             increment
+                             wrap-p)
+       (hexrgb-increment-hex (substring hex (1+ (* nb-digits 2))) nb-digits increment wrap-p)))))
+
+;;; Paper theme:
 (deftheme paper
   "An Emacs colour theme that resembles the look of paper.")
 
