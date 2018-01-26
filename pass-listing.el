@@ -132,7 +132,7 @@ available, the former is the ‘:value’ field from the plist, and
 the latter is the value of ‘point’."
   (declare (indent defun))
   `(pass-listing--defcmd2 ,name ,docstring
-     (if-let (w (cdr (widget-at (point))))
+     (if-let* ((w (cdr (widget-at (point)))))
          (let ((it (plist-get w :value))
                (p (point)))
            ,@body)
