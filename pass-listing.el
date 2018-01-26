@@ -141,7 +141,7 @@ the latter is the value of ‘point’."
 (defmacro pass-listing--defcmd2 (name docstring &rest body)
   "Define a generic command."
   (declare (indent defun))
-  `(defun ,(intern (concat "pass-listing--" (symbol-name name))) () 
+  `(defun ,(intern (concat "pass-listing--" (symbol-name name))) ()
      ,docstring
      (interactive)
      ,@body))
