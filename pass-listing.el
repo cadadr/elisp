@@ -1,6 +1,6 @@
 ;;; pass-listing.el --- Listing UI for password-store.el  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2016, 2017  Göktuğ Kayaalp
+;; Copyright (C) 2016, 2017, 2018  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Maintainer: Göktuğ Kayaalp <self@gkayaalp.com>
@@ -51,6 +51,7 @@
       (define-key map [?e] 'pass-listing--edit)
       (define-key map [?i] 'pass-listing--insert)
       (define-key map [?+] 'pass-listing--generate)
+      (define-key map [?r] 'pass-listing--regenerate)
       (define-key map [?n] 'widget-forward)
       (define-key map [?b] 'widget-backward)
       map)
@@ -165,6 +166,20 @@ the latter is the value of ‘point’."
     (password-store-generate name (read-number "Password length: "))
     (when (y-or-n-p "Copy new password to clipboard?")
       (password-store-copy name))))
+
+(pass-listing--defcmd1 regenerate
+  "Regenerate an entry.
+Useful for resetting passwords.  "
+  (password-store-generate
+   it
+   (read-number
+    (eval-when-compile
+      (concat
+       "Warning: This will reset all the contents of the "
+       "password file, though git history can be used to "
+       "retrieve any past information.\nPassword length: "))))
+  (when (y-or-n-p "Copy new password to clipboard?")
+    (password-store-copy it)))
 
 (defun pass-listing--insert-item (item)
   (widget-create 'push-button
