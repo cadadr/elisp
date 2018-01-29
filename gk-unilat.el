@@ -1,6 +1,6 @@
 ;;; gk-unilat.el -- Unified input method for variants of the Latin alphabet.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2016 Göktuğ Kayaalp
+;; Copyright (C) 2016, 2018 Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: input, greek
@@ -110,11 +110,14 @@ Portuguese, Spanish, German, Latin, and Nordic Germanics.")
    ("A0" ?Å) ("o$" ?ø) ("O$" ?Ø) ("sZ" ?ß) ("o£" ?œ) ("O£" ?Œ) ("a£" ?æ)
    ("A£" ?Æ)
 
+   ;; Punctuation
+   (".;" ?·) ("--" ?–) ("---" ?—)
+
    ;; Escaping.
    ,@(mapcar
       (lambda (letter)
         (list (format "%c#" letter) letter))
-      (string-to-list "aeiouAEIOUscgnSCGN"))))
+      (string-to-list ".-aeiouAEIOUscgnSCGN"))))
 
 ;;; Footer:
 (provide 'gk-unilat)
