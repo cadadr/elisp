@@ -32,6 +32,8 @@
 
 
 ;;; Code:
+(require 'seq)
+(require 'dash)
 
 (defun $--find-args (seq)
   (seq-sort
