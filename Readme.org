@@ -71,6 +71,29 @@ predictable way.
 Translates input in Greek latinization into Greek alphabet.  Mappings
 are based on vocal correspondence and common modern transliteration.
 
+** =org-variable-pitch.el=
+«org-variable-pitch.el» is a minor mode that enables
+‘variable-pitch-mode’ in the current Org-mode buffer, and sets some
+particular faces up so that they are are rendered in fixed-width font.
+Also, indentation, list bullets and checkboxes are displayed in
+monospace, in order to keep the shape of the outline.
+
+** =dollar.el=
+This package provides a macro named $ where in its body symbols in the
+form $N where N is a positive integer are to stand for positional
+arguments to the generated lambda.
+
+If the car of the body is a vector though, that vector becomes the
+argument list of the new lambda.
+
+Some examples:
+
+#+BEGIN_SRC elisp
+($ (message "Hello, %s" $1))
+(funcall ($ (* $1 $1)) 2)
+(reduce ($ [a b] (concat a b)) (list "hel" "lo"))
+#+END_SRC
+
 * Issues
 Please mention the relevant filename in your issue title.
 
