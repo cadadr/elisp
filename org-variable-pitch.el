@@ -98,7 +98,6 @@ Keeps some elements in fixed pitch in order to keep layout."
   (set-face-attribute 'org-todo nil :font ovp-font)
   (dolist (face ovp-mono-faces)
     (set-face-attribute face nil :font ovp-font))
-  (setq-local line-spacing nil)
   (font-lock-add-keywords nil ovp-font-lock-keywords)
   (font-lock-ensure))
 
