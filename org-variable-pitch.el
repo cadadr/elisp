@@ -45,6 +45,7 @@
 
 ;;; Code:
 
+(require 'org)
 (require 'rx)
 
 (defgroup ovp nil
