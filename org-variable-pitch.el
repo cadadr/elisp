@@ -68,7 +68,7 @@ This face is used to keep them in monospace when using
   `((,(rx bol (0+ blank)
           (opt (or (: (+ digit) (in ".)"))
                    (: (in "-+")
-                      (opt (: blank "[" (in "-X ") "]"))))
+                      (opt blank "[" (in "-X ") "]")))
                blank))
      (0 (put-text-property
          (match-beginning 0)
