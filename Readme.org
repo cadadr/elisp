@@ -12,7 +12,7 @@ Below are the contents of this repository:
 «forecast.el» is a weather forecast report generator, currently using
 data from [[https://darksky.net][Dark Sky]] (but I plan to add other backends in the future).
 
-[[./forecast.el.png]]
+# [[./forecast.el.png]]
 
 ** =paper-theme.el=
 «Paper» is a little, minimal emacs theme that is meant to be simple
@@ -31,7 +31,7 @@ It's most adapted for ELisp-Org users, as I'm one such user, though it
 works fine with Markdown, Textile, Python, JavaScript, Html, Diff,
 Magit, etc.
 
-[[./paper1.gif]]
+# [[./paper1.gif]]
 
 ** =pass-listing.el=
 «pass-listing» is a simple frontend to the [[https://www.passwordstore.org/][pass]] utility.  It uses the
@@ -55,7 +55,7 @@ and allows to open the files or view metadata from that list.  Find
 below a screenshot of the default view.  I intend to add some
 functionality for moving PDF files around and editing the metadata.
 
-[[./bibliothek.png]]
+# [[./bibliothek.png]]
 
 ** =gk-unilat.el=
 «gk-unilat» is a unified input method for European variants of the
