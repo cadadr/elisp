@@ -1,5 +1,6 @@
 #+title: Göktuğ's Emacs Lisp Bits
 #+options: toc:nil num:nil
+#+category: elisp
 
 This repository is a swarm for all the Elisp stuff I published.  Most
 files will have licence information in it, which don't are licenced
