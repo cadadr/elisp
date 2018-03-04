@@ -97,6 +97,24 @@ Some examples:
 * Issues
 Please mention the relevant filename in your issue title.
 
+** TODO dollar.el: ignore quoted expressions when looking for arguments
+: ($ '$1)
+
+Should produce
+
+: (lambda nil '$1)
+
+But it currently produces
+
+: (lambda ($1) '$1)
+
+See [[https://www.reddit.com/r/emacs/comments/814wis/dollarel_shorthand_lambda_notation_eg_message/dv0naiu/][this thread]] on Reddit.
+
+** TODO dollar.el: =$*= should stand for the entire argument list
+Like =&rest args=.
+
+See [[https://www.reddit.com/r/emacs/comments/814wis/dollarel_shorthand_lambda_notation_eg_message/dv0t2oh/][this thread]] on Reddit.
+
 * Contributing
 Thanks! Please submit a pull request or e-mail a patch.  Explain
 clearly your changes and the rationale for them, and include a clear
