@@ -110,14 +110,11 @@ Portuguese, Spanish, German, Latin, and Nordic Germanics.")
    ("A0" ?Å) ("o$" ?ø) ("O$" ?Ø) ("sZ" ?ß) ("o£" ?œ) ("O£" ?Œ) ("a£" ?æ)
    ("A£" ?Æ)
 
-   ;; Punctuation
-   (".;" ?·) ("--" ?–) ("---" ?—)
-
    ;; Escaping.
    ,@(mapcar
       (lambda (letter)
         (list (format "%c#" letter) letter))
-      (string-to-list ".-aeiouAEIOUscgnSCGN"))))
+      (string-to-list "aeiouAEIOUscgnSCGN"))))
 
 ;;; Footer:
 (provide 'gk-unilat)
