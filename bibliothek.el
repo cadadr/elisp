@@ -28,15 +28,31 @@
 ;; used more.
 
 ;; Presently, bibliothek.el displays PDF files from directories in
-;; ‘bibliothek-path’ in a tabulated list [1], where the user can view the
-;; file related to row under point (RET on the button or ‘f’ anywhere
-;; on the row by default) or bring up a buffer detailed with PDF
-;; metadata of that file (bound to ‘i’ by default).  Also,
-;; ‘tabulated-list-mode’ provides an interactive buffer header, where
-;; by clicking the column headers, the table can be sorted.
+;; ‘bibliothek-path’ in a tabulated list,
+;; (see (info "(elisp) Tabulated List Mode")).
 
-;; Some more documentation may be present in the docstring for the
-;; ‘bibliothek’ command.
+;; The functionality provided by this program is as such:
+
+;; - List PDF files from directories specified in ‘bibliothek-path’,
+;;   recursively if ‘bibliothek-recursive’ is non-nil.
+
+;;   This list includes three columns: title, author, path.  Sorting
+;;   based on these via clicking the table headers is possible.
+
+;; - Filter this list with ‘bibliothek-filter’
+
+;;   Using this function, the list can be filtered.  Currently this is
+;;   rather unsophisticated, and only allows matching a single regexp
+;;   against all the metadata PDF-tools can fetch from a file, with a
+;;   match being counted positive if any of the fields match.  More
+;;   complex mechanisms for better filtering are planned.
+
+;; - View metadata of file under cursor.
+
+;; - Visit the file associated to the item under cursor.
+
+;; See also the docstring for the ‘bibliothek’ command, which lists
+;; the keybindings, besides additional info.
 
 
 
@@ -50,9 +66,8 @@
 ;; (require 'bibliothek)
 ;; (setq bibliothek-path (list "~/Documents"))
 
-;; Then, the Bibliothek interface can be brought up via M-x bibliothek RET.
-
-;; [1] (see (info "(elisp) Tabulated List Mode"))
+;; Then, the Bibliothek interface can be brought up via
+;; M-x bibliothek RET.
 
 ;;; Code:
 
