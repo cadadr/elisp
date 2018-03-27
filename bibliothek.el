@@ -94,13 +94,14 @@
   (let (items
         (file-pattern "\\.pdf\\'"))
     (dolist (directory bibliothek-path items)
-      (let ((files (if bibliothek-recursive
-                       (directory-files-recursively directory file-pattern)
-                     (directory-files directory t file-pattern t))))
-        (dolist (file files)
-          (cl-pushnew (cons (cons 'bibliothek--filename file)
-                            (pdf-info-metadata file))
-                      items))))))
+      (when (file-exists-p directory)
+        (let ((files (if bibliothek-recursive
+                         (directory-files-recursively directory file-pattern)
+                       (directory-files directory t file-pattern t))))
+          (dolist (file files)
+            (cl-pushnew (cons (cons 'bibliothek--filename file)
+                              (pdf-info-metadata file))
+                        items)))))))
 
 (defun bibliothek--find (&optional marker)
   "Open the PDF file for the row under point.
