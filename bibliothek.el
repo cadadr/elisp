@@ -3,7 +3,7 @@
 ;; Copyright (C) 2018  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; Keywords: tools
 ;; URL: http://gkayaalp.com/emacs.html#bibliothek.el
 ;; Package-Requires: ((emacs "24.4") (pdf-tools "0.70") (a "0.1.0alpha4"))
@@ -163,6 +163,7 @@ called from a button."
   (let ((map (make-sparse-keymap)))
     (prog1 map
       (define-key map "f" #'bibliothek--find)
+      (define-key map "s" #'bibliothek-filter)
       (define-key map "g" #'bibliothek)
       (define-key map "i" #'bibliothek--info))))
 
@@ -174,13 +175,61 @@ called from a button."
   (tabulated-list-print t)
   (hl-line-mode))
 
+(defvar bibliothek--filter-history nil
+  "History of filters used by ‘bibliothek’.")
+
+(defun bibliothek--prep-item (item)
+  "Prepare ITEM to be used in the table."
+  (list (a-get item 'bibliothek--filename)
+        (let ((title (a-get item 'title))
+              (path  (a-get item 'bibliothek--filename)))
+          (when (string-empty-p (string-trim title))
+            (setq title (concat "(" (file-name-nondirectory path) ")")))
+          (vector
+           (cons title
+                 `(action bibliothek--find file ,path))
+           (a-get item 'author)
+           path))))
+
+(defun biblothek--prepare-table-entries (items match)
+  "Prepare ITEMS for the table, filter with MATCH if applicable."
+  (let (table-entries)
+    (dolist (item items table-entries)
+      (when (cl-remove-if-not
+             (lambda (field)
+               (let ((value (cdr field)))
+                 (when value
+                   (cond ((stringp value)
+                          (string-match match value))
+                         ((listp value)
+                          (cl-remove-if-not
+                           (lambda (v) (string-match match v))
+                           value))))))
+             item)
+        (cl-pushnew (bibliothek--prep-item item) table-entries)))))
+
 ;;;###autoload
-(defun bibliothek ()
+(defun bibliothek-filter (match)
+  "Limit results using MATCH, see ‘bibliothek’.
+
+This can be used as an alternative entry point to the Bibliothek
+library listing."
+  (interactive (list (read-string
+                      "Filter: "
+                      nil 'bibliothek--filter-history "" t)))
+  (bibliothek match))
+
+;;;###autoload
+(cl-defun bibliothek (&optional (match ""))
   "Show the library contents.
 
 This is the main entry point to the Bibliothek package.  It shows a
 tabulated list of metadata for all the PDF files found in the
 directories under ‘bibliothek-path’.
+
+MATCH is an optional argument, a string, used to filter the
+library listing.  An entry is included if one or more of the
+fields match.
 
 The keybindings are as follows:
 
@@ -188,24 +237,16 @@ The keybindings are as follows:
   (interactive)
   (switch-to-buffer
    (with-current-buffer (get-buffer-create "*Bibliothek*")
-     (let ((items (bibliothek--items))
-           (f (lambda (item)
-                (list (a-get item 'bibliothek--filename)
-                      (let ((title (a-get item 'title))
-                            (path  (a-get item 'bibliothek--filename)))
-                        (vector
-                         (cons title
-                               `(action bibliothek--find file ,path))
-                         (a-get item 'author)
-                         path))))))
-       (setf tabulated-list-entries
-             (mapcar f items)
-             tabulated-list-format [("Title"  40 t)
-                                    ("Author" 20 t)
-                                    ("Path"   20 t)])
-       (bibliothek-mode)
-       (setq-local truncate-lines t)
-       (current-buffer)))))
+     (setq
+      tabulated-list-entries
+      (biblothek--prepare-table-entries (bibliothek--items) match)
+      tabulated-list-format
+      [("Title"  40 t)
+       ("Author" 20 t)
+       ("Path"   20 t)])
+     (bibliothek-mode)
+     (setq-local truncate-lines t)
+     (current-buffer))))
 
 
 
