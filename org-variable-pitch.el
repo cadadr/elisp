@@ -65,15 +65,18 @@ This face is used to keep them in monospace when using
   :group 'ovp)
 
 (defvar ovp-font-lock-keywords
-  `((,(rx bol (0+ blank)
-          (opt (or (: (+ digit) (in ".)"))
-                   (: (in "-+")
-                      (opt blank "[" (in "-X ") "]")))
-               blank))
-     (0 (put-text-property
-         (match-beginning 0)
-         (match-end 0)
-         'face 'ovp-face)))))
+  (let ((code '(0 (put-text-property
+                   (match-beginning 0)
+                   (match-end 0)
+                   'face 'ovp-face))))
+    `((,(rx bol (1+ blank))
+       ,code)
+      (,(rx bol (0+ blank)
+            (or (: (+ digit) (in ".)"))
+                (: (in "-+")
+                   (opt blank "[" (in "-X ") "]")))
+            blank)
+       ,code))))
 
 (defvar ovp-mono-faces
   '(org-table
