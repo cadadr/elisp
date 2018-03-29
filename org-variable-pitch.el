@@ -89,7 +89,8 @@ This face is used to keep them in monospace when using
     org-block
     org-block-begin-line
     org-block-end-line
-    org-done)
+    org-done
+    org-document-info-keyword)
   "Faces to keep fixed-width when using
   ‘org-variable-pitch-minor-mode’.")
 
