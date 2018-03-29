@@ -40,6 +40,8 @@
 ;;   - ‘ovp-font’: The font used for parts of the buffer to be kept in
 ;;     fixed-width font.
 
+;;   - ‘ovp-mono-faces’: List of org-mode faces to keep monospace.
+
 
 
 
