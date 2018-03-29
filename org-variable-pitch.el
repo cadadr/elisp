@@ -103,7 +103,10 @@ Keeps some elements in fixed pitch in order to keep layout."
   (set-face-attribute 'ovp-face nil :font ovp-font)
   (set-face-attribute 'org-todo nil :font ovp-font)
   (dolist (face ovp-mono-faces)
-    (set-face-attribute face nil :font ovp-font))
+    (if (facep face)
+        (set-face-attribute face nil :font ovp-font)
+      (message "‘%s’ is not a valid face, thus OVP skipped it"
+               (symbol-name face))))
   (font-lock-add-keywords nil ovp-font-lock-keywords)
   (font-lock-ensure))
 
