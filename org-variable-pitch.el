@@ -56,8 +56,7 @@
   :prefix "ovp-")
 
 (defcustom ovp-font "Monospace"
-  "Monospace font to use with ‘org-variable-pitch-minor-mode’.
-When using this mode, some parts of the ")
+  "Monospace font to use with ‘org-variable-pitch-minor-mode’.")
 
 (defface ovp-face
   `((t . (:family ,ovp-font)))
