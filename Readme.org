@@ -98,6 +98,11 @@ Some examples:
 * Issues
 Please mention the relevant filename in your issue title.
 
+** TODO Add OVP to Melpa
+SCHEDULED: <2018-04-06 Cum>
+
+- [ ] Update [[https://github.com/cadadr/elisp/issues/31][issue#31]] on Github when you send the PR to Melpa.
+
 ** TODO dollar.el: ignore quoted expressions when looking for arguments
 : ($ '$1)
 
