@@ -98,6 +98,13 @@ Some examples:
 * Issues
 Please mention the relevant filename in your issue title.
 
+** TODO forecast.el: daily views [0/3]
+Implement forecast daily views.
+
+- [ ] Under the graph, each day name is a link
+- [ ] which when clicked, opens up a view
+- [ ] where the hourly data for that day is rendered.
+
 ** TODO Add OVP to Melpa
 SCHEDULED: <2018-04-06 Cum>
 
