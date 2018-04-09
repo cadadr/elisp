@@ -94,8 +94,7 @@ This face is used to keep them in monospace when using
     org-block-end-line
     org-done
     org-document-info-keyword)
-  "Faces to keep fixed-width when using
-  ‘org-variable-pitch-minor-mode’.")
+  "Faces to keep fixed-width when using ‘org-variable-pitch-minor-mode’.")
 
 (define-minor-mode org-variable-pitch-minor-mode
   "Set up the buffer to be partially in variable pitch.
