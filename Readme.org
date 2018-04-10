@@ -98,6 +98,12 @@ Some examples:
 * Issues
 Please mention the relevant filename in your issue title.
 
+** TODO Use [[https://ox-hugo.scripter.co/][ox-hugo]] to publish a website for this repo
+SCHEDULED: <2018-04-14 Cts>
+
+- [ ] Make the website
+- [ ] Send feedback to Kaushal about the experience
+
 ** TODO forecast.el: daily views [0/3]
 Implement forecast daily views.
 
