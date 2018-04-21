@@ -41,10 +41,11 @@
 
 ;;; Configurables:
 
-;;   - ‘ovp-font’: The font used for parts of the buffer to be kept in
-;;     fixed-width font.
+;;   - ‘org-variable-pitch-fixed-font’: The font used for parts of the
+;;     buffer to be kept in fixed-width font.
 
-;;   - ‘ovp-mono-faces’: List of org-mode faces to keep monospace.
+;;   - ‘org-variable-pitch-fixed-faces’: List of org-mode faces to
+;;     keep monospace.
 
 
 
@@ -54,26 +55,35 @@
 (require 'org)
 (require 'rx)
 
-(defgroup ovp nil
+(defgroup org-variable-pitch nil
   "Customisations for ‘org-variable-pitch-minor-mode’."
   :group 'org
-  :prefix "ovp-")
+  :prefix "org-variable-pitch-")
 
-(defcustom ovp-font "Monospace"
-  "Monospace font to use with ‘org-variable-pitch-minor-mode’.")
+(define-obsolete-variable-alias 'ovp-font 'org-variable-pitch-fixed-font
+  "OVP 1.0.0")
 
-(defface ovp-face
-  `((t . (:family ,ovp-font)))
+(defcustom org-variable-pitch-fixed-font "Monospace"
+  "Monospace font to use with ‘org-variable-pitch-minor-mode’."
+  :group 'org-variable-pitch
+  :type 'string
+  :risky t)
+
+(define-obsolete-face-alias 'ovp-face 'org-variable-pitch-face
+  "OVP 1.0.0")
+
+(defface org-variable-pitch-face
+  `((t . (:family ,org-variable-pitch-fixed-font)))
   "Face for initial space and list item bullets.
 This face is used to keep them in monospace when using
 ‘org-variable-pitch-minor-mode’."
-  :group 'ovp)
+  :group 'org-variable-pitch)
 
-(defvar ovp-font-lock-keywords
+(defvar org-variable-pitch-font-lock-keywords
   (let ((code '(0 (put-text-property
                    (match-beginning 0)
                    (match-end 0)
-                   'face 'ovp-face))))
+                   'face 'org-variable-pitch-face))))
     `((,(rx bol (1+ blank))
        ,code)
       (,(rx bol (0+ blank)
@@ -83,7 +93,10 @@ This face is used to keep them in monospace when using
             blank)
        ,code))))
 
-(defvar ovp-mono-faces
+(define-obsolete-variable-alias 'ovp-mono-faces 'org-variable-pitch-fixed-faces
+  "OVP 1.0.0")
+
+(defvar org-variable-pitch-fixed-faces
   '(org-table
     org-code
     org-special-keyword
@@ -102,14 +115,14 @@ Keeps some elements in fixed pitch in order to keep layout."
   nil " OVP" nil
   (variable-pitch-mode
    (if org-variable-pitch-minor-mode 1 0))
-  (set-face-attribute 'ovp-face nil :font ovp-font)
-  (set-face-attribute 'org-todo nil :font ovp-font)
-  (dolist (face ovp-mono-faces)
+  (set-face-attribute 'org-variable-pitch-face nil :font org-variable-pitch-fixed-font)
+  (set-face-attribute 'org-todo nil :font org-variable-pitch-fixed-font)
+  (dolist (face org-variable-pitch-fixed-faces)
     (if (facep face)
-        (set-face-attribute face nil :font ovp-font)
+        (set-face-attribute face nil :font org-variable-pitch-fixed-font)
       (message "‘%s’ is not a valid face, thus OVP skipped it"
                (symbol-name face))))
-  (font-lock-add-keywords nil ovp-font-lock-keywords)
+  (font-lock-add-keywords nil org-variable-pitch-font-lock-keywords)
   (font-lock-ensure))
 
 
