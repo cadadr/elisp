@@ -60,17 +60,11 @@
   :group 'org
   :prefix "org-variable-pitch-")
 
-(define-obsolete-variable-alias 'ovp-font 'org-variable-pitch-fixed-font
-  "OVP 1.0.0")
-
 (defcustom org-variable-pitch-fixed-font "Monospace"
   "Monospace font to use with ‘org-variable-pitch-minor-mode’."
   :group 'org-variable-pitch
   :type 'string
   :risky t)
-
-(define-obsolete-face-alias 'ovp-face 'org-variable-pitch-face
-  "OVP 1.0.0")
 
 (defface org-variable-pitch-face
   `((t . (:family ,org-variable-pitch-fixed-font)))
@@ -92,9 +86,6 @@ This face is used to keep them in monospace when using
                    (opt blank "[" (in "-X ") "]")))
             blank)
        ,code))))
-
-(define-obsolete-variable-alias 'ovp-mono-faces 'org-variable-pitch-fixed-faces
-  "OVP 1.0.0")
 
 (defvar org-variable-pitch-fixed-faces
   '(org-table
