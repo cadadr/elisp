@@ -4,7 +4,7 @@
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: faces
-;; Version: 0.1.0
+;; Version: 1.0.0
 ;; URL: https://www.gkayaalp.com/emacs.html#ovp
 ;; Package-Requires: ((emacs "25"))
 
