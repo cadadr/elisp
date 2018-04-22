@@ -1,4 +1,4 @@
-;;; org-variable-pitch.el --- Org Variable-Pitch minor mode.  -*- lexical-binding: t; -*-
+;;; org-variable-pitch.el --- Minor mode for variable pitch text in org mode.  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018  Göktuğ Kayaalp
 
