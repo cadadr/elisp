@@ -3,11 +3,19 @@
 #+category: elisp
 
 * Introduction
+:PROPERTIES:
+:CUSTOM_ID: introduction
+:END:
+
 This repository is a swarm for all the Elisp stuff I published.  Most
 files will have licence information in it, which don't are licenced
 under the MIT licence, whose text is available in the LICENSE file.
 
 * What's here?
+:PROPERTIES:
+:CUSTOM_ID: whatshere
+:END:
+
 Below are the contents of this repository:
 
 ** =forecast.el=
@@ -109,7 +117,7 @@ As an alternative method to install from this repo.
 SCHEDULED: <2018-04-21 Cts>
 
 - [ ] Make the website
-- [ ] Send feedback to Kaushal about the experience
+- [X] Send feedback to Kaushal about the experience
 
 ** TODO forecast.el: daily views [0/3]
 Implement forecast daily views.
@@ -143,6 +151,53 @@ Like =&rest args=.
 See [[https://www.reddit.com/r/emacs/comments/814wis/dollarel_shorthand_lambda_notation_eg_message/dv0t2oh/][this thread]] on Reddit.
 
 * Contributing
+:PROPERTIES:
+:CUSTOM_ID: contributing
+:END:
+
 Thanks! Please submit a pull request or e-mail a patch.  Explain
 clearly your changes and the rationale for them, and include a clear
 commit message, prefixed with the relevant filename.
+
+* ox-hugo setup
+This readme file doubles as a source for the website for this repo,
+using Kaushal Modi's [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]] package.  Here is the setup for that.
+
+The export destination is [[file:~/co/elisp-www/]]:
+
+#+HUGO_BASE_DIR: ~/co/elisp-www
+
+It's necessary to ~(require 'ox-hugo)~ beforehand.  Then run =C-c C-e
+H A=.
+
+** Website
+:PROPERTIES:
+:CUSTOM_ID: website
+:END:
+
+*** Homepage
+:PROPERTIES:
+:EXPORT_FILE_NAME: index
+:EXPORT_HUGO_SECTION: /
+:CUSTOM_ID: homepage
+:EXPORT_OPTIONS: toc:nil
+:END:
+
+#+INCLUDE: "./Readme.org::#introduction" :only-contents t
+
+#+INCLUDE: "./Readme.org::#whatshere" :only-contents t
+
+#+INCLUDE: "./Readme.org::#contributing" :only-contents t
+
+*** News
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: news
+:END:
+
+**** New website for my Elisp programs
+:PROPERTIES:
+:EXPORT_FILE_NAME: new-website
+:EXPORT_DATE: "2018-04-22"
+:END:
+
+Hello world!
