@@ -1,10 +1,10 @@
-;;; org-variable-pitch.el --- Org Variable-Pitch minor mode.  -*- lexical-binding: t; -*-
+;;; org-variable-pitch.el --- Minor mode for variable pitch text in org mode.  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: faces
-;; Version: 0.1.0
+;; Version: 1.0.0
 ;; URL: https://www.gkayaalp.com/emacs.html#ovp
 ;; Package-Requires: ((emacs "25"))
 
@@ -60,17 +60,11 @@
   :group 'org
   :prefix "org-variable-pitch-")
 
-(define-obsolete-variable-alias 'ovp-font 'org-variable-pitch-fixed-font
-  "OVP 1.0.0")
-
 (defcustom org-variable-pitch-fixed-font "Monospace"
   "Monospace font to use with ‘org-variable-pitch-minor-mode’."
   :group 'org-variable-pitch
   :type 'string
   :risky t)
-
-(define-obsolete-face-alias 'ovp-face 'org-variable-pitch-face
-  "OVP 1.0.0")
 
 (defface org-variable-pitch-face
   `((t . (:family ,org-variable-pitch-fixed-font)))
@@ -92,9 +86,6 @@ This face is used to keep them in monospace when using
                    (opt blank "[" (in "-X ") "]")))
             blank)
        ,code))))
-
-(define-obsolete-variable-alias 'ovp-mono-faces 'org-variable-pitch-fixed-faces
-  "OVP 1.0.0")
 
 (defvar org-variable-pitch-fixed-faces
   '(org-table
