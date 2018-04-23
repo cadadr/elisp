@@ -114,7 +114,7 @@ As an alternative method to install from this repo.
 - See [[info:elisp#Package%20Archives][info:elisp#Package Archives]]
 
 ** TODO Use [[https://ox-hugo.scripter.co/][ox-hugo]] to publish a website for this repo
-SCHEDULED: <2018-04-21 Cts>
+SCHEDULED: <2018-04-27 Cum>
 
 - [ ] Make the website
 - [X] Send feedback to Kaushal about the experience
@@ -126,11 +126,11 @@ Implement forecast daily views.
 - [ ] which when clicked, opens up a view
 - [ ] where the hourly data for that day is rendered.
 
-** TODO Add OVP to Melpa
+** DONE Add OVP to Melpa
 SCHEDULED: <2018-04-06 Cum>
 
 - [X] Update [[https://github.com/cadadr/elisp/issues/31][issue#31]] on Github when you send the PR to Melpa.
-- [ ] Accepted?
+- [X] Accepted?
 
 ** TODO dollar.el: ignore quoted expressions when looking for arguments
 : ($ '$1)
