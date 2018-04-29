@@ -5,7 +5,7 @@
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: faces
 ;; Version: 1.0.0
-;; URL: https://www.gkayaalp.com/emacs.html#ovp
+;; URL: https://cadadr.github.io/elisp/index.html#ovp
 ;; Package-Requires: ((emacs "25"))
 
 

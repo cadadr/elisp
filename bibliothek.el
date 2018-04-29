@@ -5,7 +5,7 @@
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Version: 0.2.0
 ;; Keywords: tools
-;; URL: http://gkayaalp.com/emacs.html#bibliothek-el
+;; URL: https://cadadr.github.io/elisp/index.html#bibliothek-el
 ;; Package-Requires: ((emacs "24.4") (pdf-tools "0.70") (a "0.1.0alpha4"))
 
 ;; This program is free software; you can redistribute it and/or modify

@@ -5,7 +5,7 @@
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: unix, tools
 ;; Version: 0
-;; URL: http://www.gkayaalp.com/emacs.html#bsdpkg-el
+;; URL: https://cadadr.github.io/elisp/index.html#bsdpkg-el
 ;; Package-Requires: ((emacs "25"))
 
 ;; This program is free software; you can redistribute it and/or modify

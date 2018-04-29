@@ -5,7 +5,7 @@
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: input, greek
 ;; Version: 1.5
-;; URL: http://gkayaalp.com/emacs.html#gk-unilat-el
+;; URL: https://cadadr.github.io/elisp/index.html#gk-unilat-el
 
 ;; Permission  is  hereby  granted,  free of  charge,  to  any  person
 ;; obtaining  a copy  of  this software  and associated  documentation
