@@ -16,7 +16,7 @@ under the MIT licence, whose text is available in the LICENSE file.
 :CUSTOM_ID: whatshere
 :END:
 
-Below are the contents of this repository:
+Below is a listing of all the programs here:
 
 ** =forecast.el=
 «forecast.el» is a weather forecast report generator, currently using
@@ -114,7 +114,7 @@ As an alternative method to install from this repo.
 - See [[info:elisp#Package%20Archives][info:elisp#Package Archives]]
 
 ** TODO Use [[https://ox-hugo.scripter.co/][ox-hugo]] to publish a website for this repo
-SCHEDULED: <2018-04-27 Cum>
+SCHEDULED: <2018-04-28 Cts>
 
 - [ ] Make the website
 - [X] Send feedback to Kaushal about the experience
@@ -158,46 +158,3 @@ See [[https://www.reddit.com/r/emacs/comments/814wis/dollarel_shorthand_lambda_n
 Thanks! Please submit a pull request or e-mail a patch.  Explain
 clearly your changes and the rationale for them, and include a clear
 commit message, prefixed with the relevant filename.
-
-* ox-hugo setup
-This readme file doubles as a source for the website for this repo,
-using Kaushal Modi's [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]] package.  Here is the setup for that.
-
-The export destination is [[file:~/co/elisp-www/]]:
-
-#+HUGO_BASE_DIR: ~/co/elisp-www
-
-It's necessary to ~(require 'ox-hugo)~ beforehand.  Then run =C-c C-e
-H A=.
-
-** Website
-:PROPERTIES:
-:CUSTOM_ID: website
-:END:
-
-*** Homepage
-:PROPERTIES:
-:EXPORT_FILE_NAME: index
-:EXPORT_HUGO_SECTION: /
-:CUSTOM_ID: homepage
-:EXPORT_OPTIONS: toc:nil
-:END:
-
-#+INCLUDE: "./Readme.org::#introduction" :only-contents t
-
-#+INCLUDE: "./Readme.org::#whatshere" :only-contents t
-
-#+INCLUDE: "./Readme.org::#contributing" :only-contents t
-
-*** News
-:PROPERTIES:
-:EXPORT_HUGO_SECTION: news
-:END:
-
-**** New website for my Elisp programs
-:PROPERTIES:
-:EXPORT_FILE_NAME: new-website
-:EXPORT_DATE: "2018-04-22"
-:END:
-
-Hello world!

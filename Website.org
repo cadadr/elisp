@@ -1,0 +1,71 @@
+#+title: Göktuğ's Elisp Stuff website source
+#+latex_class: gk-article
+
+This file is the source for the website for this repo, using Kaushal
+Modi's [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]] package.  Here is the setup for that.
+
+#+HUGO_BASE_DIR: ~/co/elisp-www
+
+* Website
+:PROPERTIES:
+:CUSTOM_ID: website
+:END:
+
+** About
+:PROPERTIES:
+:EXPORT_FILE_NAME: about
+:EXPORT_HUGO_SECTION: /
+:CUSTOM_ID: about
+:EXPORT_OPTIONS: toc:nil
+:END:
+
+This is the website for [[https://www.gkayaalp.com][Göktuğ]]'s Emacs Lisp stuff (what do we really
+call them? features, programs, modules, packages; well...).  This
+website is generated from the repository's [[https://github.com/cadadr/elisp/blob/master/Readme.org][readme]] file, using the
+[[https://github.com/kaushalmodi/ox-hugo][ox-hugo]] package, and the [[https://gohugo.io][Hugo]] static website generator.
+
+** Homepage
+:PROPERTIES:
+:EXPORT_FILE_NAME: _index
+:EXPORT_HUGO_SECTION: /
+:CUSTOM_ID: homepage
+:EXPORT_OPTIONS: toc:nil
+:END:
+
+This is the website for [[https://www.gkayaalp.com][Göktuğ]]'s Emacs Lisp stuff.  Some of the
+programs here are published on [[https://melpa.org][Melpa]].  All of the source code is
+available at the [[https://github.com/cadadr/elisp][source code repository]].
+
+*** What's here
+
+#+INCLUDE: "./Readme.org::#whatshere" :only-contents t
+
+*** Contributing
+
+See the [[https://github.com/cadadr/elisp][source code repository]] in order to find out about how to
+contribute.
+
+** News
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: news
+:CUSTOM_ID: news
+:END:
+
+*** New website for my Elisp programs
+:PROPERTIES:
+:EXPORT_FILE_NAME: new-website
+:EXPORT_DATE: "2018-04-22"
+:END:
+
+This is the new website for my Elisp stuff.  Here you can find
+up-to-date package summaries and , follow [[/news.html][updates]] on programs
+published here.  Descriptions here will always be up-to-date thanks to
+[[https://github.com/kaushalmodi/ox-hugo][ox-hugo]] package, with which I can reuse data from the readme file of
+the elisp repo.  Huge thanks to Kaushal Modi for authoring that
+package and for suggesting it to me.  [[https://gohugo.io][Hugo]] is not the most pleasant
+static site generator I worked with (way too complex, hard to
+customise, bad docs, weird limitations), but it's worth it given how
+useful ox-hugo is.
+
+Source code of this website is split among the content source [[https://github.com/cadadr/elisp/blob/master/Website.org][here]],
+and the Hugo setup [[https://todo][here]].
