@@ -6,7 +6,7 @@
 ;; Maintainer: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Version: 0.1.0
 ;; Keywords: unix
-;; URL: http://www.gkayaalp.com/emacs.html#pass-listing-el
+;; URL: https://cadadr.github.io/elisp/index.html#pass-listing-el
 ;; Package-Requires: ((password-store "0.1") (emacs "25"))
 
 ;; This program is free software; you can redistribute it and/or modify
