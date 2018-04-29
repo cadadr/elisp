@@ -3,20 +3,34 @@
 #+category: elisp
 
 * Introduction
+:PROPERTIES:
+:CUSTOM_ID: introduction
+:END:
+
 This repository is a swarm for all the Elisp stuff I published.  Most
 files will have licence information in it, which don't are licenced
 under the MIT licence, whose text is available in the LICENSE file.
 
 * What's here?
-Below are the contents of this repository:
+:PROPERTIES:
+:CUSTOM_ID: whatshere
+:END:
+
+Below is a listing of all the programs here:
 
 ** =forecast.el=
+:PROPERTIES:
+:CUSTOM_ID: forecast-el
+:END:
 «forecast.el» is a weather forecast report generator, currently using
 data from [[https://darksky.net][Dark Sky]] (but I plan to add other backends in the future).
 
 # [[./forecast.el.png]]
 
 ** =paper-theme.el=
+:PROPERTIES:
+:CUSTOM_ID: paper
+:END:
 «Paper» is a little, minimal emacs theme that is meant to be simple
 and consistent.
 
@@ -36,10 +50,16 @@ Magit, etc.
 # [[./paper1.gif]]
 
 ** =pass-listing.el=
+:PROPERTIES:
+:CUSTOM_ID: pass-listing-el
+:END:
 «pass-listing» is a simple frontend to the [[https://www.passwordstore.org/][pass]] utility.  It uses the
 functions from =password-store.el=.
 
 ** =bsdpkg.el=
+:PROPERTIES:
+:CUSTOM_ID: bsdpkg-el
+:END:
 «bsdpkg» is an Emacs interface to FreeBSD =pkg(1)=.  It's planned to
 genericise the package to support all *BSD packaging systems, and the
 module is written with that sort of extensibility in mind.
@@ -51,6 +71,9 @@ anybody will be interested.
 #+END_QUOTE
 
 ** =bibliothek.el=
+:PROPERTIES:
+:CUSTOM_ID: bibliothek-el
+:END:
 «bibliothek.el» is a personal PDF library manager.  Presently it only
 displays a concatenated tabular list of PDF files from many locations,
 and allows to open the files or view metadata from that list.  Find
@@ -60,6 +83,9 @@ functionality for moving PDF files around and editing the metadata.
 # [[./bibliothek.png]]
 
 ** =gk-unilat.el=
+:PROPERTIES:
+:CUSTOM_ID: gk-unilat-el
+:END:
 «gk-unilat» is a unified input method for European variants of the
 Latin alphabet.
 
@@ -68,12 +94,18 @@ in different European versions of the Latin alphabet, in a unified,
 predictable way.
 
 ** =gk-greek.el=
+:PROPERTIES:
+:CUSTOM_ID: gk-greek-el
+:END:
 «gk-greek» is a transliterating input method for modern Greek.
 
 Translates input in Greek latinization into Greek alphabet.  Mappings
 are based on vocal correspondence and common modern transliteration.
 
 ** =org-variable-pitch.el=
+:PROPERTIES:
+:CUSTOM_ID: ovp
+:END:
 «org-variable-pitch.el» is a minor mode that enables
 ‘variable-pitch-mode’ in the current Org-mode buffer, and sets some
 particular faces up so that they are are rendered in fixed-width font.
@@ -81,6 +113,9 @@ Also, indentation, list bullets and checkboxes are displayed in
 monospace, in order to keep the shape of the outline.
 
 ** =dollar.el=
+:PROPERTIES:
+:CUSTOM_ID: dollar-el
+:END:
 This package provides a macro named $ where in its body symbols in the
 form $N where N is a positive integer are to stand for positional
 arguments to the generated lambda.
@@ -106,10 +141,10 @@ As an alternative method to install from this repo.
 - See [[info:elisp#Package%20Archives][info:elisp#Package Archives]]
 
 ** TODO Use [[https://ox-hugo.scripter.co/][ox-hugo]] to publish a website for this repo
-SCHEDULED: <2018-04-21 Cts>
+SCHEDULED: <2018-04-28 Cts>
 
 - [ ] Make the website
-- [ ] Send feedback to Kaushal about the experience
+- [X] Send feedback to Kaushal about the experience
 
 ** TODO forecast.el: daily views [0/3]
 Implement forecast daily views.
@@ -118,11 +153,11 @@ Implement forecast daily views.
 - [ ] which when clicked, opens up a view
 - [ ] where the hourly data for that day is rendered.
 
-** TODO Add OVP to Melpa
+** DONE Add OVP to Melpa
 SCHEDULED: <2018-04-06 Cum>
 
 - [X] Update [[https://github.com/cadadr/elisp/issues/31][issue#31]] on Github when you send the PR to Melpa.
-- [ ] Accepted?
+- [X] Accepted?
 
 ** TODO dollar.el: ignore quoted expressions when looking for arguments
 : ($ '$1)
@@ -143,6 +178,10 @@ Like =&rest args=.
 See [[https://www.reddit.com/r/emacs/comments/814wis/dollarel_shorthand_lambda_notation_eg_message/dv0t2oh/][this thread]] on Reddit.
 
 * Contributing
+:PROPERTIES:
+:CUSTOM_ID: contributing
+:END:
+
 Thanks! Please submit a pull request or e-mail a patch.  Explain
 clearly your changes and the rationale for them, and include a clear
 commit message, prefixed with the relevant filename.

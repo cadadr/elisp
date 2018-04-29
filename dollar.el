@@ -4,6 +4,9 @@
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: lisp
+;; Version: 0
+;; URL: http://www.gkayaalp.com/emacs.html#dollar-el
+;; Package-Requires: ((emacs "25"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

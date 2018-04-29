@@ -5,7 +5,7 @@
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
 ;; Version: 0.6.3
-;; URL: http://gkayaalp.com/emacs.html#forecast.el
+;; URL: http://gkayaalp.com/emacs.html#forecast-el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
 ;; Permission  is  hereby  granted,  free of  charge,  to  any  person
