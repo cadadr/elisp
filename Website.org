@@ -29,8 +29,10 @@ website is generated from the repository's [[https://github.com/cadadr/elisp/blo
 :EXPORT_FILE_NAME: _index
 :EXPORT_HUGO_SECTION: /
 :CUSTOM_ID: homepage
-:EXPORT_OPTIONS: toc:nil
+:EXPORT_OPTIONS: toc:t
 :END:
+
+*** Introduction
 
 This is the website for [[https://www.gkayaalp.com][Göktuğ]]'s Emacs Lisp stuff.  Some of the
 programs here are published on [[https://melpa.org][Melpa]].  All of the source code is
