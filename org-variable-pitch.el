@@ -88,32 +88,43 @@ This face is used to keep them in monospace when using
        ,code))))
 
 (defvar org-variable-pitch-fixed-faces
-  '(org-table
-    org-code
-    org-special-keyword
-    org-verbatim
-    org-meta-line
-    org-block
+  '(org-block
     org-block-begin-line
     org-block-end-line
+    org-code
+    org-document-info-keyword
     org-done
-    org-document-info-keyword)
+    org-formula
+    org-meta-line
+    org-special-keyword
+    org-table
+    org-todo
+    org-verbatim)
   "Faces to keep fixed-width when using ‘org-variable-pitch-minor-mode’.")
 
+(defvar org-variable-pitch--cookies nil
+  "Face remappings to restore when the minor mode is deactivated")
+
+;;;###autoload
 (define-minor-mode org-variable-pitch-minor-mode
   "Set up the buffer to be partially in variable pitch.
 Keeps some elements in fixed pitch in order to keep layout."
   nil " OVP" nil
-  (variable-pitch-mode
-   (if org-variable-pitch-minor-mode 1 0))
   (set-face-attribute 'org-variable-pitch-face nil :font org-variable-pitch-fixed-font)
-  (set-face-attribute 'org-todo nil :font org-variable-pitch-fixed-font)
-  (dolist (face org-variable-pitch-fixed-faces)
-    (if (facep face)
-        (set-face-attribute face nil :font org-variable-pitch-fixed-font)
-      (message "‘%s’ is not a valid face, thus OVP skipped it"
-               (symbol-name face))))
-  (font-lock-add-keywords nil org-variable-pitch-font-lock-keywords)
+  (if org-variable-pitch-minor-mode
+      (progn
+        (variable-pitch-mode 1)
+        (dolist (face org-variable-pitch-fixed-faces)
+          (if (facep face)
+              (push (face-remap-add-relative face 'org-variable-pitch-face)
+                    org-variable-pitch--cookies)
+            (message "‘%s’ is not a valid face, thus OVP skipped it"
+                     (symbol-name face))))
+        (font-lock-add-keywords nil org-variable-pitch-font-lock-keywords))
+    (variable-pitch-mode -1)
+    (mapc #'face-remap-remove-relative org-variable-pitch--cookies)
+    (setq org-variable-pitch--cookies nil)
+    (font-lock-remove-keywords nil org-variable-pitch-font-lock-keywords))
   (font-lock-ensure))
 
 
