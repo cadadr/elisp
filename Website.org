@@ -53,6 +53,16 @@ contribute.
 :CUSTOM_ID: news
 :END:
 
+*** =pass-listing= gets a rename command
+:PROPERTIES:
+:EXPORT_FILE_NAME: pass-rename
+:EXPORT_DATE: "2018-11-27"
+:END:
+
+Commit @@html:<a href="https://github.com/cadadr/elisp/commit/30119002db8df4a2b444da0c0fd36ebb3c2fdba2"><abbr
+title="30119002db8df4a2b444da0c0fd36ebb3c2fdba2, click to browse commit on Github">30119002db</abbr></a>@@
+adds a rename command to pass-listing, bound to =R= by default.
+
 *** New website for my Elisp programs
 :PROPERTIES:
 :EXPORT_FILE_NAME: new-website
