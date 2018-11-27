@@ -100,6 +100,7 @@ This face is used to keep them in monospace when using
     org-document-info-keyword)
   "Faces to keep fixed-width when using ‘org-variable-pitch-minor-mode’.")
 
+;;;###autoload
 (define-minor-mode org-variable-pitch-minor-mode
   "Set up the buffer to be partially in variable pitch.
 Keeps some elements in fixed pitch in order to keep layout."
