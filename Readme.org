@@ -134,6 +134,29 @@ Some examples:
 * Issues
 Please mention the relevant filename in your issue title.
 
+** TODO OVP minor mode updates the buffer partially when not run in the org mode hook
+Try:
+
+1. =emacs -Q -L $OVP_CHECKOUT_DIR=
+2. eval the following:
+    1. =(require 'org-variable-pitch)=
+    2. =(set-face-attribute 'org-variable-pitch-face nil :background "darkorange1")=
+3. find some complex org mode file
+    1. =M-x org-variable-pitch-minor-mode=
+
+Compare that with doing the following after (2.ii):
+
+- close the org-mode file
+- eval the following:
+  - =(add-hook 'org-mode-hook 'org-variable-pitch-minor-mode)=
+- visit the same org-mode file
+
+In the former case the face is partially applied to list items and
+checkboxes, as the orange background will indicate.
+
+Further, in both cases, when the mode is toggled off, the face
+application is only partially undone.
+
 ** TODO Make a public package archive for this repo
 
 As an alternative method to install from this repo.
