@@ -110,7 +110,7 @@ This face is used to keep them in monospace when using
   "Set up the buffer to be partially in variable pitch.
 Keeps some elements in fixed pitch in order to keep layout."
   nil " OVP" nil
-  (set-face-attribute 'org-variable-pitch-face nil :font org-variable-pitch-fixed-font)
+  (set-face-attribute 'org-variable-pitch-face nil :family org-variable-pitch-fixed-font)
   (if org-variable-pitch-minor-mode
       (progn
         (variable-pitch-mode 1)
