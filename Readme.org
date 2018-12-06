@@ -134,11 +134,15 @@ Some examples:
 * Contributing
 :PROPERTIES:
 :CUSTOM_ID: contributing
+:EXPORT_FILE_NAME: docs/CONTRIBUTING
+:EXPORT_OPTIONS: toc:nil title:nil author:nil
 :END:
 
-Thanks! Please submit a pull request or e-mail a patch.  Explain
-clearly your changes and the rationale for them, and include a clear
-commit message, prefixed with the relevant filename.
+# Export: C-c C-e C-s m m
+
+Thanks for your contribution! Please submit a pull request or e-mail a
+patch.  Explain clearly your changes and the rationale for them, and
+include a clear commit message, prefixed with the relevant filename.
 
 Please write your commit message as in the example below:
 
