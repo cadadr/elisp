@@ -99,7 +99,8 @@ This face is used to keep them in monospace when using
     org-special-keyword
     org-table
     org-todo
-    org-verbatim)
+    org-verbatim
+    org-date)
   "Faces to keep fixed-width when using ‘org-variable-pitch-minor-mode’.")
 
 (defvar org-variable-pitch--cookies nil
