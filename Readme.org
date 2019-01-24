@@ -155,7 +155,7 @@ Optionally further explain the change.
 * Issues
 Please mention the relevant filename in your issue title.
 
-** TODO Get packages on Melpa stable :consider:
+** DONE Get packages on Melpa stable :consider:
 See: https://github.com/melpa/melpa#recipe-format
 
 Options:
