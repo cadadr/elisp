@@ -1,12 +1,12 @@
 ;;; pass-listing.el --- Listing UI for password-store.el  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2016, 2017, 2018  Göktuğ Kayaalp
+;; Copyright (C) 2016, 2017, 2018, 2019  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Maintainer: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Version: 0.1.0
 ;; Keywords: unix
-;; URL: https://cadadr.github.io/elisp/index.html#pass-listing-el
+;; URL: https://dev.gkayaalp.com/elisp/index.html#pass-listing-el
 ;; Package-Requires: ((password-store "0.1") (emacs "25"))
 
 ;; This program is free software; you can redistribute it and/or modify

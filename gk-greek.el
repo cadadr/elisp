@@ -1,11 +1,11 @@
 ;;; gk-greek.el --- Input method for modern Greek.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2016-2018 Göktuğ Kayaalp
+;; Copyright (C) 2016-2019 Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: input, greek
 ;; Version: 1.5
-;; URL: https://cadadr.github.io/elisp/index.html#gk-greek-el
+;; URL: https://dev.gkayaalp.com/elisp/index.html#gk-greek-el
 
 ;; Permission  is  hereby  granted,  free of  charge,  to  any  person
 ;; obtaining  a copy  of  this software  and associated  documentation

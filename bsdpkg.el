@@ -1,11 +1,11 @@
 ;;; bsdpkg.el --- Emacs interface for FreeBSD pkg(1)  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017, 2018  Göktuğ Kayaalp
+;; Copyright (C) 2017, 2018, 2019  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: unix, tools
 ;; Version: 0
-;; URL: https://cadadr.github.io/elisp/index.html#bsdpkg-el
+;; URL: https://dev.gkayaalp.com/elisp/index.html#bsdpkg-el
 ;; Package-Requires: ((emacs "25"))
 
 ;; This program is free software; you can redistribute it and/or modify

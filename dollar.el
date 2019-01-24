@@ -1,11 +1,11 @@
 ;;; dollar.el --- Shorthand lambda notation          -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018  Göktuğ Kayaalp
+;; Copyright (C) 2018, 2019  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: lisp
 ;; Version: 0
-;; URL: https://cadadr.github.io/elisp/index.html#dollar-el
+;; URL: https://dev.gkayaalp.com/elisp/index.html#dollar-el
 ;; Package-Requires: ((emacs "25"))
 
 ;; This program is free software; you can redistribute it and/or modify

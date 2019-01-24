@@ -1,11 +1,11 @@
 ;;; paper-theme.el --- A minimal Emacs colour theme. -*- lexical-binding: t; -*-
-;; Copyright (C) 2015, 2018 Göktuğ Kayaalp
+;; Copyright (C) 2015, 2018, 2019 Göktuğ Kayaalp
 ;;
 ;; Author: Göktuğ Kayaalp
 ;; Keywords: theme paper
 ;; Package-Version: 1.0.1
 ;; Package-Requires: ((emacs "24"))
-;; URL: https://cadadr.github.io/elisp/index.html#paper
+;; URL: https://dev.gkayaalp.com/elisp/index.html#paper
 ;;
 ;; Permission  is  hereby  granted,  free of  charge,  to  any  person
 ;; obtaining  a copy  of  this software  and associated  documentation

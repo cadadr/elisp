@@ -1,11 +1,11 @@
 ;;; forecast.el --- Weather forecasts -*- lexical-binding: t; -*-
 ;;
-;; Copyright (C) 2015-2018 Göktuğ Kayaalp
+;; Copyright (C) 2015-2019 Göktuğ Kayaalp
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
 ;; Version: 0.6.3
-;; URL: https://cadadr.github.io/elisp/index.html#forecast-el
+;; URL: https://dev.gkayaalp.com/elisp/index.html#forecast-el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
 ;; Permission  is  hereby  granted,  free of  charge,  to  any  person

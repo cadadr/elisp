@@ -53,6 +53,17 @@ contribute.
 :CUSTOM_ID: news
 :END:
 
+*** New domain: =dev.gkayaalp.com=
+:PROPERTIES:
+:EXPORT_FILE_NAME: new-domain
+:EXPORT_DATE: "2019-01-24"
+:END:
+
+Started using a custom domain name for this website in order to remove
+the direct links to Github.  Who knows where Github will end up now;
+it’s all smooth these days but now that the acquisition happened,
+there always is a chance that things go rogue.
+
 *** =pass-listing= gets a rename command
 :PROPERTIES:
 :EXPORT_FILE_NAME: pass-rename

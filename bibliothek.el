@@ -1,11 +1,11 @@
 ;;; bibliothek.el --- Managing a digital library of PDFs  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018  Göktuğ Kayaalp
+;; Copyright (C) 2018, 2019  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Version: 0.2.0
 ;; Keywords: tools
-;; URL: https://cadadr.github.io/elisp/index.html#bibliothek-el
+;; URL: https://dev.gkayaalp.com/elisp/index.html#bibliothek-el
 ;; Package-Requires: ((emacs "24.4") (pdf-tools "0.70") (a "0.1.0alpha4"))
 
 ;; This program is free software; you can redistribute it and/or modify
