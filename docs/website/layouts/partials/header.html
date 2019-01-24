@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8">
+    {{ .Hugo.Generator }}
+    <!-- <base href="/elisp/"> -->
+    <title>{{ .Title }} --- Göktuğ's Elisp Stuff</title>
+    <link rel="canonical" href="{{ .Permalink }}">
+    <link rel="stylesheet" href="/style.css">
+    <link href="news/index.xml" rel="alternate"
+          type="application/rss+xml" title="Göktuğ's Elisp News"/>
+  </head>
+  <body>
+    <header>
+      <h1>Göktuğ's Elisp Stuff</h1>
+      <h2>{{ .Title }}</h2>
+      <nav>
+        <a href="/index.html">Home</a>
+        |
+        <a href="/about.html">About</a>
+        |
+        <a href="/news.html">News</a>
+        |
+        <a href="https://github.com/cadadr/elisp">Repo</a>
+      </nav>
+    </header>
+    <section id="content">

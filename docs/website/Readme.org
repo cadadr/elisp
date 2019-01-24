@@ -1,0 +1,61 @@
+#+title: Hugo configuration for my elisp website.
+#+options: toc:nil
+#+category: elisp-www
+
+* Introduction
+
+This is the configuration for the "Göktuğ's Elisp Stuff" website.
+[[https://github.com/kaushalmodi/ox-hugo][ox-hugo]] is used to generate this from the [[https://github.com/cadadr/elisp][source code repository]].
+[[https://gohugo.io][Hugo]] static website generator is used to build the website from the
+source files ox-hugo generates.
+
+* Usage
+
+This section will be expanded when I will set up deployment.
+
+** Building the website
+
+There is a Makefile that handles all the tasks.
+
+Build requirements:
+
+- GNU Emacs
+- Org mode
+- ox-hugo
+- Hugo
+- make
+- Python 2 (optional, for build server)
+
+As of writing this document, I use Org 9.1, and GNU Emacs recently
+built from master (I usually build once each week), but any recent
+version of Emacs should work (not tested!).
+
+On Debian stable you might want to get Hugo from the unstable (sid)
+branch.  For that, you should add sid to apt sources (in
+=/etc/apt/sources.list=, [[https://github.com/cadadr/configuration/blob/b087649150f507e24e83ded3455de0bf512996bd/system/debian/etc/apt/sources.list][example]]), and set package =hugo= to be
+installed from unstable (in =/etc/apt/preferences=, [[https://github.com/cadadr/configuration/blob/b087649150f507e24e83ded3455de0bf512996bd/system/debian/etc/apt/preferences][example]]).
+
+Before building, open [[./generate.el]] and edit it to load ox-hugo from
+the correct path.  Also, control [[./Makefile]] and make sure the paths it
+sets and exports are all correct.  Then, proceed to running make.
+
+The default make rule will print out a help message and do nothing.
+In order to build the website, run ~make build~.  In order to run the
+build server, run ~make serve~.  This uses the ~SimpleHTTPServer~
+module from Python 2.
+
+* License
+
+This package is licensed under the terms of GNU GPLv3.  See the
+[[./COPYING]] file.
+
+* Contributing
+
+Any fixes or suggestions are welcome, just open an issue on the [[https://github.com/cadadr/elisp-www][GitHub
+repo]].  Note that the source of the website content is not in this
+repo, see the [[https://github.com/cadadr/elisp][elisp]] repo instead.
+
+* Issues
+** TODO Add a proper footer
+** TODO Fix feeds
+- Link is a relative url, guess baseURL needs to be set.

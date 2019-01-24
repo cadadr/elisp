@@ -1,0 +1,10 @@
+languageCode = "en-gb"
+title = "Göktuğ's Elisp Website"
+#baseurl = "http://dev.gkayaalp.com/elisp/"
+author = "Göktuğ Kayaalp"
+uglyURLs = true
+disablePathToLower = true
+enableRobotsTXT = true
+disableKinds = ["taxonomy", "taxonomyTerm"]
+canonifyURLs = false
+relativeURLs = true

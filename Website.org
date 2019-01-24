@@ -4,7 +4,7 @@
 This file is the source for the website for this repo, using Kaushal
 Modi's [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]] package.  Here is the setup for that.
 
-#+HUGO_BASE_DIR: ~/co/elisp-www
+#+HUGO_BASE_DIR: ~/co/elisp/docs/website
 
 * Website
 :PROPERTIES:
