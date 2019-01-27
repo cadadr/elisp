@@ -14,20 +14,22 @@ Etiam vel tortor sodales tellus ultricies commodo.
   neque quam,
   - dignissim in, mollis nec, sagittis eu, wisi.  Phasellus lacus.
     Etiam
+    * Dignissim in, mollis nec, sagittis eu, wisi.
+    * Et mollis nec, sagittis eu, wisi.
 
-+ [X] Alpha
-+ [ ] Beta
+- [X] Alpha
+- [-] Beta
   - [ ] Gamma
   - [X] Pseudorandom number generator
 
-a. laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.
-  b. Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.
+- laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.
+  a. Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.
 
-A. laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.
-  B. Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.
+- laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.
+  A. Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.
 
-1. laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.
-  2. Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.
+- laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.
+  1. Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.
 
 | Vestibulum | convallis | , lorem |     |
 | a          | tempus    | semper, | dui |
