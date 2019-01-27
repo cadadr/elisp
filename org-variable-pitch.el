@@ -83,7 +83,8 @@ This face is used to keep them in monospace when using
       (,(rx bol (0+ blank)
             (or (: (or (+ digit) letter) (in ".)"))
                 (: (in "-+")
-                   (opt blank "[" (in "-X ") "]")))
+                   (opt blank "[" (in "-X ") "]"))
+                (: (1+ blank) "\*"))
             blank)
        ,code))))
 
