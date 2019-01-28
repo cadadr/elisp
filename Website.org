@@ -63,16 +63,15 @@ With [[https://github.com/cadadr/elisp/issues/38][issue#38]] fixed, OVP now supp
 prefixes like =A.=, =a.=, =a)=, =A)=, and with the prefix =*= for
 levels except the first level.
 
-
 *** Move website sources into the elisp repository
 :PROPERTIES:
 :EXPORT_FILE_NAME: move-website-to-elisp-repo
 :EXPORT_DATE: "2019-01-28"
 :END:
 
-Now, with commit =[[https://github.com/cadadr/elisp/commit/ac2da41ca4854e7e5ea10697ec9f989f0f74d17e][ac2da41]]=, website sources live under the
-[[https://github.com/cadadr/elisp/tree/devel/docs/website][docs/website]] tree.  This was done in order to ease up adding new
-posts, which involved three repositories before this move.
+Now, with commit [[https://github.com/cadadr/elisp/commit/ac2da41ca4854e7e5ea10697ec9f989f0f74d17e][ac2da41]], website sources live under the [[https://github.com/cadadr/elisp/tree/devel/docs/website][docs/website]]
+tree.  This was done in order to ease up adding new posts, which
+involved three repositories before this move.
 
 *** New domain: =dev.gkayaalp.com=
 :PROPERTIES:
