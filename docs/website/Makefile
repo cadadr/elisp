@@ -4,6 +4,7 @@ HUGO_PUBLISHDIR=$(HOME)/co/com.gkayaalp/dev/elisp
 export HUGO_PUBLISHDIR
 ORGSRCDIR=../..
 export ORGSRCDIR
+HEAD!=git rev-parse HEAD
 
 help:
 	@echo "Targets:"
@@ -29,3 +30,6 @@ serve:
 	cd $(HUGO_PUBLISHDIR)/.. && python -m SimpleHTTPServer
 
 .PHONY: serve
+publish: build
+	cd $(HUGO_PUBLISHDIR) && git add . \
+		&& git commit -m "elisp@$(HEAD)" && git push
