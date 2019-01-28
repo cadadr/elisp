@@ -18,18 +18,15 @@ build: generate
 	$(HUGOCMD) $(HUGOPTS) &&\
 	rm $(HUGO_PUBLISHDIR)/index.xml
 
-.PHONY: build
-
 # FIXME: Any way to not re-export when uptodate?
 generate:
 	emacs --script generate.el
 
-.PHONY: generate
-
 serve:
 	cd $(HUGO_PUBLISHDIR)/.. && python -m SimpleHTTPServer
 
-.PHONY: serve
 publish: build
 	cd $(HUGO_PUBLISHDIR) && git add . \
 		&& git commit -m "elisp@$(HEAD)" && git push
+
+.PHONY: build generate serve publish
