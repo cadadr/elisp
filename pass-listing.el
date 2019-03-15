@@ -53,6 +53,7 @@
       (define-key map [?+] 'pass-listing--generate)
       (define-key map [?r] 'pass-listing--regenerate)
       (define-key map [?R] 'pass-listing--rename)
+      (define-key map [?y] 'pass-listing--copy)
       (define-key map [?n] 'widget-forward)
       (define-key map [?b] 'widget-backward)
       map)
@@ -185,6 +186,10 @@ Useful for resetting passwords.  "
 (pass-listing--defcmd1 rename
   "Rename an entry."
   (password-store-rename it (read-string "Rename entry to: ")))
+
+(pass-listing--defcmd1 copy
+  "Copy an entry."
+  (password-store-copy it))
 
 (defun pass-listing--insert-item (item)
   (widget-create 'push-button
