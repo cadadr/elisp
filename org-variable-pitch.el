@@ -96,6 +96,7 @@ This face is used to keep them in monospace when using
     org-document-info-keyword
     org-done
     org-formula
+    org-indent
     org-meta-line
     org-special-keyword
     org-table
