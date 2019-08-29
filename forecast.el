@@ -320,6 +320,11 @@ If not one of these, then `en' is selected."
   :type 'string
   :group 'forecast)
 
+(defcustom forecast-sun-symbol "☉"
+  "A single-character string for a symbol to represent snowy wheather."
+  :type 'string
+  :group 'forecast)
+
 (defcustom forecast-old-ui nil
   "If t, use the old text listing for upcoming forecast."
   :type 'boolean
@@ -610,7 +615,7 @@ Uses box-drawing characters."
          (sunsec  (- now sunrise))
          (wwidth  58)
          (graph   (concat "┝" (make-string (- wwidth 5) ?━) "┥"))
-         (sun     ?☉)
+         (sun     (aref forecast-sun-symbol 1))
          (pos    (cond
                   ((< sunrise sunset now) (- wwidth 4))
                   ((> sunrise now) 0)
