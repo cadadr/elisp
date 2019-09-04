@@ -4,7 +4,7 @@
 ;;
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: weather, forecast
-;; Version: 0.7
+;; Version: 0.8
 ;; URL: https://dev.gkayaalp.com/elisp/index.html#forecast-el
 ;; Package-Requires: ((emacs "24.4"))
 ;;
@@ -147,6 +147,8 @@
 ;;
 
 ;;; Changes:
+;; 0.8, 04 Sep 2019
+;;   - (forecast--sun-position-graphic) Fix bad array reference.
 ;; 0.7, 29 Aug 2019
 ;;   - Switch to maj.min versioning
 ;;   - (forecast-sun-symbol) New defcustom replacing hardcoded char.
