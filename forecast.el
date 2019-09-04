@@ -616,7 +616,7 @@ Uses box-drawing characters."
          (sunsec  (- now sunrise))
          (wwidth  58)
          (graph   (concat "┝" (make-string (- wwidth 5) ?━) "┥"))
-         (sun     (aref forecast-sun-symbol 1))
+         (sun     (aref forecast-sun-symbol 0))
          (pos    (cond
                   ((< sunrise sunset now) (- wwidth 4))
                   ((> sunrise now) 0)
