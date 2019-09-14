@@ -66,6 +66,25 @@
   :type 'string
   :risky t)
 
+(defcustom org-variable-pitch-fixed-faces
+  '(org-block
+    org-block-begin-line
+    org-block-end-line
+    org-code
+    org-document-info-keyword
+    org-done
+    org-formula
+    org-indent
+    org-meta-line
+    org-special-keyword
+    org-table
+    org-todo
+    org-verbatim
+    org-date)
+  "Faces to keep fixed-width when using ‘org-variable-pitch-minor-mode’."
+  :group 'org-variable-pitch
+  :type '(repeat symbol))
+
 (defface org-variable-pitch-face
   `((t . (:family ,org-variable-pitch-fixed-font)))
   "Face for initial space and list item bullets.
@@ -88,22 +107,6 @@ This face is used to keep them in monospace when using
             blank)
        ,code))))
 
-(defvar org-variable-pitch-fixed-faces
-  '(org-block
-    org-block-begin-line
-    org-block-end-line
-    org-code
-    org-document-info-keyword
-    org-done
-    org-formula
-    org-indent
-    org-meta-line
-    org-special-keyword
-    org-table
-    org-todo
-    org-verbatim
-    org-date)
-  "Faces to keep fixed-width when using ‘org-variable-pitch-minor-mode’.")
 
 (defvar org-variable-pitch--cookies nil
   "Face remappings to restore when the minor mode is deactivated")
