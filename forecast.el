@@ -367,6 +367,14 @@ the $HOME/.fonts directory for using the font.  There are not
 many fonts that support this character.  There are also the
 BabelStone fonts.")
 
+(defface forecast-rain-symbol-face
+  nil
+  "Face for the rain symbol.")
+
+(defface forecast-snow-symbol-face
+  nil
+  "Face for the snow symbol.")
+
 ;;; Functions:
 (defun forecast--assoca (keyseq list)
   "Arbitrary depth multi-level alist query.
@@ -740,9 +748,13 @@ wind directions."
                           "       "
                         (format " %%%-3d%s " (* 100 pp)
                                 (cond ((string= pt "rain")
-                                       forecast-rain-symbol)
+                                       (propertize
+                                        forecast-rain-symbol
+                                        'face 'forecast-rain-symbol-face))
                                       ((string= pt "snow")
-                                       forecast-snow-symbol)))))))
+                                       (propertize
+                                        forecast-snow-symbol
+                                        'face 'forecast-snow-symbol-face))))))))
           precip)
     (insert "  Precipitation\n")
     ;; wind

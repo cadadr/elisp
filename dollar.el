@@ -57,7 +57,13 @@ integer are to stand for positional arguments to the generated
 lambda.
 
 If the car of the BODY is a vector though, that vector becomes
-the argument list of the new lambda."
+the argument list of the new lambda.
+
+Within the body, $_ stands for arguments not used within the
+body, i.e. the argument list is the N args used within the body
+plus \"&rest $_\"; $* contains the entire argument list,
+including what $_ matches, as a cons cell whose car is a vector
+of positional arguments and whose cdr is the value of $_."
   (let ((head (car body))
         (tail (cdr body))
         args the-body)
@@ -67,7 +73,10 @@ the argument list of the new lambda."
               the-body tail)
       (setf args ($--find-args body)
             the-body body))
-    `(lambda ,args ,@the-body)))
+    `(lambda
+       (,@args &rest $_)
+       (let (($* (cons (vector ,@args) $_)))
+         ,@the-body))))
 
 
 
