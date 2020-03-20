@@ -63,6 +63,10 @@
 
 ;;;; Helper procedures:
 
+(defun onchange--debug-msg (msg &rest args)
+  (when (or debug-on-error debug-on-message)
+    (apply #'message msg args)))
+
 (defun onchange--stop-all-watchers ()
   (interactive)
   ;; Development helper: just forcibly stop all watchers.
@@ -97,6 +101,7 @@
                                           callback)
                    onchange--watchers)))))
 
+
 (defun onchange--make-callback (buffer watch-for-creations)
   (lambda (event)
     (pcase event
@@ -105,33 +110,55 @@
                    (s-starts-with-p ".#" (file-name-base file)) ;emacs swap file
                    (and watch-for-creations
                         (memq action '(created renamed))))
-         (message "Onchange caught notification: action: %S; File: %s" action file)
-         (with-current-buffer buffer
-           (onchange--with-notifications-paused
-            (lambda ()
-              (let ((cmd (buffer-local-value 'onchange--command buffer)))
-                (pcase cmd
-                  ;; Shell command
-                  ((pred stringp)
-                   (let ((output-buffer (generate-new-buffer
-                                         " *onchange process output*")))
-                     (with-current-buffer output-buffer
-                       (setq-local
-                        header-line-format
-                        (concat
-                         (format-time-string "Onchange process output (%FT%T%z) ")
-                         cmd))
-                       (shell-command cmd output-buffer))))
-                  ;; Emacs Lisp form
-                  ((pred listp)
-                   (eval cmd))
-                  ;; Interactive Emacs command
-                  ((pred symbolp)
-                   (call-interactively cmd)
-                   )
-                  (_ (user-error
-                      "Bad onchange command: not a string, Lisp form, \
-or symbol"))))))))))))
+         (onchange--debug-msg
+          "Onchange caught notification: action: %S; File: %s" action file)
+         (onchange--make-callback-1 buffer))))))
+
+
+(defun onchange--make-callback-1 (buffer)
+  (with-current-buffer buffer
+    (onchange--with-notifications-paused
+     (lambda () (onchange--run-command buffer)))))
+
+
+(defun onchange--run-command (buffer)
+  (let ((cmd (buffer-local-value 'onchange--command buffer)))
+    (pcase cmd
+      ;; Shell command
+      ((pred stringp)
+       (onchange--run-shcmd cmd))
+      ;; Emacs Lisp form
+      ((pred listp)
+       (eval cmd))
+      ;; Interactive Emacs command
+      ((pred symbolp)
+       (call-interactively cmd)
+       )
+      (_ (user-error
+          "Bad onchange command: not a string, Lisp form, or symbol")))))
+
+
+(defun onchange--run-shcmd (cmd)
+  ;; Run shell command
+  (let ((output-buffer
+         (generate-new-buffer (format "*onchange process output:%s*" cmd)))
+        (cmd-ident (concat
+                    (format-time-string "Onchange process output (%FT%T%z) ")
+                    cmd)))
+    (with-current-buffer output-buffer
+      (setq-local header-line-format cmd-ident)
+
+      ;; TODO(2020-03-20): Run proc async, use sentinel to resume when
+      ;; finishes.
+      (shell-command cmd output-buffer)
+
+      (with-current-buffer output-buffer
+        ;; TODO(2020-03-20): do it like ‘shell-command’ does, don’t
+        ;; hardcode this number.
+        (if (> (count-lines (point-min) (point-max)) 10)
+            (display-buffer output-buffer)
+          (message "%s:\n%s" cmd-ident (buffer-substring (point-min) (point-max))))))))
+
 
 (defun onchange--add-watch (buffer file-or-directory recursive watch-for-creations)
   (if (and recursive (file-directory-p file-or-directory))
