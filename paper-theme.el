@@ -330,6 +330,7 @@ May be used to refresh after tweaking some variables."
        (quote (font-lock-keyword-face        ,paper-magenta-on-paper-face))
        (quote (font-lock-type-face           ,paper-magenta-on-paper-face))
        (quote (font-lock-constant-face       ,paper-magenta-on-paper-face))
+       (quote (font-lock-preprocessor-face   ,paper-magenta-on-paper-face))
 
        ;; === Org titles ===
        ,(when paper-use-varying-heights-for-org-title-headlines
