@@ -1,6 +1,6 @@
 ;;; pass-listing.el --- Listing UI for password-store.el  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2016, 2017, 2018, 2019  Göktuğ Kayaalp
+;; Copyright (C) 2016, 2017, 2018, 2019, 2020  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Maintainer: Göktuğ Kayaalp <self@gkayaalp.com>
@@ -46,7 +46,7 @@
   (defvar pass-listing-mode-map
     (let ((map (make-sparse-keymap)))
       (define-key map [?g] 'pass-listing-mode)
-      (define-key map [?q] 'kill-this-buffer)
+      (define-key map [?q] (lambda () (interactive) (kill-buffer (current-buffer))))
       (define-key map [?d] 'pass-listing--remove)
       (define-key map [?e] 'pass-listing--edit)
       (define-key map [?i] 'pass-listing--insert)
