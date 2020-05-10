@@ -1,6 +1,6 @@
 ;;; onchange.el --- watch and respond to file system notifications  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2019  Göktuğ Kayaalp
+;; Copyright (C) 2019, 2020  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: files, processes, tools
@@ -52,6 +52,8 @@
 
 (require 'cl-lib)
 (require 'filenotify)
+(require 'subr-x)
+(require 's)
 
 ;;;; Variables:
 
@@ -72,12 +74,33 @@
   ;; Development helper: just forcibly stop all watchers.
   (mapcar #'file-notify-rm-watch (hash-table-keys file-notify-descriptors)))
 
-;; XXX(2019-09-04): This only handles cases where the command is
-;; waited in Emacs, e.g. a synchronous shell command or and Emacs
-;; function that does not run an asynchronous subprocess.  M-x
-;; compile, for example, wouldn’t work with this, there needs to be a
-;; way to signal the completion of the task with this sort of
-;; commands.
+(defvar onchange--process-spotted nil)
+
+(defun onchange--subproc-tracker (buffer descriptors)
+  (lambda (proc)
+    (setq onchange--process-spotted t)
+    (let ((old-sentinel (process-sentinel proc)))
+      (set-process-sentinel
+       proc (lambda (proc change)
+              ;; Complete onchange action...
+              (unless (process-live-p proc)
+                (with-current-buffer buffer
+                  (onchange--reinstall-watchers descriptors)))
+              ;; ... then allow old-sentinel to proceed, if any.
+              (when old-sentinel
+                (apply old-sentinel proc change)))))
+    proc))
+
+
+(defun onchange--reinstall-watchers (descriptors)
+  (pcase-dolist (`(,file . ,callback) descriptors)
+    (setq-local onchange--watchers
+                (cons
+                 (file-notify-add-watch file
+                                        onchange--filenotify-flags
+                                        callback)
+                 onchange--watchers))))
+
 (defun onchange--with-notifications-paused (callback)
   (let* ((watchers (buffer-local-value 'onchange--watchers (current-buffer)))
          ;; Remove watchers for the duration of the execution of the body...
@@ -90,16 +113,15 @@
        descriptors))
     (mapc #'file-notify-rm-watch watchers)
     (setq-local onchange--watchers nil)
-    (funcall callback)
-    ;; ... and then reinstantiate them using the data retrieved from
-    ;; the hashmap.
-    (pcase-dolist (`(,file . ,callback) descriptors)
-      (setq-local onchange--watchers
-                  (cons
-                   (file-notify-add-watch file
-                                          onchange--filenotify-flags
-                                          callback)
-                   onchange--watchers)))))
+
+    ;; Detect ‘make-process’ calls, and instrument them
+    (let ((fn (onchange--subproc-tracker (current-buffer) descriptors)))
+      (advice-add 'make-process :filter-return fn)
+      (funcall callback)
+      (advice-remove 'make-process fn)
+      (unless onchange--process-spotted
+        (onchange--reinstall-watchers descriptors))
+      (setq onchange--process-spotted nil))))
 
 
 (defun onchange--make-callback (buffer watch-for-creations)
@@ -107,7 +129,7 @@
     (pcase event
       (`(,descriptor ,action ,file . ,maybe-file1)
        (unless (or (memq action '(stopped attribute-changed))
-                   (s-starts-with-p ".#" (file-name-base file)) ;emacs swap file
+                   (string-prefix-p ".#" (file-name-base file)) ;emacs swap file
                    (and watch-for-creations
                         (memq action '(created renamed))))
          (onchange--debug-msg
