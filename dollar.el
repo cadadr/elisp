@@ -1,6 +1,7 @@
 ;;; dollar.el --- Shorthand lambda notation          -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018, 2019  Göktuğ Kayaalp
+;; Copyright (C) 2020  Adrián Medraño Calvo
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: lisp
@@ -27,7 +28,10 @@
 
 ;; This package provides a macro named $ where in its body symbols in
 ;; the form $N where N is a positive integer are to stand for
-;; positional arguments to the generated lambda.
+;; positional arguments to the generated lambda.  If the symbol $_ is used, it
+;; is added to the argument list as a &rest argument.  If the symbol $* is used,
+;; it collects all arguments, both positional and &rest.  See the docstring of
+;; `$' for details.
 
 ;; If the car of the body is a vector though, that vector becomes the
 ;; argument list of the new lambda.
@@ -35,48 +39,76 @@
 
 
 ;;; Code:
+(require 'rx)
 (require 'seq)
-(require 'dash)
 
-(defun $--find-args (seq)
+(defvar $--arg-regexp
+  (rx string-start
+      "$" (or (+ digit)
+              "*"
+              "_")
+      string-end)
+  "Regular expression matching arguments.")
+
+(defun $--normalize-args (args)
+  "Sort arguments ARGS."
   (seq-sort
    (lambda (sym1 sym2)
      (< (string-to-number (substring (symbol-name sym1) 1))
         (string-to-number (substring (symbol-name sym2) 1))))
-   (seq-filter
-    (lambda (x)
-      (and (symbolp x)
-           (equal 0 (string-match "\\$[0-9]+" (symbol-name x)))))
-    (seq-uniq (-flatten seq)))))
+   (seq-uniq args)))
 
-(defmacro $ (&rest body)
+(defun $--find-args (form)
+  "Find arguments recursively in expression FORM.
+Arguments are symbols starting with the $ character followed by a number."
+  (cond
+   ((and (listp form) (eq (car form) 'quote))
+    nil)
+   ((consp form)
+    (nconc ($--find-args (car form))
+           ($--find-args (cdr form))))
+   ((and (symbolp form)
+         (equal 0 (string-match $--arg-regexp (symbol-name form))))
+    (list form))))
+
+(defmacro $ (&optional args &rest body)
   "Shortcut for lambdas.
-
 Inside this form symbols in the form $N where N is a positive
 integer are to stand for positional arguments to the generated
 lambda.
 
-If the car of the BODY is a vector though, that vector becomes
-the argument list of the new lambda.
+If the ARGS is a vector, that vector becomes the argument list of
+the new lambda.  Otherwise ARGS is prepended to BODY.
 
-Within the body, $_ stands for arguments not used within the
-body, i.e. the argument list is the N args used within the body
-plus \"&rest $_\"; $* contains the entire argument list,
-including what $_ matches, as a cons cell whose car is a vector
-of positional arguments and whose cdr is the value of $_."
-  (let ((head (car body))
-        (tail (cdr body))
-        args the-body)
-    (if (vectorp head)
-        ;; Convert it to a list.
-        (setf args (seq-into head 'list)
-              the-body tail)
-      (setf args ($--find-args body)
-            the-body body))
-    `(lambda
-       (,@args &rest $_)
-       (let (($* (cons (vector ,@args) $_)))
-         ,@the-body))))
+When present within the body, $_ stands for arguments not used
+within the body, i.e. the argument list is the N args used within
+the body plus \"&rest $_\".
+
+When present within the body, $* contains the entire argument
+list, including what $_ matches, as a cons cell whose car is a
+vector of positional arguments and whose cdr is the value of $_."
+  (if (vectorp args)
+      ;; Convert ARGS to a list.
+      (setq args (seq-into args 'list))
+    ;; ARGS is not a named argument list, but part of body.
+    (push args body)
+    ;; Find the arguments.
+    (setq args ($--normalize-args
+                ($--find-args body)))
+    ;; Handle $* variable.
+    (when (member '$* args)
+      (setq args (delq '$* args))
+      (setq body `(let (($* (cons (vector ,@args) $_)))
+                    ,@body))
+      ;; $* needs $_.  Add it if necessary.
+      (unless (member '$_ args)
+        (push '$_ args)))
+    ;; Handle $_ variable.
+    (when (member '$_ args)
+      (setq args (nconc (delq '$_ args) '(&rest $_)))))
+  (if (equal body (list nil))
+      `(lambda (,@args))
+    `(lambda (,@args) ,@body)))
 
 
 
