@@ -1,6 +1,6 @@
 ;;; org-variable-pitch.el --- Minor mode for variable pitch text in org mode.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018, 2019  Göktuğ Kayaalp
+;; Copyright (C) 2018, 2019, 2020  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: faces
@@ -66,6 +66,11 @@
   :type 'string
   :risky t)
 
+(make-obsolete-variable
+ 'org-variable-pitch-fixed-font
+ "customize ‘org-variable-pitch-fixed-face’ instead."
+ "org-variable-pitch.el 2.0")
+
 (defcustom org-variable-pitch-fixed-faces
   '(org-block
     org-block-begin-line
@@ -95,8 +100,13 @@ apply the monospace face to the headline prefix."
   :group 'org-variable-pitch
   :type 'boolean)
 
-(defface org-variable-pitch-face
-  `((t . (:family ,org-variable-pitch-fixed-font)))
+(define-obsolete-face-alias
+  'org-variable-pitch-face
+  'org-variable-pitch-fixed-face
+  "org-variable-pitch.el 2.0.0")
+
+(defface org-variable-pitch-fixed-face
+  `((t . (:font ,(face-attribute 'default :font))))
   "Face for initial space and list item bullets.
 This face is used to keep them in monospace when using
 ‘org-variable-pitch-minor-mode’."
@@ -107,7 +117,7 @@ This face is used to keep them in monospace when using
 (let ((code '(0 (put-text-property
                    (match-beginning 0)
                    (match-end 0)
-                   'face 'org-variable-pitch-face))))
+                   'face 'org-variable-pitch-fixed-face))))
   (setq
    org-variable-pitch-font-lock-keywords
     `((,(rx bol (1+ blank))
@@ -131,13 +141,12 @@ This face is used to keep them in monospace when using
   "Set up the buffer to be partially in variable pitch.
 Keeps some elements in fixed pitch in order to keep layout."
   nil " OVP" nil
-  (set-face-attribute 'org-variable-pitch-face nil :family org-variable-pitch-fixed-font)
   (if org-variable-pitch-minor-mode
       (progn
         (variable-pitch-mode 1)
         (dolist (face org-variable-pitch-fixed-faces)
           (if (facep face)
-              (push (face-remap-add-relative face 'org-variable-pitch-face)
+              (push (face-remap-add-relative face 'org-variable-pitch-fixed-face)
                     org-variable-pitch--cookies)
             (message "‘%s’ is not a valid face, thus OVP skipped it"
                      (symbol-name face))))
@@ -150,6 +159,35 @@ Keeps some elements in fixed pitch in order to keep layout."
     (font-lock-remove-keywords nil org-variable-pitch-font-lock-keywords)
     (font-lock-remove-keywords nil org-variable-pitch-headline-font-lock-keywords))
   (font-lock-ensure))
+
+(defun org-variable-pitch--enable ()
+  "Enable ‘org-variable-pitch-minor-mode’"
+  (org-variable-pitch-minor-mode +1))
+
+;;;###autoload
+(defun org-variable-pitch-setup ()
+  "Set up ‘org-variable-pitch-minor-mode’.
+
+This function is a helper to set up OVP.  It syncs
+‘org-variable-pitch-fixed-face’ with ‘default’ face, and adds a
+hook to ‘org-mode-hook’.  Ideally, you’d want to run this
+function somewhere after you set up ‘default’ face.
+
+A nice place to call this function is from within
+‘after-init-hook’:
+
+    \(add-hook 'after-init-hook #'org-variable-pitch-setup)
+
+Alternatively, you might want to manually set up the attributes
+of ‘org-variable-pitch-fixed-face’, in which case you should
+calling avoid this function, add ‘org-variable-pitch-minor-mode’
+to ‘org-mode-hook’ manually, and set up the face however you
+please."
+  (interactive)
+  (set-face-attribute 'org-variable-pitch-fixed-face nil
+                      :font (face-attribute 'default :font))
+  (add-hook 'org-mode-hook 'org-variable-pitch--enable))
+
 
 
 
