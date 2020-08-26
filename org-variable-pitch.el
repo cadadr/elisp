@@ -60,11 +60,20 @@
   :group 'org
   :prefix "org-variable-pitch-")
 
+(defun org-variable-pitch--get-fixed-font ()
+  (if (string= org-variable-pitch-fixed-font--default
+               org-variable-pitch-fixed-font)
+      (face-attribute 'default :family)
+    org-variable-pitch-fixed-font))
+
 (defcustom org-variable-pitch-fixed-font "Monospace"
   "Monospace font to use with ‘org-variable-pitch-minor-mode’."
   :group 'org-variable-pitch
   :type 'string
   :risky t)
+
+(defconst org-variable-pitch-fixed-font--default
+  org-variable-pitch-fixed-font)
 
 (make-obsolete-variable
  'org-variable-pitch-fixed-font
@@ -106,7 +115,7 @@ apply the monospace face to the headline prefix."
   "org-variable-pitch.el 2.0.0")
 
 (defface org-variable-pitch-fixed-face
-  `((t . (:family ,(face-attribute 'default :family))))
+  `((t . (:family ,(org-variable-pitch--get-fixed-font))))
   "Face for initial space and list item bullets.
 This face is used to keep them in monospace when using
 ‘org-variable-pitch-minor-mode’."
@@ -185,7 +194,7 @@ to ‘org-mode-hook’ manually, and set up the face however you
 please."
   (interactive)
   (set-face-attribute 'org-variable-pitch-fixed-face nil
-                      :family (face-attribute 'default :family))
+                      :family (org-variable-pitch--get-fixed-font))
   (add-hook 'org-mode-hook 'org-variable-pitch--enable))
 
 
