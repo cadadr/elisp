@@ -106,7 +106,7 @@ apply the monospace face to the headline prefix."
   "org-variable-pitch.el 2.0.0")
 
 (defface org-variable-pitch-fixed-face
-  `((t . (:font ,(face-attribute 'default :font))))
+  `((t . (:family ,(face-attribute 'default :family))))
   "Face for initial space and list item bullets.
 This face is used to keep them in monospace when using
 ‘org-variable-pitch-minor-mode’."
@@ -185,7 +185,7 @@ to ‘org-mode-hook’ manually, and set up the face however you
 please."
   (interactive)
   (set-face-attribute 'org-variable-pitch-fixed-face nil
-                      :font (face-attribute 'default :font))
+                      :family (face-attribute 'default :family))
   (add-hook 'org-mode-hook 'org-variable-pitch--enable))
 
 
