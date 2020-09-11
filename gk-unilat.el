@@ -1,6 +1,6 @@
 ;;; gk-unilat.el -- Unified input method for variants of the Latin alphabet.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2016, 2018, 2019 Göktuğ Kayaalp
+;; Copyright (C) 2016, 2018, 2019, 2020 Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: input, greek
@@ -73,48 +73,68 @@ the world.")
 Defines key combos for inputting Turkish, Italian, French,
 Portuguese, Spanish, German, Latin, and Nordic Germanics.")
 
+(defvar gk-unilat--mappings
+  '(
+    ;; Turkish I and umlauts, cedillas circumflecis
+    ("i"  ?i) ("i;" ?ı) ("o;" ?ö) ("u;" ?ü) ("c;" ?ç) ("g;" ?ğ) ("s;" ?ş)
+
+    ("I;" ?İ) ("O;" ?Ö) ("U;" ?Ü) ("C;" ?Ç) ("G;" ?Ğ) ("S;" ?Ş) ("A^" ?Â)
+    ("E^" ?Ê) ("U^" ?Û) ("I^" ?Î) ("O^" ?Ô)
+
+    ("a^" ?â) ("e^" ?ê) ("i^" ?î) ("u^" ?û) ("o^" ?ô)
+
+    ;; Acute and breve
+    ("a\\" ?à) ("e\\" ?è) ("i\\" ?ì) ("o\\" ?ò) ("u\\" ?ù)
+
+    ("A\\" ?À) ("E\\" ?È) ("I\\" ?Ì) ("O\\" ?Ò) ("U\\" ?Ù)
+
+    ("a/" ?á) ("e/" ?é) ("i/" ?í) ("o/" ?ó) ("u/" ?ú)
+
+    ("A/" ?Á) ("E/" ?É) ("I/" ?Í) ("O/" ?Ó) ("U/" ?Ú)
+
+    ;; Macron
+    ("a_" ?ā) ("e_" ?ē) ("i_" ?ī) ("o_" ?ō) ("u_" ?ū)
+
+    ("A_" ?Ā) ("E_" ?Ē) ("I_" ?Ī) ("O_" ?Ō) ("U_" ?Ū)
+
+    ;; Tilde
+    ("a~" ?ã) ("e~" ?ẽ) ("i~" ?ĩ) ("o~" ?õ) ("u~" ?ũ) ("n~" ?ñ)
+
+    ("A~" ?Ã) ("E~" ?Ẽ) ("I~" ?Ĩ) ("O~" ?Õ) ("U~" ?Ũ) ("N~" ?Ñ)
+
+    ;; Ordinal
+    ("a&" ?ª) ("o&" ?º)
+
+    ;; Various
+    ("I:" ?Ï) ("i:" ?ï) ("a:" ?ä) ("A:" ?Ä) ("e:" ?ë) ("E:" ?Ë) ("a0" ?å)
+    ("A0" ?Å) ("o$" ?ø) ("O$" ?Ø) ("sZ" ?ß) ("o£" ?œ) ("O£" ?Œ) ("a£" ?æ)
+    ("A£" ?Æ)))
+
+
+(defvar gk-unilat--undo-mappings
+  (mapcar
+   (lambda (m)
+     (list (concat (car m) "#") (car (string-to-list (car m)))))
+   gk-unilat--mappings))
+
+
+(defvar gk-unilat--escape-mappings
+  (mapcar
+   (lambda (letter)
+     (list (format "%c#" letter) letter))
+   (seq-uniq
+    (mapcar
+     (lambda (m) (aref (car m) 0))
+     gk-unilat--mappings))))
+
+
 (eval
  `(quail-define-rules
-   ;; Turkish I and umlauts, cedillas circumflecis
-   ("i"  ?i) ("i;" ?ı) ("o;" ?ö) ("u;" ?ü) ("c;" ?ç) ("g;" ?ğ) ("s;" ?ş)
+   ,@gk-unilat--mappings
 
-   ("I;" ?İ) ("O;" ?Ö) ("U;" ?Ü) ("C;" ?Ç) ("G;" ?Ğ) ("S;" ?Ş) ("A^" ?Â)
-   ("E^" ?Ê) ("U^" ?Û) ("I^" ?Î) ("O^" ?Ô)
+   ,@gk-unilat--undo-mappings
 
-   ("a^" ?â) ("e^" ?ê) ("i^" ?î) ("u^" ?û) ("o^" ?ô)
-
-   ;; Acute and breve
-   ("a\\" ?à) ("e\\" ?è) ("i\\" ?ì) ("o\\" ?ò) ("u\\" ?ù)
-
-   ("A\\" ?À) ("E\\" ?È) ("I\\" ?Ì) ("O\\" ?Ò) ("U\\" ?Ù)
-
-   ("a/" ?á) ("e/" ?é) ("i/" ?í) ("o/" ?ó) ("u/" ?ú)
-
-   ("A/" ?Á) ("E/" ?É) ("I/" ?Í) ("O/" ?Ó) ("U/" ?Ú)
-
-   ;; Macron
-   ("a_" ?ā) ("e_" ?ē) ("i_" ?ī) ("o_" ?ō) ("u_" ?ū)
-
-   ("A_" ?Ā) ("E_" ?Ē) ("I_" ?Ī) ("O_" ?Ō) ("U_" ?Ū)
-
-   ;; Tilde
-   ("a~" ?ã) ("e~" ?ẽ) ("i~" ?ĩ) ("o~" ?õ) ("u~" ?ũ) ("n~" ?ñ)
-
-   ("A~" ?Ã) ("E~" ?Ẽ) ("I~" ?Ĩ) ("O~" ?Õ) ("U~" ?Ũ) ("N~" ?Ñ)
-
-   ;; Ordinal
-   ("a&" ?ª) ("o&" ?º)
-
-   ;; Various
-   ("I:" ?Ï) ("i:" ?ï) ("a:" ?ä) ("A:" ?Ä) ("e:" ?ë) ("E:" ?Ë) ("a0" ?å)
-   ("A0" ?Å) ("o$" ?ø) ("O$" ?Ø) ("sZ" ?ß) ("o£" ?œ) ("O£" ?Œ) ("a£" ?æ)
-   ("A£" ?Æ)
-
-   ;; Escaping.
-   ,@(mapcar
-      (lambda (letter)
-        (list (format "%c#" letter) letter))
-      (string-to-list "aeiouAEIOUscgnSCGN"))))
+   ,@gk-unilat--escape-mappings))
 
 ;;; Footer:
 (provide 'gk-unilat)
