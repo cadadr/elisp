@@ -4,7 +4,7 @@
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: faces
-;; Version: 1.1.0
+;; Version: 2.0
 ;; URL: https://dev.gkayaalp.com/elisp/index.html#ovp
 ;; Package-Requires: ((emacs "25"))
 
@@ -39,14 +39,100 @@
 ;;   (require 'org-variable-pitch)
 ;;   (add-hook 'org-mode-hook 'org-variable-pitch-minor-mode)
 
-;;; Configurables:
+;;; Setup:
 
-;;   - ‘org-variable-pitch-fixed-font’: The font used for parts of the
-;;     buffer to be kept in fixed-width font.
+;; org-variable-pitch.el (hereafter, OVP) can be set up in two
+;; methods, the new method introduced in v2.0, and the old way which
+;; was the initial method.
 
-;;   - ‘org-variable-pitch-fixed-faces’: List of org-mode faces to
-;;     keep monospace.
+;;;; New set up method:
 
+;; With v2.0 a new function, ‘org-variable-pitch-setup’ has been
+;; added, which is means to be added to the ‘after-init-hook’ in order
+;; to set up a sensible default configuration for OVP.  In order to
+;; use this method, you can simply add the following to your
+;; ‘user-init-file’:
+
+;;   (require 'org-variable-pitch)
+;;   (add-hook 'after-init-hook #'org-variable-pitch-setup)
+
+;; If you desire finer control, however, you might instead configure
+;; OVP as follows:
+
+;;  (require 'org-variable-pitch)
+;;  (set-face-attribute 'org-variable-pitch-fixed-face nil
+;;                      :family "My Custom Font Mono")
+;;  (add-hook 'org-mode-hook 'org-variable-pitch--enable)
+
+;; At the time I’m writing this, the above snippet is essentially
+;; equivalent to what ‘org-variable-pitch-setup’ does, but that
+;; function might get improved over time.  I’ll try to keep the
+;; documentation in sync with it, but it’s recommended that you use
+;; the setup function instead.
+
+;;;; Old setup method:
+
+;; The old way involved setting a variable-pitch font by hand and
+;; adding ‘org-variable-pitch-minor-mode’ to ‘org-mode-hook’.
+
+;; Because this method of setup is obsolete, it’s not documented here,
+;; but OVP should still work fine with old-style configurations.  You
+;; can still modify ‘org-variable-pitch-fixed-face’ (the new name of
+;; ‘org-variable-pitch-face’, which is obsoleted) and have your
+;; configurations stick though, which was not possible before v2.0.
+
+;;; Configuration:
+
+;; There are a couple variables and faces you can use to configure how
+;; OVP behaves.  These can be modified through the Emacs’
+;; customisation facility via
+
+;;   M-x customize-group RET org-variable-pitch RET
+
+;; or manually, in your ‘user-init-file’.  It’s advisable that you
+;; consult the documentation of each variable with ‘describe-variable’
+;; and each face with ‘describe-face’.
+
+;;;; ‘org-variable-pitch-fixed-face’ (face):
+
+;;   This face is applied to parts of the buffer that OVP renders in
+;;   fixed pitch, i.e. monospace fonts.  These include the space
+;;   characters on the left edge of the buffer (indentation), list
+;;   bullets, checkboxes, and optionally, leading asterixes of the
+;;   headline (see below).
+
+;;   By default, ‘org-variable-pitch-setup’ sets the ‘:family’
+;;   attribute of this face to that of the ‘default’ face.  Pre-v2.0
+;;   this was achieved via setting the ‘org-variable-pitch-fixed-font’
+;;   to a desired font, which can still be used (see below), but we’ve
+;;   obsoleted that method in favour of this new style of
+;;   configuration in order to allow customising this face.
+
+;;   This face replaces ‘org-variable-pitch-face’, which is made into
+;;   an obsolete alias (i.e. still usable, but obsoleted).
+
+;;;; ‘org-variable-pitch-fixed-font’ (variable):
+
+;;   Obsolete since v2.0. Please configure
+;;   ‘org-variable-pitch-fixed-face’ instead.
+
+;;;; ‘org-variable-pitch-fixed-faces’ (variable):
+
+;;   Apart from applying a face to the indentation and other aligned
+;;   parts of an Org mode buffer to fix alignment issues, OVP also
+;;   modifies the appearance of some other elements of the buffer so
+;;   that everything appears tidy and aligned when
+;;   ‘variable-pitch-mode’ is enabled.
+
+;;   This variable contains a list of the faces that are to be
+;;   modified in order to achive that.  You can extend this list with
+;;   the names of faces you want to keep in fixed pitch, tho the
+;;   default is aimed to be fairly comprehensive.
+
+;;;; ‘org-variable-pitch-fontify-headline-prefix’ (variable):
+
+;;   When this variable is non-nil, the leading asterixes of Org mode
+;;   headlines are configured to appear in fixed pitch too.
 
 
 
@@ -112,7 +198,7 @@ apply the monospace face to the headline prefix."
 (define-obsolete-face-alias
   'org-variable-pitch-face
   'org-variable-pitch-fixed-face
-  "org-variable-pitch.el 2.0.0")
+  "org-variable-pitch.el 2.0")
 
 (defface org-variable-pitch-fixed-face
   `((t . (:family ,(org-variable-pitch--get-fixed-font))))
