@@ -4,7 +4,7 @@
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: faces
-;; Version: 2.0
+;; Version: 2.1
 ;; URL: https://dev.gkayaalp.com/elisp/index.html#ovp
 ;; Package-Requires: ((emacs "25"))
 
@@ -180,7 +180,8 @@
     org-table
     org-todo
     org-verbatim
-    org-date)
+    org-date
+    org-drawer)
   "Faces to keep fixed-width when using ‘org-variable-pitch-minor-mode’."
   :group 'org-variable-pitch
   :type '(repeat symbol))
