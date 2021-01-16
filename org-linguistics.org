@@ -1,0 +1,265 @@
+#+title: Example document for =org-linguistics.el=
+#+author: Göktuğ Kayaalp
+#+keywords: Emacs Lisp, Org mode, Linguistics, Special blocks
+#+options: toc:nil num:nil
+
+#+latex_header_extra: \usepackage[utf8]{inputenc}
+#+latex_header_extra: \usepackage[english]{babel}
+#+latex_header_extra: \usepackage{fontspec}
+
+#+begin_export latex
+%% Fonts
+\setsansfont{Liberation Sans}
+\setromanfont[%
+ SmallCapsFont=Linux Libertine O,
+ SmallCapsFeatures={Letters=SmallCaps}
+]{Liberation Serif}
+\setmonofont{Liberation Mono}
+
+\setmainfont[%
+ SmallCapsFont=Linux Libertine O,
+ SmallCapsFeatures={Letters=SmallCaps}
+]{Liberation Serif}
+#+end_export
+
+
+#+begin_abstract
+=org-linguistics.el= is a simple Emacs Lisp package that defines some
+special blocks that help typeset syntax trees, glosses, and enumerated
+sentences. It’s basically a dirty hack on top of Org mode’s LaTeX
+export mechanism and the =org-element= API.  This is also
+fresh-outta-oven very-WIP stuff, so use with care.
+#+end_abstract
+
+* Trees
+We use the =qtree= LaTeX package to generate syntactic trees from
+unordered lists and description lists.  As seen in [[treeSrc]], we write
+the tree analysis in a list form, and each level of the list
+corresponds to a level in the tree. If the node label has an
+apostrophe or a right single quotation mark at the end, it’s parsed as
+a bar level.  By default, it’s exported as an apostrophe, but if you
+want the macron (overline) syntax, you can set
+~org-linguistics-barlevel-template~ to =\=%s=.
+
+#+name: treeSrc
+#+begin_src org
+,#+name: testTree1
+,#+begin_tree
+- S
+  - DP
+    - D’
+      - Det
+        - the
+    - N
+      - cat
+  - VP
+    - V
+      - ate
+    - DP
+      - Det
+        - the
+      - N
+        - fish
+,#+end_tree
+#+end_src
+
+Evaluating the above source code, we get a result like in
+(\ref{treePlain}):
+
+#+name: treePlain
+#+begin_tree
+- S
+  - DP
+    - D’
+      - Det
+        - the
+    - N
+      - cat
+  - VP
+    - V
+      - ate
+    - DP
+      - Det
+        - the
+      - N
+        - fish
+#+end_tree
+
+
+Another little shorthand that is available is to use description list
+items to generate "roofs" over phrases.  Observe the line =DP :: the
+cat= in [[treeRoofSrc]]. 
+
+#+name: treeRoofSrc
+#+begin_src org
+,#+begin_tree
+- S
+  - DP :: the cat
+  - VP
+    - V
+      - ate
+    - DP
+      - Det
+        - the
+      - N
+        - fish
+,#+end_tree
+#+end_src
+
+Observe then the first DP in (\ref{treeRoof}):
+
+#+name: treeRoof
+#+begin_tree
+- S
+  - DP :: the cat
+  - VP
+    - V
+      - ate
+    - DP
+      - Det
+        - the
+      - N
+        - fish
+#+end_tree
+
+This should cover the most usual and rudimentary syntactic trees.  As
+it is now, for more advanced applications, directly using =qtree= or
+=tikz-qtree= packages would be more opportune.
+
+* Glosses
+We use the =enumsentence= package to create glosses.  An improvement
+=org-linguistics.el= provides over it is a naïve automatic line
+wrapping feature (viz. =org-linguistics-gloss-fill-column=).
+
+Glosses too are based on lists.  In a =gloss= block we provide up to
+three lists: an =example= list that lists the constituents of the
+example sentence, a =gloss= list that lists a matching gloss, and
+finally a singleton =translation= list that lists a textual
+translation line.
+
+The =example= list is mandatory. You can then either provide only one
+of =gloss= or =translation=, or provide both of them.  The translation
+is not wrapped.
+
+Any list item type should work, but it’s advisable to use ordered
+lists as they help balance the glosses.
+
+The examples below should make it clearer:
+
+#+name: glossExSrc
+#+begin_src org
+,#+name: glossEx
+,#+begin_gloss
+- example
+  1) Ali
+  2) topu
+  3) at.
+  4) Veli
+  5) topu
+  6) tut.
+  7) Ayşe
+  8) ip
+  9) atla.
+
+- gloss
+  1) Ali-NOM
+  2) ball-ACC
+  3) throw-IMP
+  4) Veli-NOM
+  5) ball-ACC
+  6) catch-IMP
+  7) Ayşe-NOM
+  8) rope-NOM
+  9) jump-imp
+
+- translation
+  - Throw the ball, Ali. Catch the ball, Veli. Ayşe, jump rope.
+,#+end_gloss
+#+end_src
+
+The generated gloss figure:
+
+#+name: glossEx
+#+begin_gloss
+- example
+  1) Ali
+  2) topu
+  3) at.
+  4) Veli
+  5) topu
+  6) tut.
+  7) Ayşe
+  8) ip
+  9) atla.
+
+- gloss
+  1) Ali-NOM
+  2) ball-ACC
+  3) throw-IMP
+  4) Veli-NOM
+  5) ball-ACC
+  6) catch-IMP
+  7) Ayşe-NOM
+  8) rope-NOM
+  9) jump-imp
+
+- translation
+  - Throw the ball, Ali. Catch the ball, Veli. Ayşe, jump rope.
+#+end_gloss
+
+* Enumerated sentences
+=enumsentence= can also be used to generate non-gloss enumerated
+sentences and sentence lists.  In order to make use of this feature we
+use the =enum= blocks.  If the block contains a single paragraph, it’s
+exported as a single enumerated sentence:
+
+#+begin_src org
+,#+name: enum1
+,#+begin_enum
+The quick brown fox jumps over the lazy dog.
+,#+end_enum
+#+end_src
+
+Result:
+
+#+name: enum1
+#+begin_enum
+The quick brown fox jumps over the lazy dog.
+#+end_enum
+
+We can obviously use the =enum1= label to refer to the sentence.
+
+But if we include a list of sentences inside the =enum= block, then a
+sentence listing is generated, and each sentence has it’s own label
+generated as a combination of the =enum= block name, a dash, and the
+zero-padded one-based two-digit index of the sentence, e.g. =enum2-01=
+(= \ref{enum2-01}) and =enum2-02= (= \ref{enum2-02}) for (\ref{enum2})
+as seen below:
+
+#+begin_src org
+,#+name: enum2
+,#+begin_enum
+- The quick brown fox jumps
+- over the lazy dog.
+,#+end_enum
+#+end_src
+
+#+name: enum2
+#+begin_enum
+- The quick brown fox jumps
+- over the lazy dog.
+#+end_enum
+
+* Development and Contributions
+=org-linguistics.el= was inspired by a [[https://www.reddit.com/r/emacs/comments/kxdr7x/programming_proving_orgmode_lists_as_proof_trees/][post on r/emacs]] rather recently
+as of writing these lines (February 16th, 2021), so it is still a
+small, work-in-progress, malleable package.  As it is now, captions
+and labels need better integrating as they may cause some breakage and
+don’t work with internal links of Org mode.
+
+Ideas for new blocks are most welcome, especially when they come with
+code (I’m only an MA student so not exactly an expert in linguistics
+notation yet at this point).  Ditto for bug reports.  You can submit
+pull requests and issues on the [[https://github.com/cadadr/elisp][GitHub repository]].  Please read the
+[[https://github.com/cadadr/elisp/blob/devel/Readme.org#contributing][relevant section on project README]] in order to learn the couple little
+requirement regarding commit messages.
