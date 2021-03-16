@@ -55,7 +55,9 @@
       (define-key map [?R] 'pass-listing--rename)
       (define-key map [?y] 'pass-listing--copy)
       (define-key map [?n] 'widget-forward)
-      (define-key map [?b] 'widget-backward)
+      (define-key map [?p] 'widget-backward)
+      (define-key map [?s] 'isearch-forward)
+      (define-key map [?/] 'isearch-forward)
       map)
     "Keymap for `pass-listing-mode'")
 
