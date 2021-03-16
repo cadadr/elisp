@@ -90,6 +90,8 @@ Keybindings for `pass-listing-mode':\n
   (buffer-disable-undo)
   (setq-local default-directory (password-store-dir))
   (setq-local word-wrap t)
+  (setq-local show-paren-mode nil)
+  (hl-line-mode)
   (use-local-map pass-listing-mode--composed-map)
   ;; Insert passwords.
   (setq pass-listing--passwords
