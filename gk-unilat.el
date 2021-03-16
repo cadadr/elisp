@@ -1,6 +1,6 @@
 ;;; gk-unilat.el -- Unified input method for variants of the Latin alphabet.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2016, 2018, 2019, 2020 Göktuğ Kayaalp
+;; Copyright (C) 2016, 2018, 2019, 2020, 2021 Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: input, greek
@@ -56,6 +56,7 @@
 
 
 ;;; Code:
+(require 'seq)
 (require 'quail)
 
 (defvar gk-unilat-languages
@@ -76,7 +77,7 @@ Portuguese, Spanish, German, Latin, and Nordic Germanics.")
 (defvar gk-unilat--mappings
   '(
     ;; Turkish I and umlauts, cedillas circumflecis
-    ("i"  ?i) ("i;" ?ı) ("o;" ?ö) ("u;" ?ü) ("c;" ?ç) ("g;" ?ğ) ("s;" ?ş)
+    ("i;" ?ı) ("o;" ?ö) ("u;" ?ü) ("c;" ?ç) ("g;" ?ğ) ("s;" ?ş)
 
     ("I;" ?İ) ("O;" ?Ö) ("U;" ?Ü) ("C;" ?Ç) ("G;" ?Ğ) ("S;" ?Ş) ("A^" ?Â)
     ("E^" ?Ê) ("U^" ?Û) ("I^" ?Î) ("O^" ?Ô)
