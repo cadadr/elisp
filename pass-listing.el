@@ -208,7 +208,9 @@ Useful for resetting passwords.  "
     (if (member name pass-listing--open)
         (progn
           (let ((inhibit-read-only t))
-            (delete-region there (1- (next-button (point)))))
+            (delete-region there (1- (save-excursion
+                                       (widget-forward 1)
+                                       (point)))))
           (setq pass-listing--open
                 (remove name pass-listing--open)))
       (progn
