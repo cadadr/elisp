@@ -56,6 +56,7 @@
 
 
 ;;; Code:
+(require 'seq)
 (require 'quail)
 
 (defvar gk-unilat-languages
