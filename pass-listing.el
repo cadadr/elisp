@@ -1,6 +1,6 @@
 ;;; pass-listing.el --- Listing UI for password-store.el  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2016, 2017, 2018, 2019, 2020  Göktuğ Kayaalp
+;; Copyright (C) 2016, 2017, 2018, 2019, 2020, 2021  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Maintainer: Göktuğ Kayaalp <self@gkayaalp.com>
@@ -55,7 +55,9 @@
       (define-key map [?R] 'pass-listing--rename)
       (define-key map [?y] 'pass-listing--copy)
       (define-key map [?n] 'widget-forward)
-      (define-key map [?b] 'widget-backward)
+      (define-key map [?p] 'widget-backward)
+      (define-key map [?s] 'isearch-forward)
+      (define-key map [?/] 'isearch-forward)
       map)
     "Keymap for `pass-listing-mode'")
 
@@ -88,6 +90,8 @@ Keybindings for `pass-listing-mode':\n
   (buffer-disable-undo)
   (setq-local default-directory (password-store-dir))
   (setq-local word-wrap t)
+  (setq-local show-paren-mode nil)
+  (hl-line-mode)
   (use-local-map pass-listing-mode--composed-map)
   ;; Insert passwords.
   (setq pass-listing--passwords
@@ -204,7 +208,9 @@ Useful for resetting passwords.  "
     (if (member name pass-listing--open)
         (progn
           (let ((inhibit-read-only t))
-            (delete-region there (1- (next-button (point)))))
+            (delete-region there (1- (save-excursion
+                                       (widget-forward 1)
+                                       (point)))))
           (setq pass-listing--open
                 (remove name pass-listing--open)))
       (progn
