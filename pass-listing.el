@@ -1,6 +1,6 @@
 ;;; pass-listing.el --- Listing UI for password-store.el  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2016, 2017, 2018, 2019, 2020  Göktuğ Kayaalp
+;; Copyright (C) 2016, 2017, 2018, 2019, 2020, 2021  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Maintainer: Göktuğ Kayaalp <self@gkayaalp.com>
