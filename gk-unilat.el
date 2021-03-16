@@ -76,7 +76,7 @@ Portuguese, Spanish, German, Latin, and Nordic Germanics.")
 (defvar gk-unilat--mappings
   '(
     ;; Turkish I and umlauts, cedillas circumflecis
-    ("i"  ?i) ("i;" ?ı) ("o;" ?ö) ("u;" ?ü) ("c;" ?ç) ("g;" ?ğ) ("s;" ?ş)
+    ("i;" ?ı) ("o;" ?ö) ("u;" ?ü) ("c;" ?ç) ("g;" ?ğ) ("s;" ?ş)
 
     ("I;" ?İ) ("O;" ?Ö) ("U;" ?Ü) ("C;" ?Ç) ("G;" ?Ğ) ("S;" ?Ş) ("A^" ?Â)
     ("E^" ?Ê) ("U^" ?Û) ("I^" ?Î) ("O^" ?Ô)
