@@ -1,6 +1,6 @@
 ;;; gk-unilat.el -- Unified input method for variants of the Latin alphabet.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2016, 2018, 2019, 2020 Göktuğ Kayaalp
+;; Copyright (C) 2016, 2018, 2019, 2020, 2021 Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: input, greek
