@@ -1,6 +1,6 @@
 ;;; org-variable-pitch.el --- Minor mode for variable pitch text in org mode.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018, 2019, 2020  Göktuğ Kayaalp
+;; Copyright (C) 2018, 2019, 2020, 2021  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: faces
@@ -133,6 +133,17 @@
 
 ;;   When this variable is non-nil, the leading asterixes of Org mode
 ;;   headlines are configured to appear in fixed pitch too.
+
+;;; Notes:
+
+;; - Setting ‘redisplay-skip-fontification-on-input’ to t may lead to
+;;   inconsistent application of ‘org-variable-pitch-fixed-face’ to
+;;   indentation.  This usually self-remedies as new input is added to
+;;   the buffer and e.g. sometimes when ‘org-fill-paragraph’ is run,
+;;   but will still lead to confusing issues, like for example the
+;;   second and further lines of list items’ indentation not being
+;;   made fixed, leading to them appearing on the wrong indentation
+;;   level.
 
 
 
