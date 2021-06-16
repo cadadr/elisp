@@ -109,7 +109,10 @@ Portuguese, Spanish, German, Latin, and Nordic Germanics.")
     ;; Various
     ("I:" ?Ï) ("i:" ?ï) ("a:" ?ä) ("A:" ?Ä) ("e:" ?ë) ("E:" ?Ë) ("a0" ?å)
     ("A0" ?Å) ("o$" ?ø) ("O$" ?Ø) ("sZ" ?ß) ("o£" ?œ) ("O£" ?Œ) ("a£" ?æ)
-    ("A£" ?Æ)))
+    ("A£" ?Æ)
+
+    ;; Inclusive language - Italian
+    ("x;" ?ə) ("X;" ?Ə) ("q;" ?ɜ) ("Q;" ?Ɜ)))
 
 
 (defvar gk-unilat--undo-mappings
