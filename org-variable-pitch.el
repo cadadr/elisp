@@ -231,8 +231,8 @@ This face is used to keep them in monospace when using
        ,code)
       (,(rx bol (0+ blank)
             (or (: (or (+ digit) letter) (in ".)"))
-                (: (or (in "-+") (1+ blank "\*"))
-                   (opt blank "[" (in "-X ") "]")))
+                (: (or (in "-+") (1+ blank "*"))))
+            (opt blank "[" (in "-X ") "]")
             blank)
        ,code))
     org-variable-pitch-headline-font-lock-keywords
