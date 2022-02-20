@@ -18,9 +18,11 @@ Etiam vel tortor sodales tellus ultricies commodo.
     * Et mollis nec, sagittis eu, wisi.
 
 - [X] Alpha
-- [-] Beta
+- [ ] Beta
   - [ ] Gamma
-  - [X] Pseudorandom number generator
+  - [ ] Pseudorandom number generator
+    1. [ ] Hello!
+       1) [ ] Another test for checkboxes
 
 - laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.
   a. Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.
