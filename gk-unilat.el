@@ -4,7 +4,7 @@
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: input
-;; Version: 1.6
+;; Version: 2.0
 ;; URL: https://github.com/cadadr/elisp/#gk-unilatel
 
 ;; Permission  is  hereby  granted,  free of  charge,  to  any  person
@@ -58,22 +58,100 @@
         "Turkish" "UTF-8" "Welsh")
   "List of languages that  `unilat-gk' input-method supports.")
 
+
+(defvar gk-unilat-escape-char ?x
+  "Character to escape an active composition.
+
+When this character is entered, the current visible letter is
+inserted and the sequence is no longer available for Quail
+modifications.")
+
+
+(defvar gk-unilat-undo-char ?u
+  "Character to undo a composition.
+
+When a composition is active and this character is entered, the
+most recent modification is undone.")
+
+
 
 
 ;;; Unified latin input method:
 (quail-define-package
  "unilat-gk" "Universal Latin (GK)" "☉" nil
  "A universal Latin input method.
-Defines key combos for inputting languages listed in
-‘gk-unilat-languages’.")
+
+The Unilat-GK input method is meant to help with entering text in
+most, and ideally all, Latin-based scripts.
+
+The 26 Latin letters insert themselves. For those that can
+receive diacritics, Unilat-GK presents mnemonic key combinations
+to insert them.
+
+Some example conversions:
+    C;ekoslovakyali;lasti;ramadi;klari;mi;zdan mi;si;ni;z?
+        => Çekoslovakyalılaştıramadıklarımızdan mısınız?
+    Na ve/spera de na~o partir nunca
+        => Na véspera de não partir nunca
+    Tu bi Kurdi^ diaxivi^?
+        => Tu bi kurdî diaxivî?
+    L'histoire se re/pe\te.
+        => L'histoire se répète.
+    I no$d skal du la£re dine venner a0 kenne.
+        => I nød skal du lære dine venner å kenne.
+
+There are cases where this can get complicated, for example when
+typing a slash between two words or a colon after a vowel, in
+which case just typing ahead when Unilat-GK is active will
+produce a letter with a diacritic instead of the intended
+sequence.
+
+To remedy this, there are two mechanisms: escaping, and undoing.
+
+The escape key, determined by ‘gk-unilat-escape-char’, terminates
+the active letter’s composition, inserting what you see on the
+screen into the text without any further changes or undoing. For
+example, assuming default settings are active, observe:
+
+    here/there => heréthere    vs.    herex/there => here/there
+    see:       => seë          vs.    seex:       => see:
+
+The undo key, determined by ‘gk-unilat-undo-char’, instead,
+undoes the last modification to the current letter and inserts
+the letter without that modification into the buffer. Observe:
+
+    here/there => heréthere    vs.    here/u/there => here/there
+    aks;am     => akşam        vs.    aks;uam      => aksam
+
+The languages Unilat-GK supports are hard to pin down, as many
+world languages use some variation of the Latin alphabet and I
+only have familiarity with the orthography of a subset of them.
+
+Thus rather than listing languages it supports, I resort to
+enumerating those languages which I intentionally target. See
+‘gk-unilat-languages’ for a list of these.
+
+‘gk-unilat-languages’, with possible modifications, can be used
+to assign Unilat-GK as the default input method for supported
+languages with an Elisp snippet as follows:
+
+    ;; Use ‘unilat-gk’ whenever possible.
+    \(dolist (lang gk-unilat-languages)
+      (let* ((env (assoc lang language-info-alist))
+             (im (assoc 'input-method env)))
+        ;; Some language environments may  not have an input-method
+        ;; field, namely English.
+        (when im
+          (setcdr im \"unilat-gk\")))) ")
 
 (defvar gk-unilat--mappings
   '(
     ;; Turkish I and umlauts, cedillas circumflecis
-    ("i;" ?ı) ("o;" ?ö) ("u;" ?ü) ("c;" ?ç) ("g;" ?ğ) ("s;" ?ş)
+    ("i;" ?ı) ("i;;" ?i) ("o;" ?ö) ("u;" ?ü) ("c;" ?ç) ("g;" ?ğ) ("s;" ?ş)
 
-    ("I;" ?İ) ("O;" ?Ö) ("U;" ?Ü) ("C;" ?Ç) ("G;" ?Ğ) ("S;" ?Ş) ("A^" ?Â)
-    ("E^" ?Ê) ("U^" ?Û) ("I^" ?Î) ("O^" ?Ô)
+    ("I;" ?İ) ("I;;" ?I) ("O;" ?Ö) ("U;" ?Ü) ("C;" ?Ç) ("G;" ?Ğ) ("S;" ?Ş)
+
+    ("A^" ?Â) ("E^" ?Ê) ("U^" ?Û) ("I^" ?Î) ("O^" ?Ô)
 
     ("a^" ?â) ("e^" ?ê) ("i^" ?î) ("u^" ?û) ("o^" ?ô)
 
@@ -108,18 +186,22 @@ Defines key combos for inputting languages listed in
 (defvar gk-unilat--undo-mappings
   (mapcar
    (lambda (m)
-     (list (concat (car m) "#") (car (string-to-list (car m)))))
+     (list (concat (car m) (make-string 1 gk-unilat-undo-char))
+           (car (string-to-list (car m)))))
    gk-unilat--mappings))
 
 
 (defvar gk-unilat--escape-mappings
-  (mapcar
-   (lambda (letter)
-     (list (format "%c#" letter) letter))
-   (seq-uniq
-    (mapcar
-     (lambda (m) (aref (car m) 0))
-     gk-unilat--mappings))))
+  (append
+   (list (list (format "i;%c" gk-unilat-escape-char) ?ı)
+         (list (format "I;%c" gk-unilat-escape-char) ?İ))
+   (mapcar
+    (lambda (letter)
+      (list (format "%c%c" letter gk-unilat-escape-char) letter))
+    (seq-uniq
+     (mapcar
+      (lambda (m) (aref (car m) 0))
+      gk-unilat--mappings)))))
 
 
 (eval
