@@ -1,11 +1,11 @@
 ;;; gk-unilat.el -- Unified input method for variants of the Latin alphabet.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2016, 2018, 2019, 2020, 2021 Göktuğ Kayaalp
+;; Copyright (C) 2016, 2018, 2019, 2020, 2021, 2022 Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
-;; Keywords: input, greek
-;; Version: 1.5
-;; URL: https://dev.gkayaalp.com/elisp/index.html#gk-unilat-el
+;; Keywords: input
+;; Version: 1.6
+;; URL: https://github.com/cadadr/elisp/#gk-unilatel
 
 ;; Permission  is  hereby  granted,  free of  charge,  to  any  person
 ;; obtaining  a copy  of  this software  and associated  documentation
@@ -42,37 +42,30 @@
 ;; See  `gk-unilat-languages' for  a list  of intentionally  supported
 ;; languages.
 
-;; Contributions are welcome:
-
-;;   $ cp gk-unilat.el gk-unilat.el.orig
-;;   edit gk-unilat.el...
-;;   $ diff -u gk-unilat.el.orig gk-unilat.el > gk-unilat.el.patch
-;;   review the patch.
-;;   mail me the patch.
-
-;; Include in  your mail a description  of the changes and  why.  Make
-;; sure that the  changes fit in with the patterns  already used here.
-;; Make a patch on the latest version published.
+;; Contributions are welcome, please follow the instructions at
+;; https://github.com/cadadr/elisp/#contributing
 
 
+
 ;;; Code:
 (require 'seq)
 (require 'quail)
 
-(defvar gk-unilat-languages
-  (list "Turkish" "English" "Italian" "French" "German" "Spanish"
-        "Portuguese" "Latin" "Norwegian" "Swedish" "Welsh" "Kurdish"
-        "Dutch" "UTF-8")
-  "List of languages that  `unilat-gk' input-method supports.
-It may support  even more, but I don't know  all the languages in
-the world.")
+;; Keep this sorted alphabetically
+(defconst gk-unilat-languages
+  (list "Dutch" "English" "French" "German" "Italian" "Kurdish"
+        "Latin" "Norwegian" "Portuguese" "Spanish" "Swedish"
+        "Turkish" "UTF-8" "Welsh")
+  "List of languages that  `unilat-gk' input-method supports.")
+
 
+
 ;;; Unified latin input method:
 (quail-define-package
  "unilat-gk" "Universal Latin (GK)" "☉" nil
  "A universal Latin input method.
-Defines key combos for inputting Turkish, Italian, French,
-Portuguese, Spanish, German, Latin, and Nordic Germanics.")
+Defines key combos for inputting languages listed in
+‘gk-unilat-languages’.")
 
 (defvar gk-unilat--mappings
   '(
@@ -136,7 +129,9 @@ Portuguese, Spanish, German, Latin, and Nordic Germanics.")
    ,@gk-unilat--undo-mappings
 
    ,@gk-unilat--escape-mappings))
+
 
+
 ;;; Footer:
 (provide 'gk-unilat)
 ;;; gk-unilat.el ends here
