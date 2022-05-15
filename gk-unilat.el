@@ -4,7 +4,7 @@
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: input
-;; Version: 2.0
+;; Version: 3.0
 ;; URL: https://github.com/cadadr/elisp/#gk-unilatel
 
 ;; Permission  is  hereby  granted,  free of  charge,  to  any  person
@@ -59,7 +59,7 @@
   "List of languages that  `unilat-gk' input-method supports.")
 
 
-(defvar gk-unilat-escape-char ?x
+(defvar gk-unilat-escape-char ?#
   "Character to escape an active composition.
 
 When this character is entered, the current visible letter is
@@ -67,7 +67,7 @@ inserted and the sequence is no longer available for Quail
 modifications.")
 
 
-(defvar gk-unilat-undo-char ?u
+(defvar gk-unilat-undo-char ?
   "Character to undo a composition.
 
 When a composition is active and this character is entered, the
@@ -113,15 +113,15 @@ the active letter’s composition, inserting what you see on the
 screen into the text without any further changes or undoing. For
 example, assuming default settings are active, observe:
 
-    here/there => heréthere    vs.    herex/there => here/there
-    see:       => seë          vs.    seex:       => see:
+    here/there => heréthere    vs.    here#/there => here/there
+    see:       => seë          vs.    see#:       => see:
 
 The undo key, determined by ‘gk-unilat-undo-char’, instead,
 undoes the last modification to the current letter and inserts
 the letter without that modification into the buffer. Observe:
 
-    here/there => heréthere    vs.    here/u/there => here/there
-    aks;am     => akşam        vs.    aks;uam      => aksam
+    here/there => heréthere vs. here/<Backspace>/there => here/there
+    aks;am     => akşam     vs. aks;<Backspace>am      => aksam
 
 The languages Unilat-GK supports are hard to pin down, as many
 world languages use some variation of the Latin alphabet and I
