@@ -1,5 +1,5 @@
 ;;; paper-theme.el --- A minimal Emacs colour theme. -*- lexical-binding: t; -*-
-;; Copyright (C) 2015, 2018, 2019 Göktuğ Kayaalp
+;; Copyright (C) 2015, 2018, 2019, 2022 Göktuğ Kayaalp
 ;;
 ;; Author: Göktuğ Kayaalp
 ;; Keywords: theme paper
@@ -335,7 +335,11 @@ May be used to refresh after tweaking some variables."
        ;; === Org titles ===
        ,(when paper-use-varying-heights-for-org-title-headlines
           (quote (quote (org-tag ((t (:height 90 :weight light)))))))
-       ,@org-faces))))
+       ,@org-faces
+
+       ;; === Line numbers ===
+       (quote (line-number              ,paper-light-shadow-face))
+       (quote (line-number-current-line ((t (:inherit highlight)))))))))
 
 (paper--set-faces)
 
