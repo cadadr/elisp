@@ -1,10 +1,10 @@
 ;;; dollar.el --- Shorthand lambda notation          -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018, 2019  Göktuğ Kayaalp
+;; Copyright (C) 2018, 2019, 2023  Göktuğ Kayaalp
 
 ;; Author: Göktuğ Kayaalp <self@gkayaalp.com>
 ;; Keywords: lisp
-;; Version: 0
+;; Version: 0.2
 ;; URL: https://dev.gkayaalp.com/elisp/index.html#dollar-el
 ;; Package-Requires: ((emacs "25"))
 
@@ -38,6 +38,19 @@
 (require 'seq)
 (require 'dash)
 
+;; Exclude quoted expressions from search.
+;; cf. https://github.com/cadadr/elisp/issues/43
+(defun $--eliminate-quoted (expr)
+  (cond
+   ((and (consp expr)
+         (eq (car expr) 'quote))
+    nil)
+   ((consp expr)
+    (cons ($--eliminate-quoted (car expr))
+          ($--eliminate-quoted (cdr expr))))
+   (t
+    expr)))
+
 (defun $--find-args (seq)
   (seq-sort
    (lambda (sym1 sym2)
@@ -47,7 +60,9 @@
     (lambda (x)
       (and (symbolp x)
            (equal 0 (string-match "\\$[0-9]+" (symbol-name x)))))
-    (seq-uniq (-flatten seq)))))
+    (seq-uniq
+     (-flatten
+      ($--eliminate-quoted seq))))))
 
 (defmacro $ (&rest body)
   "Shortcut for lambdas.
