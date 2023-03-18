@@ -38,7 +38,7 @@ It's most adapted for ELisp-Org users, as I'm one such user, though it
 works fine with Markdown, Textile, Python, JavaScript, Html, Diff,
 Magit, etc.
 
-# [[./paper1.gif]]
+[[./paper1.gif]]
 
 ** =pass-listing.el=
 :PROPERTIES:
@@ -105,8 +105,6 @@ port, I will help with handing the package over on MELPA./
 
 «forecast.el» is a weather forecast report generator, currently using
 data from [[https://darksky.net][Dark Sky]] (but I plan to add other backends in the future).
-
-[[./forecast.el.png]]
 
 * Unmaintained packages
 
