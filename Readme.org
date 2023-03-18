@@ -67,16 +67,6 @@ predictable way.
 Translates input in Greek latinization into Greek alphabet.  Mappings
 are based on vocal correspondence and common modern transliteration.
 
-** =org-variable-pitch.el=
-:PROPERTIES:
-:CUSTOM_ID: ovp
-:END:
-«org-variable-pitch.el» is a minor mode that enables
-‘variable-pitch-mode’ in the current Org-mode buffer, and sets some
-particular faces up so that they are are rendered in fixed-width font.
-Also, indentation, list bullets and checkboxes are displayed in
-monospace, in order to keep the shape of the outline.
-
 ** =dollar.el=
 :PROPERTIES:
 :CUSTOM_ID: dollar-el
@@ -126,6 +116,16 @@ data from [[https://darksky.net][Dark Sky]] (but I plan to add other backends in
 take over their development, please create a new repository to do so,
 and if you want to take over the MELPA package, create an issue on
 Github and I will help with that./
+
+** =org-variable-pitch.el=
+:PROPERTIES:
+:CUSTOM_ID: ovp
+:END:
+«org-variable-pitch.el» is a minor mode that enables
+‘variable-pitch-mode’ in the current Org-mode buffer, and sets some
+particular faces up so that they are are rendered in fixed-width font.
+Also, indentation, list bullets and checkboxes are displayed in
+monospace, in order to keep the shape of the outline.
 
 ** =bsdpkg.el=
 :PROPERTIES:
